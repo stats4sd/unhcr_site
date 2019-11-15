@@ -9,6 +9,9 @@
 <script src="//code.jquery.com/jquery.js"></script>
 <!-- DataTables -->
 <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <style>
 
 /* Style the body */
@@ -91,12 +94,7 @@ body {
   padding: 20px;
 }
 
-/* Fake image, just for this example */
-.fakeimg {
-  background-color: #aaa;
-  width: 100%;
-  padding: 20px;
-}
+
 
 /* Footer */
 .footer {
@@ -171,6 +169,22 @@ body {
   background-color: #f1f1f1;
 }
 
+/*
+------------------------
+Lessons & Learning
+------------------------
+*/
+
+.lessons_top {
+            background: url('/images/lessons_top.jpg') center center / cover no-repeat;
+        }
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
 
 </style>
 </head>
@@ -178,9 +192,9 @@ body {
 @section('navbar')
 <div class="navbar">
   <a href="home">Home</a>
-  <a href="charts">Charts</a>
+  <a href="http://127.0.0.1:3581">Charts</a>
   <a href="admin">Admin</a>
-  <a href="#" class="right">Link</a>
+  <a href="lessons">Lessons & Learning</a>
 </div>
 @yield('navbar')
 
@@ -190,6 +204,3 @@ body {
 </div>
 @yield('footer')
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

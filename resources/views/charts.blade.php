@@ -5,8 +5,8 @@
 <div style="padding: 14px 20px;">
   	<div class="row">
     	<div class="col-sm-4">
-	    	<h2>About Me</h2>
-	      	<h5>Photo of me:</h5>
+	    	<h2>Charts</h2>
+	      	<h5>Description</h5>
 	      	<div>
 	      		<img src="images/linechart.png" style="width:100%"/>
 	      	</div>
