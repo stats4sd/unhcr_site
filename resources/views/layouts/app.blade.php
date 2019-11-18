@@ -192,7 +192,7 @@ Lessons & Learning
 @section('navbar')
 <div class="navbar">
   <a href="home">Home</a>
-  <a href="http://127.0.0.1:3581">Charts</a>
+  <a href="http://127.0.0.1:8001">Charts</a>
   <a href="admin">Admin</a>
   <a href="lessons">Lessons & Learning</a>
 </div>
