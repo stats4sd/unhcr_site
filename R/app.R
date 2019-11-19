@@ -3,9 +3,16 @@ library(leaflet)
 library(DT)
 library(ggvis)
 library(dplyr)
+library(RColorBrewer)
 source('data.R')
+#library(wbstats)
+# Population, total
+#pop_data <- wb(indicator = "SP.POP.TOTL", startdate = 2000, enddate = 2002)
+
+#View(pop_data)
 options(shiny.host = '127.0.0.1')
 options(shiny.port = 8001)
+
 
 shinyApp(
   ui = tagList(
@@ -31,7 +38,8 @@ shinyApp(
       theme = shinythemes::shinytheme("cosmo"),
     
       "Charts Wash Data",
-      tabPanel("Navbar 1",
+      tabPanel("SDG",
+            
         # Control Panel for the indicators 
         sidebarPanel(
           h5("Control chart simulation"),
@@ -97,8 +105,14 @@ that the true defect rate does not change over time or between sites.")
           )
         )
       ),
-      tabPanel("Navbar 2", "This panel is intentionally left blank"),
-      tabPanel("Navbar 3", "This panel is intentionally left blank")
+      tabPanel("Available Data",
+               h2("Data available into database"),
+               leafletOutput("available_map"),
+               
+               
+                       
+               )
+      #tabPanel("Navbar 3", "This panel is intentionally left blank")
     )
   ),
   server = function(input, output) {
@@ -147,7 +161,7 @@ that the true defect rate does not change over time or between sites.")
     ## table in main page tab 2
     output$tableTab2 = DT::renderDataTable({
       DT::datatable(
-        mtcars,
+        indicator_table,
         extensions = 'Buttons',
         options = list(
           dom = 'Blfrtip',
@@ -218,6 +232,20 @@ that the true defect rate does not change over time or between sites.")
       layer_lines(y = ~thresh, stroke := "black", strokeWidth := 3) %>%
       add_axis("y", title = "Proportion of defects", title_offset = 50) %>%
       bind_shiny("ribbonChart")
+    
+    #Create Available data map
+    output$available_map <- renderLeaflet({
+      leaflet(quakes, options = leafletOptions(minZoom = 1)) %>%
+        
+        setView(lng = 25, lat = 26, zoom = 3) %>% 
+        # adds different details for the map
+        addTiles() 
+        
+        
+    })
+    
+    
+    
     ##end server
   }
 )
