@@ -186,21 +186,107 @@ Lessons & Learning
   width: 50%;
 }
 
+/*------------------------
+Footer
+------------------------*/
+/* Style all font awesome icons */
+.fa {
+  padding: 20px;
+  font-size: 30px;
+  width: 50px;
+  text-align: center;
+  text-decoration: none;
+}
+
+/* Add a hover effect if you want */
+.fa:hover {
+  opacity: 0.7;
+}
+
+/* Set a specific color for each brand */
+
+/* Facebook */
+.fa-facebook {
+  background: #3B5998;
+  color: white;
+}
+
+/* Twitter */
+.fa-twitter {
+  background: #55ACEE;
+  color: white;
+}
+
+.fa-google {
+  background: #dd4b39;
+  color: white;
+}
+
+.fa-linkedin {
+  background: #007bb5;
+  color: white;
+}
+
+.fa-youtube {
+  background: #bb0000;
+  color: white;
+}
+
+.fa-instagram {
+  background: #125688;
+  color: white;
+}
+
+
+.fa-skype {
+  background: #00aff0;
+  color: white;
+}
+
+
+.fa {
+  text-align: center;
+  text-decoration: none;
+  border-radius: 50%;
+}
+
+.footer {
+  /*overflow: hidden;*/
+  background-color: #333;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+}
+
+
 </style>
 </head>
 <body>
 @section('navbar')
 <div class="navbar">
   <a href="home">Home</a>
-  <a href="http://127.0.0.1:8001">Charts</a>
-  <a href="admin">Admin</a>
+  <a href="http://127.0.0.1:8001">Available Data</a>
+  <a href="http://127.0.0.1:8001">SDG</a>
+  <!-- <a href="admin">Admin</a> -->
   <a href="lessons">Lessons & Learning</a>
 </div>
 @yield('navbar')
 
 @section('footer')
 <div class="footer">
-  <h2>Footer</h2>
+  <!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Add font awesome icons -->
+<a href="#" class="fa fa-facebook"></a>
+<a href="#" class="fa fa-twitter"></a>
+<a href="#" class="fa fa-google"></a>
+<a href="#" class="fa fa-linkedin"></a>
+<a href="#" class="fa fa-youtube"></a>
+<a href="#" class="fa fa-instagram"></a>
+<a href="#" class="fa fa-skype"></a>
+
+
 </div>
 @yield('footer')
 </body>
