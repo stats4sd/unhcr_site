@@ -7,9 +7,8 @@ library(ggthemes)
 library(readr)
 library(dplyr)
 source('dbConfig.R')
-quakes <- quakes %>%
-  dplyr::mutate(mag.level = cut(mag,c(3,4,5,6),
-                                labels = c('>3 & <=4', '>4 & <=5', '>5 & <=6')))
+quakes <- read.csv("query.csv")
+View(quakes)
 #available data maps 
 url_csv <- 'https://raw.githubusercontent.com/d4tagirl/R-Ladies-growth-maps/master/rladies.csv'
 rladies <- read_csv(url(url_csv)) %>% 
