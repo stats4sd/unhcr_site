@@ -5,11 +5,8 @@ library(ggvis)
 library(dplyr)
 library(RColorBrewer)
 source('data.R')
-#library(wbstats)
-# Population, total
-#pop_data <- wb(indicator = "SP.POP.TOTL", startdate = 2000, enddate = 2002)
 
-#View(pop_data)
+
 options(shiny.host = '127.0.0.1')
 options(shiny.port = 8001)
 
@@ -38,6 +35,10 @@ shinyApp(
       theme = shinythemes::shinytheme("cosmo"),
     
       "Charts Wash Data",
+      tabPanel("Available Data",
+               h2("Data available into database"),
+               leafletOutput("available_map"),
+      ),
       tabPanel("SDG",
             
         # Control Panel for the indicators 
@@ -83,15 +84,30 @@ that the true defect rate does not change over time or between sites.")
               
               
             ),
-            tabPanel("Tab 2", 
+            tabPanel("Basic needs and living conditions", 
                      # Description of the table
-                     h2('Table'),
-                     "This panel is intentionally left blank",
+                     h2('Basic needs and living conditions'),
+                     "Description of the table",
+                     # Dispaly the table 
+                     DT::dataTableOutput("tableTab1")
+                     ),
+            tabPanel("Livelihoods and economic self-reliance", 
+                     # Description of the table
+                     h2('Livelihoods and economic self-reliance'),
+                     "Description of the table",
                      # Dispaly the table 
                      DT::dataTableOutput("tableTab2")
                      
-                     ),
-            tabPanel("Tab 3", 
+            ),
+            tabPanel("Civil, political and legal rights", 
+                     # Description of the table
+                     h2('Civil, political and legal rights'),
+                     "Description of the table",
+                     # Dispaly the table 
+                     DT::dataTableOutput("tableTab3")
+                     
+            ),
+            tabPanel("Charts", 
                      #Description of the charts
                      h3('Charts example'),
                      "Description of the charts",
@@ -99,19 +115,10 @@ that the true defect rate does not change over time or between sites.")
                      h3("A single site's narrowing confidence interval for defect rate"),
                      ggvisOutput("ribbonChart")
                      
-                     
-                     
                      )
           )
         )
-      ),
-      tabPanel("Available Data",
-               h2("Data available into database"),
-               leafletOutput("available_map"),
-               
-               
-                       
-               )
+      )
       #tabPanel("Navbar 3", "This panel is intentionally left blank")
     )
   ),
@@ -122,6 +129,8 @@ that the true defect rate does not change over time or between sites.")
     output$table <- renderTable({
       head(cars, 4)
     })
+    
+    
     # Create the map
     output$map <- renderLeaflet({
       leaflet(quakes, options = leafletOptions(minZoom = 1)) %>%
@@ -157,11 +166,11 @@ that the true defect rate does not change over time or between sites.")
                             )
                           )
     })
-    
-    ## table in main page tab 2
-    output$tableTab2 = DT::renderDataTable({
+    ## table in main page tab 1
+    output$tableTab1 = DT::renderDataTable({
       DT::datatable(
-        indicator_table,
+        indicator_table1,
+        filter = 'top',
         extensions = 'Buttons',
         options = list(
           dom = 'Blfrtip',
@@ -170,12 +179,42 @@ that the true defect rate does not change over time or between sites.")
           br()
         ),
         class = "display"
-        
-        
-        )
-    
+      )
     })
-    # Charts in main page tab 3
+    ## table in main page tab 2
+    output$tableTab2 = DT::renderDataTable({
+      DT::datatable(
+        indicator_table2,
+        filter = 'top',
+        extensions = 'Buttons',
+        options = list(
+          dom = 'Blfrtip',
+          buttons = c(I('colvis'), 'csv'),
+          text = 'Download',
+          br()
+        ),
+        class = "display"
+        )
+    })
+    
+    ## table in main page tab 3
+    output$tableTab3 = DT::renderDataTable({
+      DT::datatable(
+        indicator_table3,
+        filter = 'top',
+        extensions = 'Buttons',
+        options = list(
+          dom = 'Blfrtip',
+          buttons = c(I('colvis'), 'csv'),
+          text = 'Download',
+          br()
+        ),
+        class = "display"
+      )
+    })
+    
+    
+    # Charts in main page tab 4
     samp_data <- reactive({
       # generate some random data
       samp <- data.frame(defects = rbinom(input$m * input$reps, input$n, input$p), 
