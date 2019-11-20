@@ -142,7 +142,7 @@ that the true defect rate does not change over time or between sites.")
         addMarkers(data=quakes, clusterOptions = markerClusterOptions()) %>% 
         # adds label only markers
         addMarkers(data=quakes,
-                            lng=~long, lat=~lat,
+                            lng=~longitude, lat=~latitude,
                             
                             
                             popup= paste("<h5><strong>","Country name","</strong></h5>",
