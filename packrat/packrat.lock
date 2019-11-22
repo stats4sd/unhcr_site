@@ -83,6 +83,11 @@ Source: CRAN
 Version: 0.6.22
 Hash: 824be063463b3709782ef29a3e8d7079
 
+Package: dotenv
+Source: CRAN
+Version: 1.0.2
+Hash: 519cd2bd051a57af796091379ee3ca69
+
 Package: dplyr
 Source: CRAN
 Version: 0.8.3

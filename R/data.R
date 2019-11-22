@@ -37,6 +37,9 @@ indicator_table_db<-dbGetQuery(con,'
   group by id')
 
 
+####################
+### Commented out temporarily as I don't have the source file to read.
+# - DEGM, 2019-11-22
 # # indicators table from csv
 # indicator_table <- read.csv("C:/Users/LuciaFalcinelli/Documents/R/unhcr/data/Colombia Iraq SDG indicators for displaced people.csv")
 # 
@@ -48,6 +51,8 @@ indicator_table_db<-dbGetQuery(con,'
 # 
 # # indicator_table3 for Livelihoods and economic self-reliance
 # indicator_table3<-indicator_table %>% select('Country', 'Year', 'SDG_1.4.2.a', 'SDG_1.4.2.b', 'SDG_16.1.4', 'SDG_16.9.1')
+###################
+
 
 dbDisconnect(con)
 
