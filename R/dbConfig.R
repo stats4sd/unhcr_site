@@ -1,4 +1,5 @@
 library(DBI)
+library(RMySQL)
 #Include databasename, user and password 
 
 con <- dbConnect(RMySQL::MySQL(),
@@ -6,6 +7,6 @@ con <- dbConnect(RMySQL::MySQL(),
                  host ='127.0.0.1', 
                  port = 3306,
                  user = 'root',
-                 password = "Logoslogos88")
+                 password = "alemonflavour")
 
 
