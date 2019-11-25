@@ -10,3 +10,4 @@ con <- dbConnect(RMySQL::MySQL(),
                  password = Sys.getenv('DB_PASSWORD')
 )
 
+
