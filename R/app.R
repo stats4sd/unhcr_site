@@ -16,18 +16,29 @@ shinyApp(
     tags$head(
       # style for the page
       tags$style(
-#       HTML(
-#          ".dt-button.buttons-columnVisibility {
-#              background: #FF0000 !important;
-#              color: white !important;
-#              opacity: 0.5;
-#           }
-#        .dt-button.buttons-columnVisibility.active {
-#              background: black !important;
-#              color: white !important;
-#              opacity: 1;
-#           }"
-#        )
+        
+       HTML(
+          "
+          .leaflet-popup-content-wrapper {
+              background: black;
+              color: #ffffff;
+              padding: 2px;
+              border-radius: 0px;
+          }
+          .leaflet-control-layers {
+              background: black;
+              color: #ffffff;
+              padding: 10px;
+              border-radius: 0px;
+          }    
+          .info.legend {
+              background: black;
+              color: #ffffff;
+              padding: 10px;
+              border-radius: 0px;
+          }    
+          "
+        )
       )
     ),
     ## navbarPage 
@@ -38,6 +49,12 @@ shinyApp(
       tabPanel("Available Data",
                h2("Data available into database"),
                leafletOutput("available_map"),
+               absolutePanel(#top = 100, right = 10,
+                             
+                             selectInput("colors", "Color Scheme",
+                                         rownames(subset(brewer.pal.info, category %in% c("seq", "div")))
+                             )
+               )
       ),
       tabPanel("SDG",
             
@@ -154,15 +171,8 @@ that the true defect rate does not change over time or between sites.")
                            
                             clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
                             labelOptions = labelOptions(noHide = T,
-                                                        direction = 'top',
-                            style = list(
-                              "color" = "red",
-                              "font-family" = "serif",
-                              "font-style" = "italic",
-                              "box-shadow" = "3px 3px rgba(0,0,0,0.25)",
-                              "font-size" = "12px",
-                              "border-color" = "rgba(0,0,0,0.5)"
-                              )
+                                                        direction = 'top'
+                            
                             )
                           )
     })
@@ -273,12 +283,31 @@ that the true defect rate does not change over time or between sites.")
       bind_shiny("ribbonChart")
     
     #Create Available data map
+    pal = colorFactor(palette = c("yellow", "red", "green"), domain = quakes$mag)
     output$available_map <- renderLeaflet({
-      leaflet(quakes, options = leafletOptions(minZoom = 1)) %>%
+      leaflet( options = leafletOptions(minZoom = 1)) %>%
         
-        setView(lng = 25, lat = 26, zoom = 3) %>% 
+        setView(lng = 25, lat = 26, zoom = 2) %>% 
         # adds different details for the map
-        addTiles() 
+        addTiles() %>%
+        addCircleMarkers(data = refugee, color = 'navy',~longitude, ~latitude, ~mag, stroke = F, group = "Refugee", 
+                         popup = paste("<h5><strong>","Country name","</strong></h5>",
+                                      "<b>Indic4:</b>", refugee$mag)) %>% 
+                                                                                                                               
+        addCircleMarkers(data = sdg, color = ~ pal(mag),~longitude, ~latitude, ~mag*2, stroke = F, group = "SDG",  
+                         popup= paste("<h5><strong>","Country name","</strong></h5>",
+                                      "<b>Indic4:</b>", sdg$mag),
+                         
+                         ) %>%
+        # Layers control
+        addLayersControl(
+          overlayGroups = c("Refugee", "SDG"),
+          options = layersControlOptions(collapsed = FALSE, title= "Layers Control")
+        ) %>% 
+        # addLegend
+        addLegend(position = "bottomright", pal = pal, values = c(2,4,6),
+                  title = "title legend"
+                  ) 
         
         
     })
