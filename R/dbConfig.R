@@ -2,6 +2,8 @@ library(DBI)
 library(dotenv)
 #Include databasename, user and password 
 
+load_dot_env(file = "../.env")
+
 con <- dbConnect(RMySQL::MySQL(),
                  dbname = Sys.getenv('DB_DATABASE'),
                  host = Sys.getenv('DB_HOST'), 
