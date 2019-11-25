@@ -8,7 +8,7 @@ library(ggthemes)
 library(dplyr)
 source('dbConfig.R')
 quakes <- read.csv("query.csv")
-View(quakes)
+#View(quakes)
 #available data maps 
 url_csv <- 'https://raw.githubusercontent.com/d4tagirl/R-Ladies-growth-maps/master/rladies.csv'
 rladies <- read.csv(url(url_csv)) %>% 
