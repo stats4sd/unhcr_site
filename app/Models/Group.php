@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Indicator extends Model
+class Group extends Model
 {
     use CrudTrait;
 
@@ -15,14 +15,14 @@ class Indicator extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'indicator';
-    // protected $primaryKey = 'id';
+    protected $table = 'group';
+    protected $primaryKey = 'name';
     // public $timestamps = false;
-    protected $guarded = ['id'];
-    // protected $fillable = [];
+    // protected $guarded = ['id'];
+    protected $fillable = ['name'];
     // protected $hidden = [];
     // protected $dates = [];
-
+    public $incrementing = false;
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS

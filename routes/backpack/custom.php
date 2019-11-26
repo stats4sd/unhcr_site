@@ -14,5 +14,8 @@ Route::group([
     Route::crud('home', 'HomeCrudController');
     Route::crud('lesson', 'LessonCrudController');
     Route::crud('indicator', 'IndicatorCrudController');
-    Route::crud('indicator', 'IndicatorCrudController');
+    Route::crud('dataset', 'DatasetCrudController');
+    Route::crud('comment', 'CommentCrudController');
+    Route::crud('sdgindicator', 'SdgIndicatorCrudController');
+    Route::crud('group', 'GroupCrudController');
 }); // this should be the absolute last line of this file

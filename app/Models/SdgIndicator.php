@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Indicator extends Model
+class SdgIndicator extends Model
 {
     use CrudTrait;
 
@@ -15,13 +15,14 @@ class Indicator extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'indicator';
-    // protected $primaryKey = 'id';
+    protected $table = 'sdg_indicators';
+    protected $primaryKey = 'id';
     // public $timestamps = false;
-    protected $guarded = ['id'];
-    // protected $fillable = [];
+    // protected $guarded = ['id'];
+    protected $fillable = ['id', 'description'];
     // protected $hidden = [];
     // protected $dates = [];
+    public $incrementing = false;
 
     /*
     |--------------------------------------------------------------------------
