@@ -51,8 +51,8 @@ shinyApp(
                leafletOutput("available_map"),
                absolutePanel(#top = 100, right = 10,
                              
-                             selectInput("colors", "Color Scheme",
-                                         rownames(subset(brewer.pal.info, category %in% c("seq", "div")))
+                             selectInput("country", "Country",
+                                         c("select country", unique(as.character(country_table$name)))
                              )
                )
       ),

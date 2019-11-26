@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Indicator extends Model
+class Dataset extends Model
 {
     use CrudTrait;
 
@@ -15,7 +15,7 @@ class Indicator extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'indicator';
+    protected $table = 'dataset';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];

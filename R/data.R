@@ -36,6 +36,10 @@ indicator_table_db<-dbGetQuery(con,'
   from indicator
   group by id')
 
+# country table
+country_table<-dbGetQuery(con,'
+  select *
+  from country')
 #filter data fo data available map
 sdg <-quakes  %>% filter(mag<=4)
 refugee <-quakes %>% filter(mag>4) 
