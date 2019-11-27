@@ -15,3 +15,8 @@
 Route::get('home', 'HomeController@index');
 
 Route::get('lessons', 'LessonController@index');
+
+Route::get('lesson_page', function(){
+	View('lesson_page');
+});
+Route::get('/lessons/{slug}', 'LessonPageController@index');

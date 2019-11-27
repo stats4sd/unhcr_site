@@ -14,8 +14,14 @@ class CreateLessonsPage extends Migration
     {
         Schema::create('lessons_page', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('lesson_title');
-            $table->text('lesson_body');
+            $table->string('title');
+            $table->string('slug');
+            $table->text('comment');
+            $table->longText('body_1');
+            $table->longText('body_2');
+            $table->longText('body_3');
+            $table->longText('card');
+            $table->text('table_title');
             $table->string('image')->nullable();
             $table->timestamps();
         });

@@ -1,6 +1,4 @@
 @extends('layouts.app')
-
-
 @section('navbar')
 <body>
 <div class="jumbotron lessons_top text-center" style="margin-bottom:0">
@@ -18,51 +16,68 @@
 	        <p>For example, WASH collects high quality data on refugees, but only where its own staff are present. They cannot rely on other groups or government initiatives to collect useful data. If their staff are not present, they don’t get the data. This is all organised through individual relationships in-country. There is not a formal process or systematised approach, and these relationships differ even between groups within UNHCR. </p>
       	</section>
   	</div>
-	  	<div class="jumbotron" style="margin-bottom:0, padding: 100px 50px;">
-	  		<h1 class="center">Map out the agreements between UNHCR offices and governments</h1>
+<!-- Topics Cards -->
+  	<div class="w3-row-padding w3-center w3-margin-top">
+		<div class="w3-third">
+			<div class="w3-card w3-container" style="min-height:460px">
+				<h3>Topics 1</h3><br>
+			  	<i class="fa fa-desktop w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
+			  	<p class="center">The situation differs a lot between countries and UNHCR departments. As mentioned above, this all seems quite ad-hoc and not formalised or recorded.</p>
+		  	</div>
 		</div>
-		<div class="row">
-			<div class="col-sm-8" style="padding: 100px 100px;"> 
-      		<section class="content mb-5 " id="lessons">
-      			<p><b>The situation differs a lot between countries and UNHCR departments. As mentioned above, this all seems quite ad-hoc and not formalised or recorded.</b></p>
-				<p><b>The groups who are best placed to collect data or support data collection are not the ones using SDG indicators.</b></p>
-	        	<p>UNHCR departments like WASH have groups in host countries supporting data collection, but they are concerned with more specialised information, rather than the SDG indicators, which are more relevant at the level of international politics. 
-				The indicators don’t map exactly to data used by these projects. WASH collects different data but can ‘convert’ it to give a value for SDG indicators. We may find that other groups do something similar. 
-				</p>
-				<p><b>The Continuous DHS being conducted in Peru may make an interesting case study</b></p>
-				<p>Data is collected annually. More information is available here: <a>https://dhsprogram.com/pubs/pdf/OP8/OP8.pdf</a></p>
-	        	<p><b>Table 1.1 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy</b></p>
-	        	<img src="images/table.gif" style="width:60%"  class="center mb-3"/>
-	        	<p><b>Getting sufficient information on FDPs is partly reliant on having the right questions, but also on them being included at all in the sampling frame.</b>
-				If you can filter down to FDPs, sample sizes are sometimes too small. We need to look at sampling strata and refugee clustering.
-				</p>
-	        	<p><b>Image 1.1 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy</b></p>
-	        	<img src="images/linechart.png" style="width:60%"  class="center mb-3"/>
-	        	<p><b>DHS and MICS have been a more helpful source than initially expected.</b></p>
-	        	<p>A few countries (Jordan, Iraq, Columbia) do seem to provide data that can be disaggregated. 
-				DHS have been particularly quick to get back to us and give access. 
-				We still have some questions to be answered regarding specific datasets. 
-				</p>
-				<p><b>There are still significant challenges, however.</b></p>
-				<p>Most DHS data we accessed was not able to be disaggregated by FDP status, or had too small a sample size once filtered to be useable. 
-				One country (Iraq) had a question which identified refugees. Not yet sure if this is listed as an optional question on the DHS survey. This is not formalised or even suggested in SDG indicator guidance.
-				Information about the SDG indicators is not always easy to come by. To calculate the infant mortality rate, lots of R scripting work was required.
-				</p>
-				<p><b>Other data sources</b></p>
-				<p>Outside of countrywide surveys, other sources provide useful but limited information. For example, there is education data from specific initiatives, but this will be incomplete and not necessarily representative of the FDP population more broadly as it only involves people from that specific project – this will likely be the case for other areas as well. </p>
-			</section>
-			</div>
-			<div class="col-sm-4" style="padding: 100px 100px;">
-				<div class="card" style="height: 300px;">
-		          	<div class="card-body">
-		            	<h2 class="card-title" style="border-bottom: solid 1px;" ></h2>
-		            	<p class="card-text">Indicators are not always recorded at the country level.
-						Sometimes the population is at camp level, or other geography. It is important to include this information in reporting.
-						</p>
-		          	</div>
-        		</div>
+
+		<div class="w3-third">
+			<div class="w3-card w3-container" style="min-height:460px">
+				<h3>Topics 2</h3><br>
+				<i class="fa fa-database w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
+				<p class="center">The situation differs a lot between countries and UNHCR departments. As mentioned above, this all seems quite ad-hoc and not formalised or recorded.</p>
 			</div>
 		</div>
+
+		<div class="w3-third">
+			<div class="w3-card w3-container" style="min-height:460px">
+		  		<h3>Topics 3</h3><br>
+			  	<i class="fa fa-server w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
+			  	<p class="center">The situation differs a lot between countries and UNHCR departments. As mentioned above, this all seems quite ad-hoc and not formalised or recorded.</p>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="jumbotron" style="margin-bottom:0, padding: 100px 50px;">
+	    <h1 class="center">Map out the agreements between UNHCR offices and governments</h1>
+	</div>
+
+<!-- Articles lists -->
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main w3-content w3-padding" style="max-width:1200px;margin-top:100px">
+
+  <!-- First Photo Grid-->
+  	<div class="w3-row-padding w3-padding-16 w3-center">
+  		@foreach ($lessons as $lesson)
+    	<div class="w3-quarter">
+    		<a href="lessons/{{$lesson->slug}}">
+      		<img src="{{$lesson->image}}" alt="Image" style="width:100%">
+      		<h3>{{$lesson->title}}</h3>
+      		</a>
+      		<p>{{$lesson->comment}}</p>
+    	</div>
+    	@endforeach
+  	</div>
+  
+  	<!-- Pagination -->
+  	<div class="w3-center w3-padding-32">
+	    <div class="w3-bar">
+		    <a href="#" class="w3-bar-item w3-button w3-hover-black">«</a>
+		    <a href="#" class="w3-bar-item w3-black w3-button">1</a>
+		    <a href="#" class="w3-bar-item w3-button w3-hover-black">2</a>
+		    <a href="#" class="w3-bar-item w3-button w3-hover-black">3</a>
+		    <a href="#" class="w3-bar-item w3-button w3-hover-black">4</a>
+		    <a href="#" class="w3-bar-item w3-button w3-hover-black">»</a>
+	    </div>
+  	</div>
+	</div>
 
 </body>
 @endsection
