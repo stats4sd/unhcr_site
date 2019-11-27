@@ -340,7 +340,7 @@ CREATE TABLE IF NOT EXISTS `indicator` (
 
 -- Dumping structure for table unhcr.sdg_indicators
 CREATE TABLE IF NOT EXISTS `sdg_indicators` (
-  `id` varchar(10) NOT NULL,
+  `id` varchar(15) NOT NULL,
   `description` varchar(250) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -351,17 +351,24 @@ CREATE TABLE IF NOT EXISTS `sdg_indicators` (
 /*!40000 ALTER TABLE `sdg_indicators` DISABLE KEYS */;
 INSERT INTO `sdg_indicators` (`id`, `description`, `created_at`, `updated_at`) VALUES
 	('1.2.1', 'Proportion of population living below the national poverty line, by sex and age', NULL, NULL),
-	('1.4.2', 'Proportion of total adult population with secure tenure rights to land, (a) with legally recognized documentation, and (b) who perceive their rights to land as secure, by sex and type of tenure', NULL, NULL),
+	('1.4.2.a', 'Proportion of total adult population with secure tenure rights to land, (a) with legally recognized documentation, (b) who perceive their rights to land as secure, by sex and type of tenure', NULL, NULL),
+	('1.4.2.b', 'Proportion of total adult population with secure tenure rights to land, (a) with legally recognized documentation, (b) who perceive their rights to land as secure, by sex and type of tenure', NULL, NULL),
 	('11.1.1', 'Proportion of urban population living in slums, informal settlements or inadequate housing', NULL, NULL),
 	('16.1.4', 'Proportion of population that feel safe walking alone around the area they live', NULL, NULL),
 	('16.9.1', 'Proportion of children under 5 years of age whose births have been registered with a civil authority, by age', NULL, NULL),
 	('2.2.1', 'Prevalence of stunting (height for age <-2 standard deviation from the median of the World Health Organization (WHO) Child Growth Standards) among children under 5 years of age', NULL, NULL),
 	('3.2.1', 'Under-five mortality rate', NULL, NULL),
-	('4.1.1', 'Proportion of children and young people: (a) in grades 2/3; (b) at the end of primary; and (c) at the end of lower secondary achieving at least a minimum proficiency level in (i) reading and (ii) mathematics, by sex', NULL, NULL),
+	('4.1.1.a.i', 'Proportion of children and young people: (a) in grades 2/3; (b) at the end of primary; and (c) at the end of lower secondary achieving at least a minimum proficiency level in (i) reading and (ii) mathematics, by sex', NULL, NULL),
+	('4.1.1.a.ii', 'Proportion of children and young people: (a) in grades 2/3; (b) at the end of primary; and (c) at the end of lower secondary achieving at least a minimum proficiency level in (i) reading and (ii) mathematics, by sex', NULL, NULL),
+	('4.1.1.b.i', 'Proportion of children and young people: (a) in grades 2/3; (b) at the end of primary; and (c) at the end of lower secondary achieving at least a minimum proficiency level in (i) reading and (ii) mathematics, by sex', NULL, NULL),
+	('4.1.1.b.ii', 'Proportion of children and young people: (a) in grades 2/3; (b) at the end of primary; and (c) at the end of lower secondary achieving at least a minimum proficiency level in (i) reading and (ii) mathematics, by sex', NULL, NULL),
+	('4.1.1.c.i', 'Proportion of children and young people: (a) in grades 2/3; (b) at the end of primary; and (c) at the end of lower secondary achieving at least a minimum proficiency level in (i) reading and (ii) mathematics, by sex', NULL, NULL),
+	('4.1.1.c.ii', 'Proportion of children and young people: (a) in grades 2/3; (b) at the end of primary; and (c) at the end of lower secondary achieving at least a minimum proficiency level in (i) reading and (ii) mathematics, by sex', NULL, NULL),
 	('6.1.1', 'Proportion of population using safely managed drinking water services', NULL, NULL),
 	('7.1.1', 'Proportion of population with access to electricity', NULL, NULL),
 	('8.3.1', 'Proportion of informal employment in non‑agriculture employment, by sex', NULL, NULL),
-	('8.5.2', 'Unemployment rate, by sex, age and persons with disabilities', NULL, NULL);
+	('8.5.2.female', 'Unemployment rate, by sex, age and persons with disabilities', NULL, NULL),
+	('8.5.2.male', 'Unemployment rate, by sex, age and persons with disabilities', NULL, NULL);
 /*!40000 ALTER TABLE `sdg_indicators` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
