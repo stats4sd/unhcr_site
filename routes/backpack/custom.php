@@ -18,4 +18,5 @@ Route::group([
     Route::crud('comment', 'CommentCrudController');
     Route::crud('sdgindicator', 'SdgIndicatorCrudController');
     Route::crud('group', 'GroupCrudController');
+    Route::crud('country', 'CountryCrudController');
 }); // this should be the absolute last line of this file

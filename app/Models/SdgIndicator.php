@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Indicator;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
@@ -35,6 +36,10 @@ class SdgIndicator extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    public function indicator() 
+    {
+        return $this->hasMany('App\Models\Indicator');
+    }
 
     /*
     |--------------------------------------------------------------------------

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Country;
+use App\Models\Indicator;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
@@ -34,6 +36,18 @@ class Dataset extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    //One to Many
+
+    public function countries()
+    {
+        return $this->belongsTo('App\Models\Country', 'country_code');
+    }
+
+     public function indicator() 
+    {
+        return $this->hasMany('App\Models\Indicator');
+    }
+
 
     /*
     |--------------------------------------------------------------------------

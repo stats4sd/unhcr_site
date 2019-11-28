@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\IndicatorRequest;
+use App\Models\Dataset;
+use App\Models\Group;
+use App\Models\SdgIndicator;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -39,7 +42,49 @@ class IndicatorCrudController extends CrudController
 
         // TODO: remove setFromDb() and manually define Fields
        
-        $this->crud->setFromDb();
+        //$this->crud->setFromDb();
+        $this->crud->addFields([
+            [
+                'type' => 'custom_html',
+                'name' => 'main_title',
+                'value' => '<h4>Insert the following fields</h4>'
+            ],
+            [
+                'name' => 'dataset_id',
+                'label' => 'Dataset',
+                'type' => 'select2',
+                'entity' => 'datasets',
+                'attribute' => 'description',
+                'model' => Dataset::class
+            ],
+            [
+                'name' => 'group_name',
+                'label' => 'Group name',
+                'type' => 'select2',
+                'entity' => 'groups',
+                'attribute' => 'name',
+                'model' => Group::class
+            ],
+            [
+                'name' => 'sdg_indicator',
+                'label' => 'Sdg Indicator',
+                'type' => 'select2',
+                'entity' => 'sdg_indicators',
+                'attribute' => 'id',
+                'model' => SdgIndicator::class
+            ],
+            [
+                'name' => 'indicator_value',
+                'label' => 'Indicator Value',
+                'type' => 'number',
+            ],
+            [
+                'name' => 'fake',
+                'type' => 'checkbox',
+                'label' => 'Is it fake?',
+            ],
+
+        ]);
     }
 
     protected function setupUpdateOperation()
