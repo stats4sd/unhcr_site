@@ -11,6 +11,11 @@
 |
 */
 
+Route::get('/', function(){
+
+    return redirect('home');
+
+});
 
 Route::get('home', 'HomeController@index');
 

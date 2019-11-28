@@ -52,4 +52,10 @@ class Lesson extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+    public function setTitleAttribute ($value)
+    {
+        $this->attributes['slug'] = preg_replace('/[^a-z0-9]+/i', '-', trim(strtolower($value)));
+        $this->attributes['title'] = $value;
+    }
+
 }
