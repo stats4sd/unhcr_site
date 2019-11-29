@@ -13,4 +13,4 @@
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('sdgindicator') }}'><i class='nav-icon fa fa-paper-plane-o'></i> Sdg Indicators</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('group') }}'><i class='nav-icon fa fa-group'></i> Groups</a></li>
 
-<li class='nav-item'><a class='nav-link' href='{{ backpack_url('country') }}'><i class='nav-icon fa fa-question'></i> Countries</a></li>
+<!-- <li class='nav-item'><a class='nav-link' href='{{ backpack_url('country') }}'><i class='nav-icon fa fa-question'></i> Countries</a></li> -->

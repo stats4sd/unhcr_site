@@ -20,25 +20,30 @@ class SdgIndicator extends Model
     protected $primaryKey = 'id';
     // public $timestamps = false;
     // protected $guarded = ['id'];
-    protected $fillable = ['id', 'description'];
+    protected $fillable = ['id', 'code', 'description'];
     // protected $hidden = [];
     // protected $dates = [];
     public $incrementing = false;
+    protected $appends = ['full_lable'];
 
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    public function getFullLableAttribute()
+    {
+        return $this->code . ' ' . $this->description;
+    }
 
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function indicator() 
+    public function indicators() 
     {
-        return $this->hasMany('App\Models\Indicator');
+        return $this->hasMany('App\Models\Indicator', 'sdg_indicator_id');
     }
 
     /*
@@ -58,4 +63,11 @@ class SdgIndicator extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+    public function setCodeAttribute($value)
+    {
+        $this->attributes['id'] = str_replace( '.', '_', $value);
+        $this->attributes['code'] = $value;
+        return $value;
+    }
+
 }

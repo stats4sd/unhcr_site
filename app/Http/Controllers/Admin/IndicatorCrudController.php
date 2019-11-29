@@ -33,7 +33,50 @@ class IndicatorCrudController extends CrudController
     {
         // TODO: remove setFromDb() and manually define Columns, maybe Filters
         
-        $this->crud->setFromDb();
+         $this->crud->addColumns([
+            [
+                'name' => 'dataset_id',
+                'label' => 'Dataset',
+                'type' => 'select',
+                'entity' => 'datasets',
+                'attribute' => 'description',
+                'model' => Dataset::class
+            ],
+            [
+                'name' => 'group_name',
+                'label' => 'Group name',
+                'type' => 'text',
+            ], 
+            [
+                'name' => 'sdg_indicator_id',
+                'label' => 'Sdg Indicator',
+                'type' => 'select',
+                'entity' => 'sdg_indicator',
+                'attribute' => 'full_lable',
+                'model' => SdgIndicator::class
+            ],
+            [
+                'name' => 'indicator_value',
+                'label' => 'Indicator Value',
+                'type' => 'number',
+            ],
+            [
+                'name' => 'fake',
+                'type' => 'check',
+                'label' => 'Fake',
+            ],
+            [
+                'name' => 'created_at',
+                'label' => 'Created at',
+                'type' => 'datetime',
+            ],
+            [
+                'name' => 'updated_at',
+                'label' => 'Updated at',
+                'type' => 'datetime',
+            ]
+
+        ]);
     }
 
     protected function setupCreateOperation()
@@ -66,11 +109,11 @@ class IndicatorCrudController extends CrudController
                 'model' => Group::class
             ],
             [
-                'name' => 'sdg_indicator',
+                'name' => 'sdg_indicator_id',
                 'label' => 'Sdg Indicator',
                 'type' => 'select2',
-                'entity' => 'sdg_indicators',
-                'attribute' => 'id',
+                'entity' => 'sdg_indicator',
+                'attribute' => 'full_lable',
                 'model' => SdgIndicator::class
             ],
             [

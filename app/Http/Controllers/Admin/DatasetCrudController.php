@@ -30,7 +30,63 @@ class DatasetCrudController extends CrudController
     protected function setupListOperation()
     {
         // TODO: remove setFromDb() and manually define Columns, maybe Filters
-        $this->crud->setFromDb();
+        $this->crud->addColumns([
+            
+            [
+                'name' => 'country_code',
+                'label' => 'ISO code',
+                'type' => 'select',
+                'entity' => 'countries',
+                'attribute' => 'name',
+                'model' => Country::class
+            ],
+            [
+                'name' => 'region',
+                'label' => 'Region',
+                'type' => 'text',    
+            ],
+            [   // date_picker
+               'name' => 'year',
+               'type' => 'number',
+               'label' => 'Year',
+            ],
+            [
+                'name' => 'description',
+                'type' => 'text',
+                'label' => 'Description',
+            ],
+            [
+                'name' => 'population_definition',
+                'type' => 'text',
+                'label' => 'Population definition',
+            ],
+            [
+                'name' => 'source_url',
+                'type' => 'url',
+                'label' => 'Source url',
+            ],
+            [
+                'name' => 'scripts_url',
+                'type' => 'url',
+                'label' => 'Scripts url',
+            ],
+            [
+                'name' => 'fake',
+                'type' => 'check',
+                'label' => 'Fake',
+            ],
+            [
+                'name' => 'created_at',
+                'type' => 'datetime',
+                'label' => 'Created at',
+            ],
+            [
+                'name' => 'updated_at',
+                'type' => 'datetime',
+                'label' => 'Updated at',
+            ]
+
+        ]);
     }
 
     protected function setupCreateOperation()
@@ -49,7 +105,7 @@ class DatasetCrudController extends CrudController
                 'label' => 'ISO code',
                 'type' => 'select2',
                 'entity' => 'countries',
-                'attribute' => 'ISO_code',
+                'attribute' => 'name',
                 'model' => Country::class
             ],
             [
