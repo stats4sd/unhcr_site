@@ -18,10 +18,10 @@ class CreateLessonsPage extends Migration
             $table->string('slug');
             $table->text('comment');
             $table->longText('body_1');
-            $table->longText('body_2');
-            $table->longText('body_3');
-            $table->longText('card');
-            $table->text('table_title');
+            $table->longText('body_2')->nullable();
+            $table->longText('body_3')->nullable();
+            $table->longText('card')->nullable();
+            $table->text('table_title')->nullable();
             $table->string('image')->nullable();
             $table->timestamps();
         });

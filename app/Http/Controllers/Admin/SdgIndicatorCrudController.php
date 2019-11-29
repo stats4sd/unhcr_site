@@ -31,8 +31,8 @@ class SdgIndicatorCrudController extends CrudController
         // TODO: remove setFromDb() and manually define Columns, maybe Filters
         $this->crud->setColumns([
             [
-                'name' => 'id',
-                'label' => 'Id',
+                'name' => 'code',
+                'label' => 'Code',
                 'type' => 'char',
             ],
             [
@@ -60,13 +60,14 @@ class SdgIndicatorCrudController extends CrudController
         // TODO: remove setFromDb() and manually define Fields
         $this->crud->addFields([
             [
-                'name' => 'id',
-                'label' => 'Id',
-                'type' => 'text',     
+                'name' => 'code',
+                'label' => 'Insert code',
+                'type' => 'text', 
+                'hint' => 'Example 2.3.4',   
             ],
             [
                 'name' => 'description',
-                'label' => 'Description',
+                'label' => 'Insert description',
                 'type' => 'text',
             ]
         ]);

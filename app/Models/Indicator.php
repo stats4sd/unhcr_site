@@ -43,9 +43,9 @@ class Indicator extends Model
         return $this->belongsTo('App\Models\Group', 'group_name');
     }
 
-    public function sdg_indicators()
+    public function sdg_indicator()
     {
-        return $this->belongsTo('App\Models\SdgIndicator', 'sdg_indicator');
+        return $this->belongsTo('App\Models\SdgIndicator', 'sdg_indicator_id');
     }
 
     /*

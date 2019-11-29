@@ -15,7 +15,7 @@
 	    <section class="content mb-5" id="introduction">
 		        <p><b>{{ $lesson_page->comment }}</b></p>
 		        <p>{{ $lesson_page->body_1 }}</p>
-		        @if ($lesson_page->table_title!=null)
+		        @if( $lesson_page->table_title!=null )
 		        <div class="w3-container">
 	  				<hr>
 	  					<div class="w3-center">
