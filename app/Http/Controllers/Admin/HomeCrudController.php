@@ -21,7 +21,7 @@ class HomeCrudController extends CrudController
 
     public function setup()
     {
-        $this->crud->setModel('App\Models\Home');
+        $this->crud->setModel('App\Models\HomePageCard');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/home');
         $this->crud->setEntityNameStrings('home', 'home Page');
     }
