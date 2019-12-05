@@ -33,13 +33,13 @@ map <- world +
 #use con for connecting to database
 indicator_table_db<-dbGetQuery(con,'
   select *
-  from indicator
+  from indicators
   group by id')
 
 # country table
 country_table<-dbGetQuery(con,'
   select *
-  from country')
+  from countries')
 #filter data fo data available map
 sdg <-quakes  %>% filter(mag<=4)
 refugee <-quakes %>% filter(mag>4)
