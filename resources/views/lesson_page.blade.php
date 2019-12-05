@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('navbar')
+@section('content')
 <style type="text/css">
 	.lesson_page {
             background: url('{{$lesson_page->image}}') center center / cover no-repeat;
@@ -11,7 +11,7 @@
 </div>
 
 <div class="row">
-	<div class="col-sm-8 center" style="padding: 100px 100px;"> 
+	<div class="col-sm-8 center" style="padding: 100px 100px;">
 	    <section class="content mb-5" id="introduction">
 		        <p><b>{{ $lesson_page->comment }}</b></p>
 		        <p>{{ $lesson_page->body_1 }}</p>
