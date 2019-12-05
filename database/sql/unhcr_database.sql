@@ -12,7 +12,7 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Dumping structure for table unhcr.country
-CREATE TABLE IF NOT EXISTS `country` (
+CREATE TABLE IF NOT EXISTS `countries` (
   `ISO_code` varchar(3) NOT NULL,
   `name` varchar(50) NOT NULL,
   `longitude` varchar(15) DEFAULT NULL,
@@ -23,8 +23,8 @@ CREATE TABLE IF NOT EXISTS `country` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table unhcr.country: ~249 rows (approximately)
-/*!40000 ALTER TABLE `country` DISABLE KEYS */;
-INSERT INTO `country` (`ISO_code`, `name`, `longitude`, `latitude`, `created_at`, `updated_at`) VALUES
+/*!40000 ALTER TABLE `countries` DISABLE KEYS */;
+INSERT INTO `countries` (`ISO_code`, `name`, `longitude`, `latitude`, `created_at`, `updated_at`) VALUES
 	('ABW', 'Aruba', '', '', NULL, NULL),
 	('AFG', 'Afghanistan', '', '', NULL, NULL),
 	('AGO', 'Angola', '', '', NULL, NULL),
@@ -274,10 +274,10 @@ INSERT INTO `country` (`ISO_code`, `name`, `longitude`, `latitude`, `created_at`
 	('ZAF', 'South Africa', '', '', NULL, NULL),
 	('ZMB', 'Zambia', '', '', NULL, NULL),
 	('ZWE', 'Zimbabwe', '', '', NULL, NULL);
-/*!40000 ALTER TABLE `country` ENABLE KEYS */;
+/*!40000 ALTER TABLE `countries` ENABLE KEYS */;
 
 -- Dumping structure for table unhcr.dataset
-CREATE TABLE IF NOT EXISTS `dataset` (
+CREATE TABLE IF NOT EXISTS `datasets` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `country_code` varchar(3) NOT NULL,
   `region` varchar(50) DEFAULT NULL,
@@ -291,15 +291,15 @@ CREATE TABLE IF NOT EXISTS `dataset` (
   `fake` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `FK_dataset_country` (`country_code`),
-  CONSTRAINT `FK_dataset_country` FOREIGN KEY (`country_code`) REFERENCES `country` (`ISO_code`)
+  CONSTRAINT `FK_dataset_country` FOREIGN KEY (`country_code`) REFERENCES `countries` (`ISO_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table unhcr.dataset: ~0 rows (approximately)
-/*!40000 ALTER TABLE `dataset` DISABLE KEYS */;
-/*!40000 ALTER TABLE `dataset` ENABLE KEYS */;
+/*!40000 ALTER TABLE `datasets` DISABLE KEYS */;
+/*!40000 ALTER TABLE `datasets` ENABLE KEYS */;
 
 -- Dumping structure for table unhcr.group
-CREATE TABLE IF NOT EXISTS `group` (
+CREATE TABLE IF NOT EXISTS `groups` (
   `name` varchar(50) NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -308,7 +308,7 @@ CREATE TABLE IF NOT EXISTS `group` (
 
 -- Dumping data for table unhcr.group: ~4 rows (approximately)
 /*!40000 ALTER TABLE `group` DISABLE KEYS */;
-INSERT INTO `group` (`name`, `created_at`, `updated_at`) VALUES
+INSERT INTO `groups` (`name`, `created_at`, `updated_at`) VALUES
 	('Asylum Seekers', NULL, NULL),
 	('IDPs', NULL, NULL),
 	('Mixed', NULL, NULL),
@@ -316,7 +316,7 @@ INSERT INTO `group` (`name`, `created_at`, `updated_at`) VALUES
 /*!40000 ALTER TABLE `group` ENABLE KEYS */;
 
 -- Dumping structure for table unhcr.indicator
-CREATE TABLE IF NOT EXISTS `indicator` (
+CREATE TABLE IF NOT EXISTS `indicators` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `dataset_id` int(11) NOT NULL,
   `group_name` varchar(50) NOT NULL,
@@ -329,7 +329,7 @@ CREATE TABLE IF NOT EXISTS `indicator` (
   KEY `FK_indicators_group` (`group_name`),
   KEY `FK_indicator_sdg_indicators` (`sdg_indicator_id`),
   KEY `FK_indicator_dataset` (`dataset_id`),
-  CONSTRAINT `FK_indicator_dataset` FOREIGN KEY (`dataset_id`) REFERENCES `dataset` (`id`),
+  CONSTRAINT `FK_indicator_dataset` FOREIGN KEY (`dataset_id`) REFERENCES `datasets` (`id`),
   CONSTRAINT `FK_indicator_sdg_indicators` FOREIGN KEY (`sdg_indicator_id`) REFERENCES `sdg_indicators` (`id`),
   CONSTRAINT `FK_indicators_group` FOREIGN KEY (`group_name`) REFERENCES `group` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

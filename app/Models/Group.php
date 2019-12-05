@@ -16,7 +16,7 @@ class Group extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'group';
+    protected $table = 'groups';
     protected $primaryKey = 'name';
     // public $timestamps = false;
     // protected $guarded = ['id'];
@@ -35,7 +35,7 @@ class Group extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function indicator() 
+    public function indicator()
     {
         return $this->hasMany('App\Models\Indicator');
     }

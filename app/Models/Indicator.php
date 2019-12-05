@@ -18,7 +18,7 @@ class Indicator extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'indicator';
+    protected $table = 'indicators';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
