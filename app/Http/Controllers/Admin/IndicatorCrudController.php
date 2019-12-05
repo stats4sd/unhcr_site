@@ -32,7 +32,7 @@ class IndicatorCrudController extends CrudController
     protected function setupListOperation()
     {
         // TODO: remove setFromDb() and manually define Columns, maybe Filters
-        
+
          $this->crud->addColumns([
             [
                 'name' => 'dataset_id',
@@ -46,7 +46,7 @@ class IndicatorCrudController extends CrudController
                 'name' => 'group_name',
                 'label' => 'Group name',
                 'type' => 'text',
-            ], 
+            ],
             [
                 'name' => 'sdg_indicator_id',
                 'label' => 'Sdg Indicator',
@@ -58,6 +58,9 @@ class IndicatorCrudController extends CrudController
             [
                 'name' => 'indicator_value',
                 'label' => 'Indicator Value',
+                'attributes' => [
+                    'step' => 'any',
+                ],
                 'type' => 'number',
             ],
             [
@@ -84,7 +87,7 @@ class IndicatorCrudController extends CrudController
         $this->crud->setValidation(IndicatorRequest::class);
 
         // TODO: remove setFromDb() and manually define Fields
-       
+
         //$this->crud->setFromDb();
         $this->crud->addFields([
             [
