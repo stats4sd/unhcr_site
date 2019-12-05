@@ -20,11 +20,18 @@ Route::get('/', function(){
 Route::get('home', 'HomeController@index');
 
 Route::get('lessons', 'LessonController@index');
-
 Route::get('lesson_page', function(){
-	View('lesson_page');
+	return view('lesson_page');
 });
 Route::get('/lessons/{slug}', 'LessonPageController@index');
+
+Route::get('available-data', function() {
+    return view('available-data');
+});
+
+Route::get('sdgs', function() {
+    return view('sdgs');
+});
 
 // Login route redirect user to the chosen external provider, and the callback route handles users returning from the external provider.
 Route::get('login', 'Auth\LoginController@redirectToProvider')->name('login');

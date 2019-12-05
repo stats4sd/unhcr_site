@@ -5,10 +5,10 @@ library(ggvis)
 library(dplyr)
 library(RColorBrewer)
 library(shinythemes)
-source('data.R')
+source('R/data.R')
 
-options(shiny.host = '127.0.0.1')
-options(shiny.port = 8001)
+## options(shiny.host = '127.0.0.1')
+## options(shiny.port = 8001)
 
 
 shinyApp(
@@ -16,7 +16,7 @@ shinyApp(
     tags$head(
       # style for the page
       tags$style(
-        
+
        HTML(
           "
           .leaflet-popup-content-wrapper {
@@ -30,35 +30,35 @@ shinyApp(
               color: #ffffff;
               padding: 10px;
               border-radius: 0px;
-          }    
+          }
           .info.legend {
               background: black;
               color: #ffffff;
               padding: 10px;
               border-radius: 0px;
-          }    
+          }
           "
         )
       )
     ),
-    ## navbarPage 
+    ## navbarPage
     navbarPage(
       theme = shinythemes::shinytheme("cosmo"),
-    
+
       "Charts Wash Data",
       tabPanel("Available Data",
                h2("Data available into database"),
                leafletOutput("available_map"),
                absolutePanel(#top = 100, right = 10,
-                             
+
                              selectInput("country", "Country",
                                          c("select country", unique(as.character(country_table$name)))
                              )
                )
       ),
       tabPanel("SDG",
-            
-        # Control Panel for the indicators 
+
+        # Control Panel for the indicators
         sidebarPanel(
           h5("Control chart simulation"),
           sliderInput("n",
@@ -86,8 +86,8 @@ shinyApp(
                        value = 0.10),
           p(
             "This is a simulation of a quality control exercise across multiple sites for
-12 to 60 months where defect is a binary attribute.  Choose the parameters 
-above to see the impact of different 
+12 to 60 months where defect is a binary attribute.  Choose the parameters
+above to see the impact of different
 sample size, number of sites, true defect rate, etc.  It is assumed
 that the true defect rate does not change over time or between sites.")
 
@@ -98,40 +98,40 @@ that the true defect rate does not change over time or between sites.")
             tabPanel("Map",
               h2("Map"),
               leafletOutput("map"),
-              
-              
+
+
             ),
-            tabPanel("Basic needs and living conditions", 
+            tabPanel("Basic needs and living conditions",
                      # Description of the table
                      h2('Basic needs and living conditions'),
                      "Description of the table",
-                     # Dispaly the table 
+                     # Dispaly the table
                      DT::dataTableOutput("tableTab1")
                      ),
-            tabPanel("Livelihoods and economic self-reliance", 
+            tabPanel("Livelihoods and economic self-reliance",
                      # Description of the table
                      h2('Livelihoods and economic self-reliance'),
                      "Description of the table",
-                     # Dispaly the table 
+                     # Dispaly the table
                      DT::dataTableOutput("tableTab2")
-                     
+
             ),
-            tabPanel("Civil, political and legal rights", 
+            tabPanel("Civil, political and legal rights",
                      # Description of the table
                      h2('Civil, political and legal rights'),
                      "Description of the table",
-                     # Dispaly the table 
+                     # Dispaly the table
                      DT::dataTableOutput("tableTab3")
-                     
+
             ),
-            tabPanel("Charts", 
+            tabPanel("Charts",
                      #Description of the charts
                      h3('Charts example'),
                      "Description of the charts",
                      ggvisOutput("controlChart"),
                      h3("A single site's narrowing confidence interval for defect rate"),
                      ggvisOutput("ribbonChart")
-                     
+
                      )
           )
         )
@@ -146,33 +146,33 @@ that the true defect rate does not change over time or between sites.")
     output$table <- renderTable({
       head(cars, 4)
     })
-    
-    
+
+
     # Create the map
     output$map <- renderLeaflet({
       leaflet(quakes, options = leafletOptions(minZoom = 1)) %>%
-        
-        setView(lng = 25, lat = 26, zoom = 3) %>% 
+
+        setView(lng = 25, lat = 26, zoom = 3) %>%
         # adds different details for the map
-        addTiles() %>% 
-        # adds marks 
-        addMarkers(data=quakes, clusterOptions = markerClusterOptions()) %>% 
+        addTiles() %>%
+        # adds marks
+        addMarkers(data=quakes, clusterOptions = markerClusterOptions()) %>%
         # adds label only markers
         addMarkers(data=quakes,
                             lng=~longitude, lat=~latitude,
-                            
-                            
+
+
                             popup= paste("<h5><strong>","Country name","</strong></h5>",
                                   "<b>Indic1:</b>", quakes$mag, "<br>",
                                    "<b>Indic2:</b>", quakes$stations, "<br>",
                                    "<b>Indic3:</b>", quakes$depth, "<br>",
                                    "<b>Indic4:</b>", quakes$long),
-                          
-                           
+
+
                             clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
                             labelOptions = labelOptions(noHide = T,
                                                         direction = 'top'
-                            
+
                             )
                           )
     })
@@ -206,7 +206,7 @@ that the true defect rate does not change over time or between sites.")
         class = "display"
         )
     })
-    
+
     ## table in main page tab 3
     output$tableTab3 = DT::renderDataTable({
       DT::datatable(
@@ -222,27 +222,27 @@ that the true defect rate does not change over time or between sites.")
         class = "display"
       )
     })
-    
-    
+
+
     # Charts in main page tab 4
     samp_data <- reactive({
       # generate some random data
-      samp <- data.frame(defects = rbinom(input$m * input$reps, input$n, input$p), 
+      samp <- data.frame(defects = rbinom(input$m * input$reps, input$n, input$p),
                          month = 1:input$m,
                          run = as.factor(rep(1:input$reps, each = input$m)),
                          n = input$n)  %>%
         mutate(defectsp = defects / n)
-      
-      
+
+
     })
-    
+
     samp_data_plus <- reactive({
       # add the thresholds based on standard deviations, etc
-      
+
       # overall limits, based on null hypothesis of true rate is the target:
       sigma <- sqrt(input$thresh * (1 - input$thresh) / input$n)
       upper <- input$thresh + 3 * sigma
-      
+
       # create a data frame of the simulated data plus thresholds etc
       tmp <- samp_data() %>%
         # add the overall limits:
@@ -257,11 +257,11 @@ that the true defect rate does not change over time or between sites.")
                cumsigma = sqrt(cumdefectp * (1 - cumdefectp) / cumn),
                cumupper = cumdefectp + 1.96 * cumsigma,
                cumlower = cumdefectp - 1.96 * cumsigma)
-      
+
       return(tmp)
-      
+
     })
-    
+
     # draw the two charts:
     samp_data_plus %>%
       ggvis(x = ~month, y = ~defectsp, stroke = ~run) %>%
@@ -273,7 +273,7 @@ that the true defect rate does not change over time or between sites.")
       hide_legend(scales = "fill") %>%
       add_axis("y", title = "Proportion of defects", title_offset = 50) %>%
       bind_shiny("controlChart")
-    
+
     samp_data_plus %>%
       filter(run == 1) %>%
       ggvis(x = ~month) %>%
@@ -281,39 +281,39 @@ that the true defect rate does not change over time or between sites.")
       layer_lines(y = ~thresh, stroke := "black", strokeWidth := 3) %>%
       add_axis("y", title = "Proportion of defects", title_offset = 50) %>%
       bind_shiny("ribbonChart")
-    
+
     #Create Available data map
     pal = colorFactor(palette = c("yellow", "red", "green"), domain = quakes$mag)
     output$available_map <- renderLeaflet({
       leaflet( options = leafletOptions(minZoom = 1)) %>%
-        
-        setView(lng = 25, lat = 26, zoom = 2) %>% 
+
+        setView(lng = 25, lat = 26, zoom = 2) %>%
         # adds different details for the map
         addTiles() %>%
-        addCircleMarkers(data = refugee, color = 'navy',~longitude, ~latitude, ~mag, stroke = F, group = "Refugee", 
+        addCircleMarkers(data = refugee, color = 'navy',~longitude, ~latitude, ~mag, stroke = F, group = "Refugee",
                          popup = paste("<h5><strong>","Country name","</strong></h5>",
-                                      "<b>Indic4:</b>", refugee$mag)) %>% 
-                                                                                                                               
-        addCircleMarkers(data = sdg, color = ~ pal(mag),~longitude, ~latitude, ~mag*2, stroke = F, group = "SDG",  
+                                      "<b>Indic4:</b>", refugee$mag)) %>%
+
+        addCircleMarkers(data = sdg, color = ~ pal(mag),~longitude, ~latitude, ~mag*2, stroke = F, group = "SDG",
                          popup= paste("<h5><strong>","Country name","</strong></h5>",
                                       "<b>Indic4:</b>", sdg$mag),
-                         
+
                          ) %>%
         # Layers control
         addLayersControl(
           overlayGroups = c("Refugee", "SDG"),
           options = layersControlOptions(collapsed = FALSE, title= "Layers Control")
-        ) %>% 
+        ) %>%
         # addLegend
         addLegend(position = "bottomright", pal = pal, values = c(2,4,6),
                   title = "title legend"
-                  ) 
-        
-        
+                  )
+
+
     })
-    
-    
-    
+
+
+
     ##end server
   }
 )
