@@ -74,7 +74,7 @@ body {
 }
 
 /* Column container */
-.row {  
+.row {
   display: -ms-flexbox; /* IE10 */
   display: flex;
   -ms-flex-wrap: wrap; /* IE10 */
@@ -91,7 +91,7 @@ body {
 }
 
 /* Main column */
-.main {   
+.main {
   -ms-flex: 70%; /* IE10 */
   flex: 70%;
   background-color: white;
@@ -109,7 +109,7 @@ body {
 
 /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 700px) {
-  .row {   
+  .row {
     flex-direction: column;
   }
 }
@@ -281,15 +281,8 @@ Footer
 <div class="footer">
   <!-- Add icon library -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
 <!-- Add font awesome icons -->
-<a href="#" class="fa fa-facebook"></a>
-<a href="#" class="fa fa-twitter"></a>
-<a href="#" class="fa fa-google"></a>
-<a href="#" class="fa fa-linkedin"></a>
-<a href="#" class="fa fa-youtube"></a>
-<a href="#" class="fa fa-instagram"></a>
-<a href="#" class="fa fa-skype"></a>
+    <a href="{{ url('login') }}" class="text-white">Admin Login</a>
 
 
 </div>

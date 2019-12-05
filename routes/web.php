@@ -38,5 +38,5 @@ Route::get('admin/login',function(){
 });
 
 Route::get('admin/logout',function(){
-    return view('welcom;e');
-})
+    return view('welcome');
+});
