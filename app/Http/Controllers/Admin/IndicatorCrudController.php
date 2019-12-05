@@ -58,9 +58,6 @@ class IndicatorCrudController extends CrudController
             [
                 'name' => 'indicator_value',
                 'label' => 'Indicator Value',
-                'attributes' => [
-                    'step' => 'any',
-                ],
                 'type' => 'number',
             ],
             [
@@ -122,6 +119,9 @@ class IndicatorCrudController extends CrudController
             [
                 'name' => 'indicator_value',
                 'label' => 'Indicator Value',
+                'attributes' => [
+                    'step' => 'any',
+                ],
                 'type' => 'number',
             ],
             [
