@@ -59,6 +59,7 @@ class IndicatorCrudController extends CrudController
                 'name' => 'indicator_value',
                 'label' => 'Indicator Value',
                 'type' => 'number',
+                'decimals' => 2,
             ],
             [
                 'name' => 'fake',
