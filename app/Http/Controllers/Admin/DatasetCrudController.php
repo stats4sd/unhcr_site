@@ -31,10 +31,10 @@ class DatasetCrudController extends CrudController
     {
         // TODO: remove setFromDb() and manually define Columns, maybe Filters
         $this->crud->addColumns([
-            
+
             [
                 'name' => 'country_code',
-                'label' => 'ISO code',
+                'label' => 'Country',
                 'type' => 'select',
                 'entity' => 'countries',
                 'attribute' => 'name',
@@ -43,11 +43,11 @@ class DatasetCrudController extends CrudController
             [
                 'name' => 'region',
                 'label' => 'Region',
-                'type' => 'text',    
+                'type' => 'text',
             ],
             [   // date_picker
                'name' => 'year',
-               'type' => 'number',
+               'type' => 'text',
                'label' => 'Year',
             ],
             [
@@ -102,7 +102,7 @@ class DatasetCrudController extends CrudController
             ],
             [
                 'name' => 'country_code',
-                'label' => 'ISO code',
+                'label' => 'Select the country where the data was collected',
                 'type' => 'select2',
                 'entity' => 'countries',
                 'attribute' => 'name',
@@ -110,40 +110,42 @@ class DatasetCrudController extends CrudController
             ],
             [
                 'name' => 'region',
-                'label' => 'Region',
-                'type' => 'text',    
+                'label' => 'If the dataset relates to a specific region within the country, add it here.',
+                'hint' => 'Leave blank if unknown or if the dataset is country-wide',
+                'type' => 'text',
             ],
             [   // date_picker
                'name' => 'year',
                'type' => 'number',
-               'label' => 'Year',
+               'label' => 'What year was the data collected?',
             ],
             [
                 'name' => 'description',
                 'type' => 'text',
-                'label' => 'Description',
+                'label' => 'Enter a descriptive title for the dataset',
+                'hint' => 'This will be used to recognise this dataset in other parts of the platform',
             ],
             [
                 'name' => 'population_definition',
                 'type' => 'text',
-                'label' => 'Population definition',
+                'label' => 'Give the definition of the population for which the dataset applies',
             ],
             [
                 'name' => 'source_url',
                 'type' => 'url',
-                'label' => 'Source url',
+                'label' => 'If the dataset is available online, enter the url where the source data can be found',
             ],
             [
                 'name' => 'scripts_url',
                 'type' => 'url',
-                'label' => 'Scripts url',
+                'label' => 'If the scripts used to generate the linked indicators are available online, enter the url where they can be found',
             ],
             [
                 'name' => 'fake',
                 'type' => 'checkbox',
-                'label' => 'Is it fake?',
-            ]
-
+                'label' => 'Is this a fake dataset?',
+                'hint' => 'Fake datasets are used to test the system. No fake data should be present in the live platform',
+            ],
         ]);
     }
 

@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\Request;
+use App\Http\Requests\HomePageCardRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class HomeCrudController
+ * Class HomePageCardCrudController
  * @package App\Http\Controllers\Admin
  * @property-read CrudPanel $crud
  */
-class HomeCrudController extends CrudController
+class HomePageCardCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -21,14 +21,13 @@ class HomeCrudController extends CrudController
 
     public function setup()
     {
-        $this->crud->setModel('App\Models\Home');
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/home');
-        $this->crud->setEntityNameStrings('home', 'home Page');
+        $this->crud->setModel('App\Models\HomePageCard');
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/homepagecard');
+        $this->crud->setEntityNameStrings('home page card', 'home page cards');
     }
 
     protected function setupListOperation()
     {
-        // TODO: remove setFromDb() and manually define Columns, maybe Filters
         $this->crud->addColumns([
             [
                 'name' => 'card_title',
@@ -42,14 +41,12 @@ class HomeCrudController extends CrudController
                 'type' => 'text',
             ],
         ]);
-
     }
 
     protected function setupCreateOperation()
     {
-        $this->crud->setValidation(HomeRequest::class);
+        $this->crud->setValidation(HomePageCardRequest::class);
 
-        // TODO: remove setFromDb() and manually define Fields
         $this->crud->addFields([
             [
                 'name' => 'card_title',

@@ -6,8 +6,8 @@
 <li class='nav-item'><a class='nav-link' href="{{ backpack_url('comment') }}"><i class='nav-icon fa fa-comments-o'></i> Comments</a></li>
 
 <h5 style="color: lightgrey; padding-left: 10px">WebPage</h5>
-<li class='nav-item'><a class='nav-link' href="{{ backpack_url('home') }}"><i class='nav-icon fa fa-file-text'></i> Home Page</a></li>
-<li class='nav-item'><a class='nav-link' href="{{ backpack_url('lesson') }}"><i class='nav-icon fa fa-institution'></i> Lessons Page</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('homepagecard') }}'><i class='nav-icon fa fa-file-text'></i> Home Page Cards</a></li>
+<li class='nav-item'><a class='nav-link' href="{{ backpack_url('lesson') }}"><i class='nav-icon fa fa-institution'></i> Lessons</a></li>
 
 <h5 style="color: lightgrey; padding-left: 10px">Tables</h5>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('sdgindicator') }}'><i class='nav-icon fa fa-paper-plane-o'></i> Sdg Indicators</a></li>

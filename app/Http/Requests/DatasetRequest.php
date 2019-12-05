@@ -25,8 +25,11 @@ class DatasetRequest extends FormRequest
      */
     public function rules()
     {
+        $year = date("Y");
         return [
-            // 'name' => 'required|min:5|max:255'
+            'country_code' => 'required',
+            'year' => 'required|integer|min:1900|max:' . $year,
+            'description' => 'required',
         ];
     }
 

@@ -331,7 +331,7 @@ CREATE TABLE IF NOT EXISTS `indicators` (
   KEY `FK_indicator_dataset` (`dataset_id`),
   CONSTRAINT `FK_indicator_dataset` FOREIGN KEY (`dataset_id`) REFERENCES `datasets` (`id`),
   CONSTRAINT `FK_indicator_sdg_indicators` FOREIGN KEY (`sdg_indicator_id`) REFERENCES `sdg_indicators` (`id`),
-  CONSTRAINT `FK_indicators_group` FOREIGN KEY (`group_name`) REFERENCES `group` (`name`)
+  CONSTRAINT `FK_indicators_group` FOREIGN KEY (`group_name`) REFERENCES `groups` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table unhcr.indicator: ~0 rows (approximately)
