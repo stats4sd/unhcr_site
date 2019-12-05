@@ -1,9 +1,10 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateHomePage extends Migration
+class CreateCommentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +13,9 @@ class CreateHomePage extends Migration
      */
     public function up()
     {
-        Schema::create('home_page', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('card_title')->unique();
-            $table->text('card_body');
+            $table->text('comment');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class CreateHomePage extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('home_page');
+        Schema::dropIfExists('comments');
     }
 }

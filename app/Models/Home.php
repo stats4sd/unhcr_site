@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Home extends Model
+class HomeCard extends Model
 {
     use CrudTrait;
 
@@ -15,7 +15,7 @@ class Home extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'home_page';
+    protected $table = 'home_page_cards';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];

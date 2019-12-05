@@ -17,7 +17,7 @@ class Country extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'country';
+    protected $table = 'countries';
     protected $primaryKey = 'ISO_code';
     // public $timestamps = false;
     // protected $guarded = ['id'];
@@ -38,7 +38,7 @@ class Country extends Model
     |--------------------------------------------------------------------------
     */
     //One to Many
-    public function dataset() 
+    public function dataset()
     {
         return $this->hasMany('App\Models\Dataset');
     }

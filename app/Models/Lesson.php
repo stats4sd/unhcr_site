@@ -15,7 +15,7 @@ class Lesson extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'lessons_page';
+    protected $table = 'lessons';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];

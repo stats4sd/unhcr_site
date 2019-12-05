@@ -17,7 +17,7 @@ class Dataset extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'dataset';
+    protected $table = 'datasets';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -30,7 +30,7 @@ class Dataset extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-  
+
 
     /*
     |--------------------------------------------------------------------------
@@ -44,7 +44,7 @@ class Dataset extends Model
         return $this->belongsTo('App\Models\Country', 'country_code');
     }
 
-    public function indicator() 
+    public function indicator()
     {
         return $this->hasMany('App\Models\Indicator');
     }

@@ -41,7 +41,7 @@ class SdgIndicator extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function indicators() 
+    public function indicators()
     {
         return $this->hasMany('App\Models\Indicator', 'sdg_indicator_id');
     }
