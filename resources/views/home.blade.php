@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('navbar')
+@section('content')
 
 <div class="header">
     <img src="images/iraq-children.jpg" style="width:100%"/>
