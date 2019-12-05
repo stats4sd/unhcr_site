@@ -76,6 +76,12 @@ class DatasetCrudController extends CrudController
                 'label' => 'Fake',
             ],
             [
+                'name' => 'comment',
+                'type' => 'text',
+                'label' => 'Comments',
+                'limit' => 100,
+            ],
+            [
                 'name' => 'created_at',
                 'type' => 'datetime',
                 'label' => 'Created at',
@@ -110,7 +116,7 @@ class DatasetCrudController extends CrudController
             ],
             [
                 'name' => 'region',
-                'label' => 'If the dataset relates to a specific region within the country, add it here.',
+                'label' => 'Add the specific region:',
                 'hint' => 'Leave blank if unknown or if the dataset is country-wide',
                 'type' => 'text',
             ],
@@ -145,6 +151,11 @@ class DatasetCrudController extends CrudController
                 'type' => 'checkbox',
                 'label' => 'Is this a fake dataset?',
                 'hint' => 'Fake datasets are used to test the system. No fake data should be present in the live platform',
+            ],
+            [
+                'name' => 'comment',
+                'type' => 'textarea',
+                'label' => 'Add any comments about this specific dataset:',
             ],
         ]);
     }
