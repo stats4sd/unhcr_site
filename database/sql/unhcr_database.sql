@@ -355,7 +355,7 @@ CREATE TABLE IF NOT EXISTS `indicators` (
   `dataset_id` int(11) NOT NULL,
   `group_name` varchar(50) NOT NULL,
   `sdg_indicator_id` varchar(50) NOT NULL,
-  `indicator_value` int(11) NOT NULL,
+  `indicator_value` decimal(8,3) NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `fake` int(1) NOT NULL DEFAULT '0',

@@ -30,4 +30,8 @@ return [
         'redirect' => env('AZURE_REDIRECT_URI')
     ],
 
+
+    'shiny' => [
+        'url' => env('SHINY_URL');
+    ]
 ];

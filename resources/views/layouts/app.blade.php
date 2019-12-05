@@ -267,17 +267,16 @@ Footer
 </style>
 </head>
 <body>
-@section('navbar')
-<div class="navbar">
-  <a href="home">Home</a>
-  <a href="http://127.0.0.1:8001">Available Data</a>
-  <a href="http://127.0.0.1:8001">SDG</a>
-  <!-- <a href="admin">Admin</a> -->
-  <a href="lessons">Lessons & Learning</a>
-</div>
-@yield('navbar')
+    <div class="navbar">
+      <a href="{{ url('home') }}">Home</a>
+      <a href="{{ url('available-data') }}">Available Data</a>
+      <a href="{{ url('sdgs') }}">SDGs</a>
+      <!-- <a href="admin">Admin</a> -->
+      <a href="{{ url('lessons') }}">Lessons & Learning</a>
+    </div>
+@yield('content')
 
-@section('footer')
+
 <div class="footer">
   <!-- Add icon library -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
