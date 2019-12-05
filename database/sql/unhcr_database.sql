@@ -315,10 +315,6 @@ INSERT INTO `groups` (`name`, `created_at`, `updated_at`) VALUES
 	('Refugees', NULL, NULL);
 /*!40000 ALTER TABLE `groups` ENABLE KEYS */;
 
--- Dumping data for table unhcr.indicator: ~0 rows (approximately)
-/*!40000 ALTER TABLE `indicator` DISABLE KEYS */;
-/*!40000 ALTER TABLE `indicator` ENABLE KEYS */;
-
 -- Dumping structure for table unhcr.sdg_indicators
 CREATE TABLE IF NOT EXISTS `sdg_indicators` (
   `id` varchar(15) NOT NULL,
@@ -353,7 +349,7 @@ INSERT INTO `sdg_indicators` (`code`, `id`,`description`, `created_at`, `updated
     ('8.5.2.male', '8_5_2_male','Unemployment rate, by sex, age and persons with disabilities', NULL, NULL);
 /*!40000 ALTER TABLE `sdg_indicators` ENABLE KEYS */;
 
--- Dumping structure for table unhcr.indicator
+-- Dumping structure for table unhcr.indicators
 CREATE TABLE IF NOT EXISTS `indicators` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `dataset_id` int(11) NOT NULL,
@@ -372,7 +368,9 @@ CREATE TABLE IF NOT EXISTS `indicators` (
   CONSTRAINT `FK_indicators_group` FOREIGN KEY (`group_name`) REFERENCES `groups` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-
+-- Dumping data for table unhcr.indicator: ~0 rows (approximately)
+/*!40000 ALTER TABLE `indicators` DISABLE KEYS */;
+/*!40000 ALTER TABLE `indicators` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
