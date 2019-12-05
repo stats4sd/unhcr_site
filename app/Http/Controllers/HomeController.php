@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Home;
+use App\Models\HomePageCard;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     public function index()
     {
-    	$cards = Home::all();
+    	$cards = HomePageCard::all();
     	return View('home',compact('cards'));
     }
 }

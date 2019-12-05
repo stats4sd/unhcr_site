@@ -15,8 +15,8 @@ class GroupCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    // use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    // use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     public function setup()
@@ -35,11 +35,6 @@ class GroupCrudController extends CrudController
                 'label' => 'Name',
                 'type' => 'text',
             ],
-            [
-                'name' => 'created_at',
-                'label' => 'created_at',
-                'type' => 'dateTime',
-            ],
         ]);
     }
 
@@ -47,7 +42,14 @@ class GroupCrudController extends CrudController
     {
         $this->crud->setValidation(GroupRequest::class);
 
-        // TODO: remove setFromDb() and manually define Fields
+        $this->crud->setColumns([
+            [
+                'name' => 'name',
+                'label' => 'Enter name of group',
+                'type' => 'text',
+            ],
+        ]);
+
     }
 
     protected function setupUpdateOperation()

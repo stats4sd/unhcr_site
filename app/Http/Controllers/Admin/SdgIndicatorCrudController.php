@@ -15,8 +15,8 @@ class SdgIndicatorCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    // use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    // use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     public function setup()
@@ -28,7 +28,6 @@ class SdgIndicatorCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        // TODO: remove setFromDb() and manually define Columns, maybe Filters
         $this->crud->setColumns([
             [
                 'name' => 'code',
@@ -39,17 +38,8 @@ class SdgIndicatorCrudController extends CrudController
                 'name' => 'description',
                 'label' => 'Description',
                 'type' => 'text',
+                'limit' => 100,
             ],
-            [
-                'name' => 'created_at',
-                'label' => 'created_at',
-                'type' => 'dateTime',
-            ],
-            [
-                'name' => 'updated_at',
-                'label' => 'updated_at',
-                'type' => 'datetime',
-            ]
         ]);
     }
 
@@ -62,8 +52,8 @@ class SdgIndicatorCrudController extends CrudController
             [
                 'name' => 'code',
                 'label' => 'Insert code',
-                'type' => 'text', 
-                'hint' => 'Example 2.3.4',   
+                'type' => 'text',
+                'hint' => 'Example 2.3.4',
             ],
             [
                 'name' => 'description',
@@ -79,7 +69,7 @@ class SdgIndicatorCrudController extends CrudController
         $this->crud->addFields([
             [
                 'name' => 'id',
-                'label' => 'Id',
+                'label' => 'Id (cannot be changed - if this is wrong, please delete and recreate the SDG indicator record)',
                 'type' => 'text',
                 'attributes' => [
                     'disabled' => 'disabled'
