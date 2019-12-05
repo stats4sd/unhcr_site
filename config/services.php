@@ -32,6 +32,6 @@ return [
 
 
     'shiny' => [
-        'url' => env('SHINY_URL');
-    ]
+        'url' => env('SHINY_URL'),
+    ],
 ];
