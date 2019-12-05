@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `countries` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ISO_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table unhcr.country: ~249 rows (approximately)
 /*!40000 ALTER TABLE `countries` DISABLE KEYS */;
@@ -292,7 +292,7 @@ CREATE TABLE IF NOT EXISTS `datasets` (
   PRIMARY KEY (`id`),
   KEY `FK_dataset_country` (`country_code`),
   CONSTRAINT `FK_dataset_country` FOREIGN KEY (`country_code`) REFERENCES `countries` (`ISO_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table unhcr.dataset: ~0 rows (approximately)
 /*!40000 ALTER TABLE `datasets` DISABLE KEYS */;
@@ -304,7 +304,7 @@ CREATE TABLE IF NOT EXISTS `groups` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table unhcr.group: ~4 rows (approximately)
 /*!40000 ALTER TABLE `group` DISABLE KEYS */;
@@ -332,7 +332,7 @@ CREATE TABLE IF NOT EXISTS `indicators` (
   CONSTRAINT `FK_indicator_dataset` FOREIGN KEY (`dataset_id`) REFERENCES `datasets` (`id`),
   CONSTRAINT `FK_indicator_sdg_indicators` FOREIGN KEY (`sdg_indicator_id`) REFERENCES `sdg_indicators` (`id`),
   CONSTRAINT `FK_indicators_group` FOREIGN KEY (`group_name`) REFERENCES `groups` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table unhcr.indicator: ~0 rows (approximately)
 /*!40000 ALTER TABLE `indicator` DISABLE KEYS */;
@@ -346,7 +346,7 @@ CREATE TABLE IF NOT EXISTS `sdg_indicators` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table unhcr.sdg_indicators: ~12 rows (approximately)
 /*!40000 ALTER TABLE `sdg_indicators` DISABLE KEYS */;
