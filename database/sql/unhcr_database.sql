@@ -32,7 +32,7 @@ INSERT INTO `country` (`ISO_code`, `name`, `longitude`, `latitude`, `created_at`
 	('ALA', 'Aland Islands', '', '', NULL, NULL),
 	('ALB', 'Albania', '', '', NULL, NULL),
 	('AND', 'Andorra', '', '', NULL, NULL),
-	('ARE', 'United Arab Emirates', '', '', NULL, NULL),
+	('ARE', 'United Arab Emirgaates', '', '', NULL, NULL),
 	('ARG', 'Argentina', '', '', NULL, NULL),
 	('ARM', 'Armenia', '', '', NULL, NULL),
 	('ASM', 'American Samoa', '', '', NULL, NULL),
