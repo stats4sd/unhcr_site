@@ -47,7 +47,7 @@ class DatasetCrudController extends CrudController
             ],
             [   // date_picker
                'name' => 'year',
-               'type' => 'text',
+               'type' => 'number',
                'label' => 'Year',
             ],
             [
