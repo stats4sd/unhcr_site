@@ -8,54 +8,17 @@ library(shinythemes)
 source('data.R')
 
 options(shiny.host = '127.0.0.1')
-options(shiny.port = 8001)
+options(shiny.port = 8002)
 
 
 shinyApp(
   ui = tagList(
     tags$head(
-      # style for the page
-      tags$style(
-        
-       HTML(
-          "
-          .leaflet-popup-content-wrapper {
-              background: black;
-              color: #ffffff;
-              padding: 2px;
-              border-radius: 0px;
-          }
-          .leaflet-control-layers {
-              background: black;
-              color: #ffffff;
-              padding: 10px;
-              border-radius: 0px;
-          }    
-          .info.legend {
-              background: black;
-              color: #ffffff;
-              padding: 10px;
-              border-radius: 0px;
-          }    
-          "
-        )
-      )
+      
     ),
     ## navbarPage 
     navbarPage(
-      theme = shinythemes::shinytheme("cosmo"),
-    
-      "Charts Wash Data",
-      tabPanel("Available Data",
-               h2("Data available into database"),
-               leafletOutput("available_map"),
-               absolutePanel(#top = 100, right = 10,
-                             
-                             selectInput("country", "Country",
-                                         c("select country", unique(as.character(country_table$name)))
-                             )
-               )
-      ),
+
       tabPanel("SDG",
             
         # Control Panel for the indicators 
@@ -84,12 +47,7 @@ shinyApp(
                        "Target maximum defect rate",
                        min = 0, max = 1, step = 0.01,
                        value = 0.10),
-          p(
-            "This is a simulation of a quality control exercise across multiple sites for
-12 to 60 months where defect is a binary attribute.  Choose the parameters 
-above to see the impact of different 
-sample size, number of sites, true defect rate, etc.  It is assumed
-that the true defect rate does not change over time or between sites.")
+          p( "This is a simulation ")
 
         ),
         mainPanel(
@@ -179,7 +137,7 @@ that the true defect rate does not change over time or between sites.")
     ## table in main page tab 1
     output$tableTab1 = DT::renderDataTable({
       DT::datatable(
-        indicator_table1,
+        #indicator_table1,
         filter = 'top',
         extensions = 'Buttons',
         options = list(
@@ -194,7 +152,7 @@ that the true defect rate does not change over time or between sites.")
     ## table in main page tab 2
     output$tableTab2 = DT::renderDataTable({
       DT::datatable(
-        indicator_table2,
+        #indicator_table2,
         filter = 'top',
         extensions = 'Buttons',
         options = list(
@@ -210,7 +168,7 @@ that the true defect rate does not change over time or between sites.")
     ## table in main page tab 3
     output$tableTab3 = DT::renderDataTable({
       DT::datatable(
-        indicator_table3,
+        #indicator_table3,
         filter = 'top',
         extensions = 'Buttons',
         options = list(
@@ -281,37 +239,6 @@ that the true defect rate does not change over time or between sites.")
       layer_lines(y = ~thresh, stroke := "black", strokeWidth := 3) %>%
       add_axis("y", title = "Proportion of defects", title_offset = 50) %>%
       bind_shiny("ribbonChart")
-    
-    #Create Available data map
-    pal = colorFactor(palette = c("yellow", "red", "green"), domain = quakes$mag)
-    output$available_map <- renderLeaflet({
-      leaflet( options = leafletOptions(minZoom = 1)) %>%
-        
-        setView(lng = 25, lat = 26, zoom = 2) %>% 
-        # adds different details for the map
-        addTiles() %>%
-        addCircleMarkers(data = refugee, color = 'navy',~longitude, ~latitude, ~mag, stroke = F, group = "Refugee", 
-                         popup = paste("<h5><strong>","Country name","</strong></h5>",
-                                      "<b>Indic4:</b>", refugee$mag)) %>% 
-                                                                                                                               
-        addCircleMarkers(data = sdg, color = ~ pal(mag),~longitude, ~latitude, ~mag*2, stroke = F, group = "SDG",  
-                         popup= paste("<h5><strong>","Country name","</strong></h5>",
-                                      "<b>Indic4:</b>", sdg$mag),
-                         
-                         ) %>%
-        # Layers control
-        addLayersControl(
-          overlayGroups = c("Refugee", "SDG"),
-          options = layersControlOptions(collapsed = FALSE, title= "Layers Control")
-        ) %>% 
-        # addLegend
-        addLegend(position = "bottomright", pal = pal, values = c(2,4,6),
-                  title = "title legend"
-                  ) 
-        
-        
-    })
-    
     
     
     ##end server

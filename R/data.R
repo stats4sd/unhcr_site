@@ -33,13 +33,12 @@ map <- world +
 #use con for connecting to database 
 indicator_table_db<-dbGetQuery(con,'
   select *
-  from indicator
-  group by id')
+  from countries')
 
 # country table
 country_table<-dbGetQuery(con,'
   select *
-  from country')
+  from countries')
 #filter data fo data available map
 sdg <-quakes  %>% filter(mag<=4)
 refugee <-quakes %>% filter(mag>4) 
@@ -49,16 +48,16 @@ refugee <-quakes %>% filter(mag>4)
 ### Commented out temporarily as I don't have the source file to read.
 # - DEGM, 2019-11-22
 # # indicators table from csv
-# indicator_table <- read.csv("C:/Users/LuciaFalcinelli/Documents/R/unhcr/data/Colombia Iraq SDG indicators for displaced people.csv")
+indicator_table <- read.csv("C:/Users/LuciaFalcinelli/Documents/R/unhcr/data/Colombia Iraq SDG indicators for displaced people.csv")
 # 
 # # indicator_table1 for Basic needs and living conditions
-# indicator_table1<-indicator_table %>% select('Country', 'Year', 'SDG_2.2.1', 'SDG_3.2.1', 'SDG_6.6.1', 'SDG_11.1.1')
+indicator_table1<-indicator_table %>% select('Country', 'Year', 'SDG_2.2.1', 'SDG_3.2.1', 'SDG_6.6.1', 'SDG_11.1.1')
 # 
 # # indicator_table2 for Livelihoods and economic self-reliance
 # indicator_table2<-indicator_table %>% select('Country', 'Year', 'SDG_1.2.1', 'SDG_4.1.1.a.i', 'SDG_7.1.1', 'SDG_8.3.1', 'SDG_8.5.2.male', 'SDG_8.5.2.female')
 # 
 # # indicator_table3 for Livelihoods and economic self-reliance
-# indicator_table3<-indicator_table %>% select('Country', 'Year', 'SDG_1.4.2.a', 'SDG_1.4.2.b', 'SDG_16.1.4', 'SDG_16.9.1')
+indicator_table3<-indicator_table %>% select('Country', 'Year', 'SDG_1.4.2.a', 'SDG_1.4.2.b', 'SDG_16.1.4', 'SDG_16.9.1')
 ###################
 
 
