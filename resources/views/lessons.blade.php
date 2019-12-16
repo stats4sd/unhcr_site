@@ -1,16 +1,16 @@
 @extends('layouts.app')
-@section('navbar')
+@section('content')
 <body>
 <div class="jumbotron lessons_top text-center" style="margin-bottom:0">
   <h1 style="color: white;">Lessons and Learning</h1>
 </div>
-	<div class="col-sm-12 center" style="padding: 50px 50px;"> 
+	<div class="col-sm-12 center" style="padding: 50px 50px;">
       	<section class="content mb-5" id="introduction">
 	        <h1 style="text-align:center"><b>Lessons learned</b></h1>
 	        <p><b>There is very little data on IDPs and out-of-camp refugees</b></p>
-	        <p>This is not new information, but worth bearing in mind when looking at the available data.</p> 
-			<p>IDP data collection challenges seem to be due to their being harder to keep track of and less of a priority for data collection groups, as they don’t face the same challenges as refugees, such as language and cultural barriers to integration. 
-			Out-of-camp refugees are very hard to collect data about as the situation is extremely sensitive. There is not much realistically that we can recommend to change this.  
+	        <p>This is not new information, but worth bearing in mind when looking at the available data.</p>
+			<p>IDP data collection challenges seem to be due to their being harder to keep track of and less of a priority for data collection groups, as they don’t face the same challenges as refugees, such as language and cultural barriers to integration.
+			Out-of-camp refugees are very hard to collect data about as the situation is extremely sensitive. There is not much realistically that we can recommend to change this.
 			</p>
 	        <p><b>Currently, data collected by countries and government projects is unlikely to disaggregate by FDPs unless UNHCR has been working with the groups directly.</b></p>
 	        <p>For example, WASH collects high quality data on refugees, but only where its own staff are present. They cannot rely on other groups or government initiatives to collect useful data. If their staff are not present, they don’t get the data. This is all organised through individual relationships in-country. There is not a formal process or systematised approach, and these relationships differ even between groups within UNHCR. </p>
@@ -65,7 +65,7 @@
     	</div>
     	@endforeach
   	</div>
-  
+
   	<!-- Pagination -->
   	<div class="w3-center w3-padding-32">
 	    <div class="w3-bar">
