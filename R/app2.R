@@ -1,7 +1,7 @@
 library(shiny)
 library(leaflet)
 library(DT)
-library(ggvis)
+#library(ggvis)
 library(dplyr)
 library(RColorBrewer)
 library(shinythemes)
