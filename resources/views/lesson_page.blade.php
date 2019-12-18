@@ -2,7 +2,7 @@
 @section('content')
 <style type="text/css">
 	.lesson_page {
-            background: url('{{$lesson_page->image}}') center center / cover no-repeat;
+            background: url('storage/public/{{$lesson_page->image_background}}') center center / cover no-repeat;
         }
 </style>
 <body>
