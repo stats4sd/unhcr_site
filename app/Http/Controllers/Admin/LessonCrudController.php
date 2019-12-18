@@ -50,16 +50,48 @@ class LessonCrudController extends CrudController
                 'label' => 'Lesson title',
             ],
             [
+                'name' => 'image_background',
+                'label' => 'Image background',
+                'type' => 'upload',
+                'upload' => true,
+                'disk' => 'uploads',
+            ],
+            [
                 'type' => 'text',
                 'name' => 'comment',
                 'label' => 'Insert a short descrition for the lesson page',
             ],
-            [   // TinyMCE
+            [   
                 'name' => 'body_1',
-                'label' => 'Body_1',
-                'type' => 'tinymce',
-                // optional overwrite of the configuration array
-                // 'options' => [ 'selector' => 'textarea.tinymce',  'skin' => 'dick-light', 'plugins' => 'image,link,media,anchor' ],
+                'label' => 'Body 1',
+                'type' => 'textarea',
+            ],
+            [
+                'name' => 'table_title_1',
+                'label' => 'Table title 1',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'table_body_1',
+                'label' => 'Table body 1',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'image_1',
+                'label' => 'Image body 1',
+                'type' => 'upload',
+                'upload' => true,
+                'disk' => 'uploads',
+            ],
+            [   
+                'name' => 'body_2',
+                'label' => 'Body 2',
+                'type' => 'textarea',      
+            ],
+            [   
+                'name' => 'body_3',
+                'label' => 'Body 3',
+                'type' => 'textarea',
             ],
                        
         ]);
@@ -69,4 +101,5 @@ class LessonCrudController extends CrudController
     {
         $this->setupCreateOperation();
     }
+
 }

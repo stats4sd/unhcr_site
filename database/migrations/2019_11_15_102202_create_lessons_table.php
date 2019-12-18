@@ -15,14 +15,22 @@ class CreateLessonsTable extends Migration
         Schema::create('lessons', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
+            $table->text('image_background');
             $table->string('slug');
-            $table->text('comment');
+            $table->text('comment')->nullable();
             $table->longText('body_1');
+            $table->text('table_title_1')->nullable();
+            $table->text('table_body_1')->nullable();
+            $table->string('image_1')->nullable();
             $table->longText('body_2')->nullable();
+            $table->text('table_title_2')->nullable();
+            $table->text('table_body_2')->nullable();
+            $table->string('image_2')->nullable();
             $table->longText('body_3')->nullable();
+            $table->text('table_title_3')->nullable();
+            $table->text('table_body_3')->nullable();
+            $table->string('image_3')->nullable();
             $table->longText('card')->nullable();
-            $table->text('table_title')->nullable();
-            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
