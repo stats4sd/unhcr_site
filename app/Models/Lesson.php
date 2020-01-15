@@ -22,6 +22,9 @@ class Lesson extends Model
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
+    protected $casts = [
+        'table_body_1' => 'array'
+    ];
 
     /*
     |--------------------------------------------------------------------------

@@ -15,125 +15,99 @@ options(shiny.port = 8002)
 shinyApp(
   ui = tagList(
     tags$head(
-
     ),
     ## navbarPage
-    navbarPage(
-
-      tabPanel("SDG",
-
+    fluidPage(
+      fluidRow(
+        column(4,
         # Control Panel for the indicators
-        sidebarPanel(
-          h5("Control chart simulation"),
+          h3("DISAGGREGATED DATA"),
+          h4("Availability by Location"),
+        selectInput("country", "",
+                    c("Select Country", unique(as.character(indicators$countries_name)))
+                    ),
+       
           sliderInput("n",
-                      "Number of samples per month:",
-                      min = 1,
-                      max = 200,
-                      value = 30),
-          sliderInput("reps",
-                      "Number of sites to show in control chart:",
-                      min = 1,
-                      max = 25,
-                      value = 1),
-          sliderInput("m",
-                      "Number of months to show:",
-                      min = 12,
-                      max = 48,
-                      value = 24),
-          numericInput("p",
-                       "True defect rate (which of course is unknown in the real world)",
-                       min = 0, max = 1, step = 0.01,
-                       value = 0.15),
-          numericInput("thresh",
-                       "Target maximum defect rate",
-                       min = 0, max = 1, step = 0.01,
-                       value = 0.10),
-
-
+                      "Select the years:",
+                      min = min(years),
+                      max = max(years),
+                      value = c(min(years), max(years))
+                      ),
+        
+        checkboxGroupInput("filterSubsets", 
+                           h3("Filter Subsets"), 
+                           choices = list("Refugees" = "Refugees", 
+                                          "IDPs (in camps/settlements)" = "IDPs (in camps/settlements)", 
+                                          "IDPs (not in camps/settlements)" = "IDPs (not in camps/settlements)",
+                                          "IDPs" = "IDPs"
+                                          ),
+                          ),
+        checkboxGroupInput("filterIndicators", 
+                           h3("Filter Indicators"), 
+                           choices = list("8.5.2.male: Unemployment rate, by sex, age and persons with disabilities" = '8_5_2_male', 
+                                          "8.5.2.female:	Unemployment rate, by sex, age and persons with disabilities" = '8_5_2_female', 
+                                          "8.3.1.male:	Proportion of informal employment in non‑agriculture employment, by sex" = '8_3_1_male',
+                                          "8.3.1.female:	Proportion of informal employment in non‑agriculture employment, by sex" = '8_3_1_female', 
+                                          "7.1.1:	Proportion of population with access to electricity" = "7_1_1", 
+                                          "6.1.1:	Proportion of population using safely managed drinking water services" = "6_1_1",
+                                          "4.1.1.c.ii: Proportion of children and young people: (a) in grades 2/3; (b) at the end of primary; and (c) at the end of lower secondary achieving at least a minimum proficiency level in (i) reading and (ii) mathematics, by sex" = "4_1_1_c_ii", 
+                                          "4.1.1.c.i: Proportion of children and young people: (a) in grades 2/3; (b) at the end of primary; and (c) at the end of lower secondary achieving at least a minimum proficiency level in (i) reading and (ii) mathematics, by sex" = "4_1_1_c_i",
+                                          "4.1.1.b.ii: Proportion of children and young people: (a) in grades 2/3; (b) at the end of primary; and (c) at the end of lower secondary achieving at least a minimum proficiency level in (i) reading and (ii) mathematics, by sex" = "4_1_1_b_ii", 
+                                          "4.1.1.b.i: Proportion of children and young people: (a) in grades 2/3; (b) at the end of primary; and (c) at the end of lower secondary achieving at least a minimum proficiency level in (i) reading and (ii) mathematics, by sex" = "4_1_1_b_i", 
+                                          "4.1.1.a.ii: Proportion of children and young people: (a) in grades 2/3; (b) at the end of primary; and (c) at the end of lower secondary achieving at least a minimum proficiency level in (i) reading and (ii) mathematics, by sex" = "4_1_1_a_ii",
+                                          "4.1.1.a.i: Proportion of children and young people: (a) in grades 2/3; (b) at the end of primary; and (c) at the end of lower secondary achieving at least a minimum proficiency level in (i) reading and (ii) mathematics, by sex" = "4_1_1_a_i",
+                                          "3.2.1: Under-five mortality rate" = "3_2_1",
+                                          "2.2.1:	Prevalence of stunting (height for age" = "2_2_1",
+                                          "1.4.2.b:	Proportion of total adult population with secure tenure rights to land, (a) with legally recognized documentation, (b) who perceive their rights to land as secure, by sex and type of tenure" = "1_4_2_b",
+                                          "1.4.2.a: Proportion of total adult population with secure tenure rights to land, (a) with legally recognized documentation, (b) who perceive their rights to land as secure, by sex and type of tenure" = "1_4_2_a",
+                                          "1.2.1:	Proportion of population living below the national poverty line, by sex and age" = "1_2_1",
+                                          "16.9.1: Proportion of children under 5 years of age whose births have been registered with a civil authority, by age" = "16_9_1",
+                                          "16.1.4:	Proportion of population that feel safe walking alone around the area they live" = "16_1_4",
+                                          "11.1.1:	Proportion of urban population living in slums, informal settlements or inadequate housing" = "11_1_1"
+                                          ),
+                          ),
         ),
-        mainPanel(
-          tabsetPanel(
-          # Map
-            tabPanel("Map",
+        
+          column(8,
               h2("Map"),
-              leafletOutput("map"),
-
-
-            ),
-            tabPanel("Basic needs and living conditions",
-                     # Description of the table
-                     h2('Basic needs and living conditions'),
-                     "Description of the table",
-                     # Dispaly the table
-                     DT::dataTableOutput("tableTab1")
-                     ),
-            tabPanel("Livelihoods and economic self-reliance",
-                     # Description of the table
-                     h2('Livelihoods and economic self-reliance'),
-                     "Description of the table",
-                     # Dispaly the table
-                     DT::dataTableOutput("tableTab2")
-
-            ),
-            tabPanel("Civil, political and legal rights",
-                     # Description of the table
-                     h2('Civil, political and legal rights'),
-                     "Description of the table",
-                     # Dispaly the table
-                     DT::dataTableOutput("tableTab3")
-
-            ),
-            tabPanel("Charts",
-                     #Description of the charts
-                     h3('Charts example'),
-                     "Description of the charts",
-                     ggvisOutput("controlChart"),
-                     h3("A single site's narrowing confidence interval for defect rate"),
-                     ggvisOutput("ribbonChart")
-
-                     )
+              leafletOutput("mymap", height="85vh"),
+              "Basic needs and living conditions",
+              #DT::dataTableOutput("tableTab1")
           )
-        )
-      )
-      #tabPanel("Navbar 3", "This panel is intentionally left blank")
+      )      
     )
   ),
   server = function(input, output) {
-    output$txtout <- renderText({
-      paste(input$txt, input$slider, format(input$date), sep = ", ")
-    })
-    output$table <- renderTable({
-      head(cars, 4)
-    })
+    
 
 
     # Create the map
-    output$map <- renderLeaflet({
-      leaflet(quakes, options = leafletOptions(minZoom = 1)) %>%
+    output$mymap <- renderLeaflet({
+    leaflet() %>% addTiles() %>% addProviderTiles("Esri.WorldStreetMap") %>%
+      addMiniMap(
+        tiles = providers$Esri.WorldStreetMap,
+        toggleDisplay = TRUE
+      )
+    })
 
-        setView(lng = 25, lat = 26, zoom = 3) %>%
-        # adds different details for the map
-        addTiles() %>%
-        # adds marks
-        addMarkers(data=quakes, clusterOptions = markerClusterOptions()) %>%
-        # adds label only markers
-        addMarkers(data=quakes,
-                            lng=~longitude, lat=~latitude,
-
-
-                            popup= paste("<h5><strong>","Country name","</strong></h5>",
-                                  "<b>Indic1:</b>", quakes$mag, "<br>",
-                                   "<b>Indic2:</b>", quakes$stations, "<br>",
-                                   "<b>Indic3:</b>", quakes$depth, "<br>",
-                                   "<b>Indic4:</b>", quakes$long),
-
-
-                            clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
-                            labelOptions = labelOptions(noHide = T,
-                                                        direction = 'top'
-
-                            )
-                          )
+    observe({
+   
+      if(nrow(indicators) > 0) {
+          
+          leafletProxy("mymap") %>%
+            setView(lng = 0, lat = 0, zoom = 2.5) %>%
+            #clearMarkers() %>%
+            addCircleMarkers(layerId = indicators$id, lng = indicators$longitude, 
+                              lat = indicators$latitude, radius =8, stroke=FALSE, color = "blue", 
+                              fillOpacity = 0.4, 
+                              popup = paste("<h5><b>Country:</b>", 
+                              indicators$countries_name, "</h5>",
+                              "<h5><b>Indicators :</b>", indicators$indicator_num , "</h5>"))
+      } else {
+        leafletProxy("mymap") %>%
+          setView(lng = 0, lat = 0, zoom = 2.5)
+      }
+    
     })
     ## table in main page tab 1
     output$tableTab1 = DT::renderDataTable({
@@ -150,96 +124,8 @@ shinyApp(
         class = "display"
       )
     })
-    ## table in main page tab 2
-    output$tableTab2 = DT::renderDataTable({
-      DT::datatable(
-        #indicator_table2,
-        filter = 'top',
-        extensions = 'Buttons',
-        options = list(
-          dom = 'Blfrtip',
-          buttons = c(I('colvis'), 'csv'),
-          text = 'Download',
-          br()
-        ),
-        class = "display"
-        )
-    })
+    
 
-    ## table in main page tab 3
-    output$tableTab3 = DT::renderDataTable({
-      DT::datatable(
-        #indicator_table3,
-        filter = 'top',
-        extensions = 'Buttons',
-        options = list(
-          dom = 'Blfrtip',
-          buttons = c(I('colvis'), 'csv'),
-          text = 'Download',
-          br()
-        ),
-        class = "display"
-      )
-    })
-
-
-    # Charts in main page tab 4
-    samp_data <- reactive({
-      # generate some random data
-      samp <- data.frame(defects = rbinom(input$m * input$reps, input$n, input$p),
-                         month = 1:input$m,
-                         run = as.factor(rep(1:input$reps, each = input$m)),
-                         n = input$n)  %>%
-        mutate(defectsp = defects / n)
-
-
-    })
-
-    samp_data_plus <- reactive({
-      # add the thresholds based on standard deviations, etc
-
-      # overall limits, based on null hypothesis of true rate is the target:
-      sigma <- sqrt(input$thresh * (1 - input$thresh) / input$n)
-      upper <- input$thresh + 3 * sigma
-
-      # create a data frame of the simulated data plus thresholds etc
-      tmp <- samp_data() %>%
-        # add the overall limits:
-        mutate(upper = upper,
-               thresh = input$thresh) %>%
-        # add the cumulative results for each run including confidence intervals:
-        group_by(run) %>%
-        mutate(meandefectsp = mean(defectsp),
-               cumdefects = cumsum(defects),
-               cumn = cumsum(n),
-               cumdefectp = cumdefects / cumn,
-               cumsigma = sqrt(cumdefectp * (1 - cumdefectp) / cumn),
-               cumupper = cumdefectp + 1.96 * cumsigma,
-               cumlower = cumdefectp - 1.96 * cumsigma)
-
-      return(tmp)
-
-    })
-
-    # draw the two charts:
-    samp_data_plus %>%
-      ggvis(x = ~month, y = ~defectsp, stroke = ~run) %>%
-      layer_lines() %>%
-      layer_points(fill = ~run) %>%
-      layer_lines(y = ~upper, stroke := "black", strokeDash := 6, strokeWidth := 3) %>%
-      layer_lines(y = ~thresh, stroke := "black", strokeWidth := 3) %>%
-      hide_legend(scales = "stroke") %>%
-      hide_legend(scales = "fill") %>%
-      add_axis("y", title = "Proportion of defects", title_offset = 50) %>%
-      bind_shiny("controlChart")
-
-    samp_data_plus %>%
-      filter(run == 1) %>%
-      ggvis(x = ~month) %>%
-      layer_ribbons(y = ~cumupper, y2 = ~cumlower, fill := "grey") %>%
-      layer_lines(y = ~thresh, stroke := "black", strokeWidth := 3) %>%
-      add_axis("y", title = "Proportion of defects", title_offset = 50) %>%
-      bind_shiny("ribbonChart")
 
     ##end server
   }
