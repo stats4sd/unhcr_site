@@ -61,6 +61,11 @@ class LessonCrudController extends CrudController
                 'name' => 'comment',
                 'label' => 'Insert a short descrition for the lesson page',
             ],
+            [
+                'type' => 'text',
+                'name' => 'card',
+                'label' => 'Insert a short note for the right card',
+            ],
             [   
                 'name' => 'body_1',
                 'label' => 'Body 1',

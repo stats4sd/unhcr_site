@@ -11,9 +11,3 @@ con <- dbConnect(RMySQL::MySQL(),
                  user = Sys.getenv('DB_USERNAME'),
                  password = Sys.getenv('DB_PASSWORD')
 )
-indicator_table<-dbGetQuery(con,'
-  select *
-  from countries
-  
-           ')
-

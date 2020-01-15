@@ -20,18 +20,18 @@
 	  				<hr>
 	  					<div class="w3-center">
 	    					<p w3-class="w3-large"><b>Table 1.1 {{ $lesson_page->table_title_1 }}</b></p>
-	    					<p> {{$lesson_page->table_body_1}} </p>
+	    				
 	  					</div>
 					<div class="w3-responsive w3-card-4">
 					<table class="w3-table w3-striped w3-bordered">
 						<thead>
-							<tr class="w3-theme">
 							
-								<th>Name</th>
+							<tr class="w3-theme">
+								<th>First name </th>
 								<th>Last Name</th>
 								<th>Points</th>
-								
 							</tr>
+						
 						</thead>
 						<tbody>
 						<tr>

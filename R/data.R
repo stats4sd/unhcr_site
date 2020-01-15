@@ -6,28 +6,8 @@ library(ggthemes)
 library(dplyr)
 source('dbConfig.R')
 
-#available data maps
-url_csv <- 'https://raw.githubusercontent.com/d4tagirl/R-Ladies-growth-maps/master/rladies.csv'
-rladies <- read.csv(url(url_csv)) %>%
-  select(-1)
 
-datatable(rladies, rownames = FALSE,
-          options = list(pageLength = 5))
-
-
-#use con for connecting to database
-indicator_table_db<-dbGetQuery(con,'
-  select *
-  from countries')
-
- 
-
-# country table
-country_table<-dbGetQuery(con,'
-  select *
-  from countries')
-
-#fdata for data available map
+#indicators
 indicators<-dbGetQuery(con,'
   SELECT
           indicators.dataset_id,
@@ -50,12 +30,16 @@ indicators<-dbGetQuery(con,'
   ')
 
 indicators$countries_name <- as.factor(indicators$countries_name )
+indicators$year <- as.numeric(indicators$year)
+indicators$latitude <- as.numeric(indicators$latitude)
+indicators$longitude <- as.numeric(indicators$longitude)
 
-sdg <-quakes  %>% filter(mag<=4)
-refugee <-quakes %>% filter(mag>4)
+##get years list for the slider range bar 
+years<-indicators$year
 
-
-
+##add number indicators for each country
+indicators_num<-indicators %>% group_by(countries_name) %>% summarise('indicator_num'= n())
+indicators<-merge(indicators, indicators_num, by.x= 'countries_name', by.y = 'countries_name')
 
 dbDisconnect(con)
 
