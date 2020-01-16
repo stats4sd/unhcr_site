@@ -23,12 +23,18 @@ shinyApp(
         # Control Panel for the indicators
           h3("DISAGGREGATED DATA"),
           h4("Availability by Location"),
-        selectInput("country", "",
-                    c("Select Country", unique(as.character(indicators$countries_name)))
-                    ),
+         selectizeInput(
+                     "country", 
+                     "",
+                     countries_list, 
+                      options = list(
+                       placeholder = "Select a Country", 
+                       onInitialize = I('function() { this.setValue(""); }')
+                       )
+                     ),
        
-          sliderInput("n",
-                      "Select the years:",
+          sliderInput("years",
+                      h3("Filter Year"), 
                       min = min(years),
                       max = max(years),
                       value = c(min(years), max(years))
@@ -36,50 +42,26 @@ shinyApp(
         
         checkboxGroupInput("filterSubsets", 
                            h3("Filter Subsets"), 
-                           choices = list("Refugees" = "Refugees", 
-                                          "IDPs (in camps/settlements)" = "IDPs (in camps/settlements)", 
-                                          "IDPs (not in camps/settlements)" = "IDPs (not in camps/settlements)",
-                                          "IDPs" = "IDPs"
-                                          ),
+                           choices = subsets_list
+                           
                           ),
         checkboxGroupInput("filterIndicators", 
                            h3("Filter Indicators"), 
-                           choices = list("8.5.2.male: Unemployment rate, by sex, age and persons with disabilities" = '8_5_2_male', 
-                                          "8.5.2.female:	Unemployment rate, by sex, age and persons with disabilities" = '8_5_2_female', 
-                                          "8.3.1.male:	Proportion of informal employment in non‑agriculture employment, by sex" = '8_3_1_male',
-                                          "8.3.1.female:	Proportion of informal employment in non‑agriculture employment, by sex" = '8_3_1_female', 
-                                          "7.1.1:	Proportion of population with access to electricity" = "7_1_1", 
-                                          "6.1.1:	Proportion of population using safely managed drinking water services" = "6_1_1",
-                                          "4.1.1.c.ii: Proportion of children and young people: (a) in grades 2/3; (b) at the end of primary; and (c) at the end of lower secondary achieving at least a minimum proficiency level in (i) reading and (ii) mathematics, by sex" = "4_1_1_c_ii", 
-                                          "4.1.1.c.i: Proportion of children and young people: (a) in grades 2/3; (b) at the end of primary; and (c) at the end of lower secondary achieving at least a minimum proficiency level in (i) reading and (ii) mathematics, by sex" = "4_1_1_c_i",
-                                          "4.1.1.b.ii: Proportion of children and young people: (a) in grades 2/3; (b) at the end of primary; and (c) at the end of lower secondary achieving at least a minimum proficiency level in (i) reading and (ii) mathematics, by sex" = "4_1_1_b_ii", 
-                                          "4.1.1.b.i: Proportion of children and young people: (a) in grades 2/3; (b) at the end of primary; and (c) at the end of lower secondary achieving at least a minimum proficiency level in (i) reading and (ii) mathematics, by sex" = "4_1_1_b_i", 
-                                          "4.1.1.a.ii: Proportion of children and young people: (a) in grades 2/3; (b) at the end of primary; and (c) at the end of lower secondary achieving at least a minimum proficiency level in (i) reading and (ii) mathematics, by sex" = "4_1_1_a_ii",
-                                          "4.1.1.a.i: Proportion of children and young people: (a) in grades 2/3; (b) at the end of primary; and (c) at the end of lower secondary achieving at least a minimum proficiency level in (i) reading and (ii) mathematics, by sex" = "4_1_1_a_i",
-                                          "3.2.1: Under-five mortality rate" = "3_2_1",
-                                          "2.2.1:	Prevalence of stunting (height for age" = "2_2_1",
-                                          "1.4.2.b:	Proportion of total adult population with secure tenure rights to land, (a) with legally recognized documentation, (b) who perceive their rights to land as secure, by sex and type of tenure" = "1_4_2_b",
-                                          "1.4.2.a: Proportion of total adult population with secure tenure rights to land, (a) with legally recognized documentation, (b) who perceive their rights to land as secure, by sex and type of tenure" = "1_4_2_a",
-                                          "1.2.1:	Proportion of population living below the national poverty line, by sex and age" = "1_2_1",
-                                          "16.9.1: Proportion of children under 5 years of age whose births have been registered with a civil authority, by age" = "16_9_1",
-                                          "16.1.4:	Proportion of population that feel safe walking alone around the area they live" = "16_1_4",
-                                          "11.1.1:	Proportion of urban population living in slums, informal settlements or inadequate housing" = "11_1_1"
-                                          ),
+                           choices = sdg_list
                           ),
         ),
         
           column(8,
+           
               h2("Map"),
               leafletOutput("mymap", height="85vh"),
-              "Basic needs and living conditions",
+              "Basic needs and living conditions"
               #DT::dataTableOutput("tableTab1")
           )
       )      
     )
   ),
   server = function(input, output) {
-    
-
 
     # Create the map
     output$mymap <- renderLeaflet({
@@ -90,25 +72,115 @@ shinyApp(
       )
     })
 
-    observe({
-   
-      if(nrow(indicators) > 0) {
+    # Filter data by subset 
+    filter_country <- reactive({
+      if(input$country==""){
+        
+        return(indicators)
+      }else{
+        country_selected <- indicators%>% filter(country_code==input$country)
+        return(country_selected)
+      }
+    })
+    
+    # Filter data by subsets
+    filter_subsets <- reactive(function(country_selected){
+        if(input$filterSubsets==""){
+          subset_selected <- country_selected %>% filter(group_name==input$filterSubsets)
           
+          return(country_selected)
+        } else {
+          subset_selected <- country_selected %>% filter(group_name==input$filterSubsets)
+          return(subset_selected)
+        }
+      })
+
+    observe({
+      
+      if(input$country=="") {
+
+          refugees <- subset(indicators, group_name == "Refugees")
+          idps <- subset(indicators, group_name == "IDPs")
+          isdps_not_camp <- subset(indicators, group_name == "IDPs (not in camp/settlements)")
+          isdps_camp <- subset(indicators, group_name == "Asylum Seekers")
+          asylum_seekers <- subset(indicators, group_name == "Asylum Seekers")
+          mixed <- subset(indicators, group_name == "Mixed")
           leafletProxy("mymap") %>%
             setView(lng = 0, lat = 0, zoom = 2.5) %>%
             #clearMarkers() %>%
-            addCircleMarkers(layerId = indicators$id, lng = indicators$longitude, 
-                              lat = indicators$latitude, radius =8, stroke=FALSE, color = "blue", 
-                              fillOpacity = 0.4, 
+            addCircleMarkers(layerId = mixed$id, lng = mixed$longitude, 
+                             lat = (mixed$latitude-runif(1)), radius = mixed$indicator_value*15, stroke=FALSE, color = "#08306b", 
+                             fillOpacity = 0.6, 
+                             popup = paste("<h5><b>Country:</b>", 
+                                           mixed$countries_name, "</h5>",
+                                           "<h5><b>Indicators n:</b>", mixed$indicator_num , "</h5>"
+                                           )) %>% 
+            addCircleMarkers(layerId = refugees$id, lng = refugees$longitude, 
+                              lat = refugees$latitude, radius = refugees$indicator_value*15, stroke=FALSE, color = "#08519c", 
+                              fillOpacity = 0.6, 
                               popup = paste("<h5><b>Country:</b>", 
-                              indicators$countries_name, "</h5>",
-                              "<h5><b>Indicators :</b>", indicators$indicator_num , "</h5>"))
+                                            refugees$countries_name, "</h5>",
+                                            "<h5><b>Indicators n:</b>", refugees$indicator_num , "</h5>"
+                                             
+                              )) %>% 
+            addCircleMarkers(layerId = idps$id, lng = (idps$longitude+runif(1)), 
+                             lat = idps$latitude, radius = idps$indicator_value*15, stroke=FALSE, color = "#2171b5", 
+                             fillOpacity = 0.6, 
+                             popup = paste("<h5><b>Country:</b>", 
+                                           idps$countries_name, "</h5>",
+                                           "<h5><b>Indicators n:</b>", idps$indicator_num , "</h5>"
+                                           )) %>%
+            addCircleMarkers(layerId = isdps_not_camp$id, lng = (isdps_not_camp$longitude+runif(1)), 
+                             lat = (isdps_not_camp$latitude+runif(1)), radius = isdps_not_camp$indicator_value*15, stroke=FALSE, color = "#4292c6", 
+                             fillOpacity = 0.6, 
+                             popup = paste("<h5><b>Country:</b>", 
+                                           isdps_not_camp$countries_name, "</h5>",
+                                           "<h5><b>Indicators n:</b>", isdps_not_camp$indicator_num , "</h5>"
+                                           )) %>%
+            addCircleMarkers(layerId = isdps_camp$id, lng = isdps_camp$longitude, 
+                             lat = (isdps_camp$latitude+runif(1)), radius = isdps_camp$indicator_value*15, stroke=FALSE, color = "#6baed6", 
+                             fillOpacity = 0.6, 
+                             popup = paste("<h5><b>Country:</b>", 
+                                           isdps_camp$countries_name, "</h5>",
+                                           "<h5><b>Indicators n:</b>", isdps_camp$indicator_num , "</h5>"
+                                           )) %>%
+            addCircleMarkers(layerId = asylum_seekers$id, lng = (asylum_seekers$longitude+runif(1)), 
+                             lat = (asylum_seekers$latitude-runif(1)), radius = asylum_seekers$indicator_value*15, stroke=FALSE, color = "#9ecae1", 
+                             fillOpacity = 0.6, 
+                             popup = paste("<h5><b>Country:</b>", 
+                                           asylum_seekers$countries_name, "</h5>",
+                                           "<h5><b>Indicators n:</b>", asylum_seekers$indicator_num , "</h5>"
+                                           )) 
+            
       } else {
+        
+        filter_country <- filter_country()
+        
+        filter_years <- subset(filter_country, year>=min(input$years) && year<=max(input$years))
+        #filter_country <- subset(filter_country, group_name==input$filterSubsets)
+        #filter_country <- subset(filter_country, sdg_indicator_id==input$filterIndicators)
+        
         leafletProxy("mymap") %>%
-          setView(lng = 0, lat = 0, zoom = 2.5)
+            setView(lng = unique(filter_country$longitude), lat = unique(filter_country$latitude), zoom = 5) %>% 
+            clearMarkers() %>% 
+              addCircleMarkers(layerId = filter_country$id, lng = (filter_country$longitude+runif(1)), 
+                              lat = filter_country$latitude, radius =8, stroke=FALSE, color = "#9ecae1", 
+                              fillOpacity = 0.6, 
+                              popup = paste("<h5><b>Country:</b>", 
+                                            filter_country$countries_name, "</h5>",
+                                            "<h5><b>Indicators n:</b>", filter_country$indicator_num , "</h5>"
+                              )) 
+              
+            
       }
+      
+      
     
     })
+    
+    
+
+    ## 
     ## table in main page tab 1
     output$tableTab1 = DT::renderDataTable({
       DT::datatable(
@@ -130,3 +202,4 @@ shinyApp(
     ##end server
   }
 )
+
