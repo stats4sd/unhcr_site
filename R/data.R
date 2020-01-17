@@ -46,9 +46,28 @@ indicators<-merge(indicators, indicators_num, by.x= 'countries_name', by.y = 'co
 
 countries_list <- setNames(indicators$country_code,as.character(indicators$countries_name))
 subsets_list <- unique(setNames(indicators$group_name,as.character(indicators$group_name)))
-sdg_list <- setNames(indicators$sdg_indicator_id,as.character(paste(indicators$sdg_code, indicators$sdg_description, sep=': ')))
+sdg_list <- setNames(indicators$sdg_code,as.character(paste(indicators$sdg_code, indicators$sdg_description, sep=': ')))
 sdg_list[!is.na(sdg_list)]
 
+#data to display in the table
+data_table <- dbGetQuery(con,'
+SELECT
+          
+          indicators.group_name,
+          indicators.indicator_value,
+          datasets.region,
+          datasets.year,
+          datasets.description,
+          datasets.population_definition,
+          datasets.source_url,
+          datasets.comment,
+          countries.name as countries_name,
+          sdg_indicators.code as sdg_code
+          FROM indicators
+          LEFT JOIN datasets on indicators.dataset_id = datasets.id
+          LEFT JOIN countries on datasets.country_code = countries.ISO_code
+          LEFT JOIN sdg_indicators on indicators.sdg_indicator_id = sdg_indicators.id;
+  ')
 dbDisconnect(con)
 
 
