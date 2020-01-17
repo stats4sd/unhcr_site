@@ -5,8 +5,24 @@ library(ggvis)
 library(dplyr)
 library(RColorBrewer)
 library(shinythemes)
-source('data.R')
+library(devtools)
+library(htmlwidgets)
+library(ggplot2)
+library(googleVis)
 
+
+#library(googleCharts)
+library(chartjs)
+
+#install_github("jcheng5/googleCharts")
+
+
+
+
+#devtools::install_github("jcheng5/googleCharts")
+
+#devtools::install_github("tutuchan/chartjs", ref="dev")
+source('data.R')
 
 options(shiny.host = '127.0.0.1')
 options(shiny.port = 8002)
@@ -21,8 +37,8 @@ shinyApp(
       fluidRow(
         column(4,
         # Control Panel for the indicators
-          h3("DISAGGREGATED DATA"),
-          h4("Availability by Location"),
+          h3("DISAGGREGATED DATA", align = "center", style = "color:blue"),
+          h4("Availability by Location", align = "center", style = "color:blue"),
          selectizeInput(
                      "country", 
                      "",
@@ -52,11 +68,15 @@ shinyApp(
         ),
         
           column(8,
-           
-              h2("Map"),
-              leafletOutput("mymap", height="85vh"),
-              "Basic needs and living conditions"
-              #DT::dataTableOutput("tableTab1")
+                  br(),
+                  leafletOutput("mymap", height="85vh"),
+                  br(),
+                  p("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."),
+                  DT::dataTableOutput("tableTab1"),
+                  h3("Chart"),
+                  plotOutput("chart")
+                 
+
           )
       )      
     )
@@ -84,15 +104,24 @@ shinyApp(
     })
     
     # Filter data by subsets
-    filter_subsets <- reactive(function(country_selected){
-        if(input$filterSubsets==""){
-          subset_selected <- country_selected %>% filter(group_name==input$filterSubsets)
-          
-          return(country_selected)
-        } else {
-          subset_selected <- country_selected %>% filter(group_name==input$filterSubsets)
-          return(subset_selected)
-        }
+    selectedData <- reactive({
+      req(input$country)
+      req(input$filterSubsets)
+      req(input$years)
+      req(input$filterIndicators)
+      data_table <- subset(indicators, country_code == input$country)  
+      data_table <- data_table  %>% select(countries_name, group_name, year, sdg_code, indicator_value, description, population_definition, comment)
+      if(!is.na(input$filterSubsets)){
+        data_table <- subset(data_table, group_name %in% input$filterSubsets)  
+      }
+      if(input$filterIndicators!=""){
+        data_table <- subset(data_table, sdg_code %in% input$filterIndicators)  
+      }
+      if(input$years!=""){
+        data_table <- subset(data_table, year >= min(input$years) & year <= max(input$years) )  
+      }
+
+      return(data_table)
       })
 
     observe({
@@ -184,7 +213,7 @@ shinyApp(
     ## table in main page tab 1
     output$tableTab1 = DT::renderDataTable({
       DT::datatable(
-        #indicator_table1,
+        selectedData(),
         filter = 'top',
         extensions = 'Buttons',
         options = list(
@@ -196,7 +225,20 @@ shinyApp(
         class = "display"
       )
     })
+    ## Chart
     
+    observe({
+  
+      output$chart <- renderPlot({
+          charts <-ggplot(data = selectedData(), aes(x=year, y=indicator_value)) +
+            geom_line(size = 2, alpha = 0.75) +
+            geom_point(size =3, alpha = 0.75) 
+          charts
+        
+      })
+        
+      
+    })
 
 
     ##end server
