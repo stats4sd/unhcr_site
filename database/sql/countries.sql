@@ -1,4 +1,5 @@
-DELETE 
+\('(.+)', '.+', '([-\.\d]+)', '([-\.\d]+)', NULL, NULL\),
+UPDATE countries SET longitude=$2, latitude=$3 WHERE ISO_code='$1';
 
 INSERT INTO `countries` (`ISO_code`, `name`, `longitude`, `latitude`, `created_at`, `updated_at`) VALUES
 	UPDATE countries SET longitude=-69.968338, latitude=12.52111 WHERE ISO_code='ABW';

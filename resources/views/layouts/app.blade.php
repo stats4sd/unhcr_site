@@ -269,9 +269,7 @@ Footer
 <body>
     <div class="navbar">
       <a href="{{ url('home') }}">Home</a>
-      <a href="{{ url('available-data') }}">Available Data</a>
       <a href="{{ url('sdgs') }}">SDGs</a>
-      <!-- <a href="admin">Admin</a> -->
       <a href="{{ url('lessons') }}">Lessons & Learning</a>
     </div>
 @yield('content')

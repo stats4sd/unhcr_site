@@ -45,9 +45,11 @@ indicators_num<-indicators %>% group_by(countries_name) %>% summarise('indicator
 indicators<-merge(indicators, indicators_num, by.x= 'countries_name', by.y = 'countries_name')
 
 countries_list <- setNames(indicators$country_code,as.character(indicators$countries_name))
+
 subsets_list <- unique(setNames(indicators$group_name,as.character(indicators$group_name)))
-sdg_list <- setNames(indicators$sdg_code,as.character(paste(indicators$sdg_code, indicators$sdg_description, sep=': ')))
+sdg_list <- setNames(unique(indicators$sdg_code),as.character(paste(unique(indicators$sdg_code), unique(indicators$sdg_description), sep=': ')))
 sdg_list[!is.na(sdg_list)]
+sdg_code_list <- unique(indicators$sdg_code)
 
 #data to display in the table
 data_table <- dbGetQuery(con,'
