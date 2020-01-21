@@ -7,13 +7,7 @@ library(RColorBrewer)
 library(devtools)
 library(htmlwidgets)
 library(ggplot2)
-library(googleVis)
 
-
-#install_github("jcheng5/googleCharts", force=TRUE)
-#devtools::install_github("jcheng5/googleCharts")
-
-#devtools::install_github("tutuchan/chartjs", ref="dev")
 source('data.R')
 
 options(shiny.host = '127.0.0.1')
