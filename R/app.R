@@ -1,13 +1,9 @@
 library(shiny)
 library(leaflet)
 library(DT)
-library(ggvis)
 library(dplyr)
 library(RColorBrewer)
-library(devtools)
-library(htmlwidgets)
 library(ggplot2)
-
 source('data.R')
 
 options(shiny.host = '127.0.0.1')
