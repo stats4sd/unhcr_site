@@ -67,13 +67,22 @@ shinyApp(
                                     choices = sdg_code_list,
                                     selected = sdg_code_list[[1]]
                                 )
+                  
+                ),
+                   div(style="vertical-align:top; width: 200px; padding-top: 300px;",
+                 selectizeInput("groupChartFilter", 
+                                    h5("Filter Subsets"), 
+                                    choices = subsets_list,
+                                    selected = subsets_list[[1]]
+                                )
                  
    
                   
-                )
+                ),
                ),
                column(8,
                plotOutput("chart"),
+              
                plotOutput("chartSdgsGroup")
                )
                
@@ -118,9 +127,9 @@ shinyApp(
       })
 
     ChartSdgsGroup<- reactive ({
-      req(input$sdgChartFilter)
+      req(input$groupChartFilter)
       data<-selectedData()
-      data <-subset(data, sdg_code == input$sdgChartFilter)
+      data <-subset(data, group_name == input$groupChartFilter)
 
       return(data)
 
