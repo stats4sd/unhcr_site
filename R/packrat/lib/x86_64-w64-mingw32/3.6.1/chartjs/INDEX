@@ -1,0 +1,11 @@
+%>%                     Pipe operator
+chartjs                 chartjs
+charts                  Draw charts
+cjsAddScale             Add a scale to an axis
+cjsEditScale            Edit an existing scale
+cjsLegend               Add legends
+cjsTitle                Add title
+colortypes              Color types
+options                 Edit default options
+shiny-chartjs           Shiny bindings for chartjs
+tooltips                Edit default tooltips
