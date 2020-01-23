@@ -13,7 +13,7 @@ class CoordinatesCountriesTable extends Migration
      */
     public function up()
     {
-        DB::unprepared(file_get_contents('database/sql/countries.sql'));
+        DB::unprepared(file_get_contents('database/sql/countries_coord.sql'));
     }
 
     /**
