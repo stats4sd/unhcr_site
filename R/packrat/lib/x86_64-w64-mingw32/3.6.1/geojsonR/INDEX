@@ -1,9 +1,0 @@
-Dump_From_GeoJson       returns a json-dump from a geojson file
-FROM_GeoJson            reads GeoJson data
-FROM_GeoJson_Schema     reads GeoJson data using a one-word-schema
-Features_2Collection    creates a FeatureCollection dump from multiple
-                        Feature geojson objects
-TO_GeoJson              converts data to a GeoJson object
-merge_files             merge json files (or any kind of text files)
-                        from a directory
-shiny_from_JSON         secondary function for shiny Applications
