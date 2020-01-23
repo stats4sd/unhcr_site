@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Draw charts</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for charts {chartjs}"><tr><td>charts {chartjs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Draw charts</h2>
+
+<h3>Description</h3>
+
+<p>These functions are used to draw the different types of graphs.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+cjsBar(chartjs, labels, stacked = FALSE)
+
+cjsLine(chartjs, labels)
+
+cjsPie(chartjs, labels)
+
+cjsDoughnut(chartjs, labels, cutout = 50)
+
+cjsPolar(chartjs, labels)
+
+cjsRadar(chartjs, labels)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>chartjs</code></td>
+<td>
+<p>a <code><a href="chartjs.html">chartjs</a></code> object</p>
+</td></tr>
+<tr valign="top"><td><code>labels</code></td>
+<td>
+<p>a vector of characters</p>
+</td></tr>
+<tr valign="top"><td><code>stacked</code></td>
+<td>
+<p>a logical, defaults to FALSE. If TRUE, bars will be stacked
+at each x value.</p>
+</td></tr>
+<tr valign="top"><td><code>cutout</code></td>
+<td>
+<p>the optional percentage of the inner cutout for Doughnut
+charts (defaults to 50)</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>chartjs</em> version 0.3.3.9000 <a href="00Index.html">Index</a>]</div>
+</body></html>

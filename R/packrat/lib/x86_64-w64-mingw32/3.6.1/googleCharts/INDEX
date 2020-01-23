@@ -1,0 +1,4 @@
+googleAnnotatedTimeLine
+                        Create a Google Chart
+googleChartsInit        Initialize Google Charts
+googleSetSelection      Set selection on active Google Chart

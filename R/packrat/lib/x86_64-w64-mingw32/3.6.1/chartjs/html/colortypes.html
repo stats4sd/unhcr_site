@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Color types</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for colortypes {chartjs}"><tr><td>colortypes {chartjs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Color types</h2>
+
+<h3>Description</h3>
+
+<p>Allowed color types
+</p>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>borderColor</code></td>
+<td>
+<p>for all charts</p>
+</td></tr>
+<tr valign="top"><td><code>backgroundColor</code></td>
+<td>
+<p>for all charts</p>
+</td></tr>
+<tr valign="top"><td><code>pointBorderColor</code></td>
+<td>
+<p>for Line, Radar and Scatter charts</p>
+</td></tr>
+<tr valign="top"><td><code>pointBackgroundColor</code></td>
+<td>
+<p>for Line, Radar and Scatter charts</p>
+</td></tr>
+<tr valign="top"><td><code>hoverBorderColor</code></td>
+<td>
+<p>for Bar, Pie, Doughnut and PolarArea charts</p>
+</td></tr>
+<tr valign="top"><td><code>hoverBackgroundColor</code></td>
+<td>
+<p>for Bar, Pie, Doughnut and PolarArea charts</p>
+</td></tr>
+<tr valign="top"><td><code>pointHoverBorderColor</code></td>
+<td>
+<p>for Line, Radar and Scatter charts</p>
+</td></tr>
+<tr valign="top"><td><code>pointHoverBackgroundColor</code></td>
+<td>
+<p>for Line, Radar and Scatter charts</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>When adding custom colours to a chart, the color argument should have the structure displayed in
+the example and <strong>ALL</strong> necessary colors must be given.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+color &lt;- list(background = "#FF0000",
+              border = "#00FF00",
+              hover = list(background = "#FF0000",
+                           border = "#00FF00"),
+              point = list(background = "#FF0000",
+                           border = "#00FF00",
+                           hover = list(background = "#FF0000",
+                                        border = "#00FF00")))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>chartjs</em> version 0.3.3.9000 <a href="00Index.html">Index</a>]</div>
+</body></html>

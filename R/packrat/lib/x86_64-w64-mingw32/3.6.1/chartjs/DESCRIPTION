@@ -1,0 +1,32 @@
+Package: chartjs
+Type: Package
+Title: An Implementation of the Chart.js Library
+Version: 0.3.3.9000
+Date: 2016-05-05
+Authors@R: person("Pierre", "Formont", email =
+    "pierre.formont@gmail.com", role = c("aut", "cre"))
+Description: An implementation of the Chart.js visualization library.
+License: MIT + file LICENSE
+LazyData: TRUE
+Suggests: testthat, knitr
+Imports: htmltools, htmlwidgets, magrittr, RColorBrewer
+VignetteBuilder: knitr
+RoxygenNote: 5.0.1
+RemoteType: github
+RemoteHost: api.github.com
+RemoteRepo: chartjs
+RemoteUsername: tutuchan
+RemoteRef: master
+RemoteSha: 1830bd206ebe9c6148fcd4f53f489a94b13bd94a
+GithubRepo: chartjs
+GithubUsername: tutuchan
+GithubRef: master
+GithubSHA1: 1830bd206ebe9c6148fcd4f53f489a94b13bd94a
+NeedsCompilation: no
+Packaged: 2020-01-17 16:44:53 UTC; LuciaFalcinelli
+Author: Pierre Formont [aut, cre]
+Maintainer: Pierre Formont <pierre.formont@gmail.com>
+Built: R 3.6.1; ; 2020-01-17 16:44:54 UTC; windows
+InstallAgent: packrat 0.5.0
+InstallSource: github
+Hash: 93c8d6fad6c98a8847be9e05dc2c5b26
