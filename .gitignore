@@ -13,3 +13,5 @@ npm-debug.log
 yarn-error.log
 .Rproj.user
 R/packrat/lib*/
+R/packrat/src*/
+
