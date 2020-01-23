@@ -4,7 +4,7 @@ library(dotenv)
 
 load_dot_env(file = "../.env")
 
-con <- dbConnect(RMySQL::MySQL(),
+con <-  DBI::dbConnect(RMySQL::MySQL(),
                  dbname = Sys.getenv('DB_DATABASE'),
                  host = Sys.getenv('DB_HOST'),
                  port = as.numeric(Sys.getenv('DB_PORT')),
