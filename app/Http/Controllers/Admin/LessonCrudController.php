@@ -161,7 +161,7 @@ class LessonCrudController extends CrudController
                 'type' => 'upload',
                 'upload' => true,
                 'disk' => 'uploads',
-            ],
+            ]
                        
         ]);
     }
