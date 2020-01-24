@@ -1,8 +1,6 @@
 library(DBI)
 library(DT)
-library(ggplot2)
 library(maps)
-library(ggthemes)
 library(dplyr)
 source('dbConfig.R')
 
