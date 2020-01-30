@@ -28,31 +28,37 @@ SELECT
           LEFT JOIN datasets on indicators.dataset_id = datasets.id
           LEFT JOIN countries on datasets.country_code = countries.ISO_code
           LEFT JOIN sdg_indicators on indicators.sdg_indicator_id = sdg_indicators.id;
-  ')
+          
+                       ')
 
 indicators$countries_name <- as.factor(indicators$countries_name )
 indicators$year <- as.numeric(indicators$year)
 indicators$latitude <- as.numeric(indicators$latitude)
 indicators$longitude <- as.numeric(indicators$longitude)
+indicators$group_name <- as.factor(indicators$group_name)
 
 ##get years list for the slider range bar 
 years<-indicators$year
 
-##add number indicators for each country
-indicators_num<-indicators %>% group_by(countries_name) %>% summarise('indicator_num'= n())
-indicators<-merge(indicators, indicators_num, by.x= 'countries_name', by.y = 'countries_name')
+##create indicator for the maps included the color for the group
+indicators_map <- indicators %>% group_by(countries_name, group_name, latitude, longitude) %>% summarise('indicator_num'= n()) 
+palette_group <- data.frame('group_name' = unique(indicators_map$group_name), "color"=c("#08306b","#08519c", "#2171b5", "#4292c6", "#6baed6", "#9ecae1"), 
+                            'lat'= c(1,0,0,1,0,-1), 'long'= c(0,-1,1,1,0,1))
+indicators_map <- merge(x=indicators_map, y=palette_group, by="group_name", all.x=TRUE)
+indicators_map$latitude <- indicators_map$latitude+indicators_map$lat
+indicators_map$longitude <- indicators_map$longitude+indicators_map$long
 
+#list of countries, sdg and sdg_code for the filters
 countries_list <- setNames(indicators$country_code,as.character(indicators$countries_name))
-
-subsets_list <- unique(setNames(indicators$group_name,as.character(indicators$group_name)))
+subsets_list <- sort(unique(setNames(indicators$group_name,as.character(indicators$group_name))))
 sdg_list <- setNames(unique(indicators$sdg_code),as.character(paste(unique(indicators$sdg_code), unique(indicators$sdg_description), sep=': ')))
 sdg_list[!is.na(sdg_list)]
+sdg_list <- sort(sdg_list)
 sdg_code_list <- unique(indicators$sdg_code)
 
 #data to display in the table
 data_table <- dbGetQuery(con,'
 SELECT
-          
           indicators.group_name,
           indicators.indicator_value,
           datasets.region,
