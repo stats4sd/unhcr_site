@@ -5,23 +5,44 @@ library(dplyr)
 library(RColorBrewer)
 library(ggplot2)
 library(shinyjs)
+library(rgdal)
 source('data.R')
 
 options(shiny.host = '127.0.0.1')
 options(shiny.port = 8002)
 
+
 shinyApp(
   ui = tagList(
-    tags$head(
-    ),
+    tags$style("
+    .irs-bar {
+      height: 8px;
+      top: 25px;
+      border-top: 1px solid black;
+      border-bottom: 1px solid #428bca;
+      background: #0072BC;
+    }
+    
+    .irs-from, .irs-to, .irs-single {
+        color: #fff;
+        font-size: 11px;
+        line-height: 1.333;
+        text-shadow: none;
+        padding: 1px 3px;
+        background: #428bca;
+        border-radius: 3px;
+        -moz-border-radius: 3px;
+    }
+    
+    "),
     useShinyjs(),  # Set up shinyjs
     ## navbarPage
     fluidPage(
       fluidRow(
         column(4,
                # Control Panel for the indicators
-               h3("DISAGGREGATED DATA", align = "center", style = "color:blue"),
-               h4("Availability by Location", align = "center", style = "color:blue"),
+               h3("DISAGGREGATED DATA", align = "center", style = "color:#0072BC"),
+               h4("Availability by Location", align = "center", style = "color:#0072BC"),
                selectizeInput(
                  "country", 
                  "",
@@ -36,7 +57,8 @@ shinyApp(
                            h3("Filter Year"), 
                            min = min(years),
                            max = max(years),
-                           value = c(min(years), max(years))
+                           value = c(min(years), max(years)),
+                           sep = ""
                ),
                
                checkboxGroupInput("filterSubsets", 
@@ -91,25 +113,21 @@ shinyApp(
   server = function(input, output, session) {
     # Create the map
     output$mymap <- renderLeaflet({
-      leaflet() %>% addTiles() %>% addProviderTiles("Esri.WorldStreetMap") %>%
-        addMiniMap(
-          tiles = providers$Esri.WorldStreetMap,
-          toggleDisplay = TRUE
-        )
+      leaflet() %>% addTiles() %>% addProviderTiles("Esri.WorldStreetMap")
     })
+   
 
     observe({
       req(input$filterIndicators)
       if(input$filterIndicators!=""){
         shinyjs::show(id = "groupfilter") 
-        shinyjs::show(id = "sdgfilter") 
+        shinyjs::show(id = "sdgfilter")
       }
     })
     
     # Filter data by subset 
     filter_country <- reactive({
       if(input$country==""){
-        
         return(indicators)
       }else{
         country_selected <- indicators%>% filter(country_code==input$country)
@@ -151,158 +169,55 @@ shinyApp(
         data_table <- subset(data_table, sdg_code %in% input$filterIndicators)  
       }
       if(input$years!=""){
-        data_table <- subset(data_table, year >= min(input$years) & year <= max(input$years) )  
+        data_table <- subset(data_table, year >= min(input$years) & year <= max(input$years))  
       }
-      
       return(data_table)
     })
+  
     
     observe({
       
       if(input$country=="") {
-        
-        refugees <- subset(indicators, group_name == "Refugees")
-        idps <- subset(indicators, group_name == "IDPs")
-        isdps_not_camp <- subset(indicators, group_name == "IDPs (not in camp/settlements)")
-        isdps_camp <- subset(indicators, group_name == "Asylum Seekers")
-        asylum_seekers <- subset(indicators, group_name == "Asylum Seekers")
-        mixed <- subset(indicators, group_name == "Mixed")
+
         leafletProxy("mymap") %>%
           setView(lng = 0, lat = 0, zoom = 2.5) %>%
-          #clearMarkers() %>%
-          addCircleMarkers(layerId = mixed$id, lng = mixed$longitude, 
-                           lat = (mixed$latitude-1), radius = mixed$indicator_num, stroke=FALSE, color = "#08306b", 
+          addCircleMarkers(lng = indicators_map$longitude, 
+                           lat = indicators_map$latitude, radius = 10, stroke=FALSE, color = indicators_map$color, 
                            fillOpacity = 0.6, 
                            popup = paste("<h5><b>Country:</b>", 
-                                         mixed$countries_name, "</h5>",
+                                         indicators_map$countries_name, "</h5>",
                                          "<h5><b>Subset:</b>",
-                                         mixed$group_name,
-                                         "<h5><b>Indicators n:</b>", mixed$indicator_num , "</h5>"
+                                         indicators_map$group_name,
+                                         "<h5><b>Indicators n:</b>", indicators_map$indicator_num , "</h5>"
                            )) %>% 
-          addCircleMarkers(layerId = refugees$id, lng = refugees$longitude, 
-                           lat = refugees$latitude, radius = refugees$indicator_num, stroke=FALSE, color = "#08519c", 
-                           fillOpacity = 0.6, 
-                           popup = paste("<h5><b>Country:</b>", 
-                                         refugees$countries_name, "</h5>",
-                                         "<h5><b>Subset:</b>",
-                                         refugees$group_name,
-                                         "<h5><b>Indicators n:</b>", refugees$indicator_num , "</h5>"
-                                         
-                           )) %>% 
-          addCircleMarkers(layerId = idps$id, lng = (idps$longitude+1), 
-                           lat = idps$latitude, radius = idps$indicator_num, stroke=FALSE, color = "#2171b5", 
-                           fillOpacity = 0.6, 
-                           popup = paste("<h5><b>Country:</b>", 
-                                         idps$countries_name, "</h5>",
-                                         "<h5><b>Subset:</b>",
-                                         idps$group_name,
-                                         "<h5><b>Indicators n:</b>", idps$indicator_num , "</h5>"
-                           )) %>%
-          addCircleMarkers(layerId = isdps_not_camp$id, lng = (isdps_not_camp$longitude+1), 
-                           lat = (isdps_not_camp$latitude+1), radius = isdps_not_camp$indicator_num, stroke=FALSE, color = "#4292c6", 
-                           fillOpacity = 0.6, 
-                           popup = paste("<h5><b>Country:</b>", 
-                                         isdps_not_camp$countries_name, "</h5>",
-                                         "<h5><b>Subset:</b>",
-                                         isdps_not_camp$group_name,
-                                         "<h5><b>Indicators n:</b>", idps$indicator_num , "</h5>"
-                           )) %>%
-          addCircleMarkers(layerId = isdps_camp$id, lng = isdps_camp$longitude, 
-                           lat = (isdps_camp$latitude+1), radius = isdps_camp$indicator_num, stroke=FALSE, color = "#6baed6", 
-                           fillOpacity = 0.6, 
-                           popup = paste("<h5><b>Country:</b>", 
-                                         isdps_camp$countries_name, "</h5>",
-                                         "<h5><b>Subset:</b>",
-                                         isdps_camp$group_name,
-                                         "<h5><b>Indicators n:</b>", isdps_camp$indicator_num , "</h5>"
-                           )) %>%
-          addCircleMarkers(layerId = asylum_seekers$id, lng = (asylum_seekers$longitude+1), 
-                           lat = (asylum_seekers$latitude-1), radius = asylum_seekers$indicator_num, stroke=FALSE, color = "#9ecae1", 
-                           fillOpacity = 0.6, 
-                           popup = paste("<h5><b>Country:</b>", 
-                                         asylum_seekers$countries_name, "</h5>",
-                                         "<h5><b>Subset:</b>",
-                                         asylum_seekers$group_name,
-                                         "<h5><b>Indicators n:</b>", asylum_seekers$indicator_num , "</h5>"
-                           )) 
-        
-      
+          addLegend("bottomright",
+                    colors = unique(indicators_map$color),
+                    labels = unique(indicators_map$group_name),
+                    opacity = 0.6)
+          
       } else if(input$country!=""){
         
         leafletProxy("mymap") %>%
           setView(lng = 0, lat = 0, zoom = 2.5) %>%
-          clearMarkers() 
+          clearMarkers()
         }
     })
     
     observe({
       req(input$filterIndicators)
         data_maps <- selectedData()
-        refugees <- subset(data_maps, group_name == "Refugees")
-        idps <- subset(data_maps, group_name == "IDPs")
-        isdps_not_camp <- subset(data_maps, group_name == "IDPs (not in camp/settlements)")
-        isdps_camp <- subset(data_maps, group_name == "Asylum Seekers")
-        asylum_seekers <- subset(data_maps, group_name == "Asylum Seekers")
-        mixed <- subset(data_maps, group_name == "Mixed")
+         
         leafletProxy("mymap") %>%
           setView(lng = 0, lat = 0, zoom = 2.5) %>%
-          #clearMarkers() %>%
-          addCircleMarkers(layerId = mixed$id, lng = mixed$longitude, 
-                           lat = (mixed$latitude-1), radius = mixed$indicator_value*15, stroke=FALSE, color = "#08306b", 
-                           fillOpacity = 0.6, 
-                           popup = paste("<h5><b>Country:</b>", 
-                                         mixed$countries_name, "</h5>",
-                                         "<h5><b>Subset:</b>",
-                                         mixed$group_name,
-                                         "<h5><b>Indicators n:</b>", mixed$indicator_num , "</h5>"
-                           )) %>% 
-          addCircleMarkers(layerId = refugees$id, lng = refugees$longitude, 
-                           lat = refugees$latitude, radius = refugees$indicator_value*15, stroke=FALSE, color = "#08519c", 
-                           fillOpacity = 0.6, 
-                           popup = paste("<h5><b>Country:</b>", 
-                                         refugees$countries_name, "</h5>",
-                                         "<h5><b>Subset:</b>",
-                                         refugees$group_name,
-                                         "<h5><b>Indicators n:</b>", refugees$indicator_num , "</h5>"
-                                         
-                           )) %>% 
-          addCircleMarkers(layerId = idps$id, lng = (idps$longitude+1), 
-                           lat = idps$latitude, radius = idps$indicator_value*15, stroke=FALSE, color = "#2171b5", 
-                           fillOpacity = 0.6, 
-                           popup = paste("<h5><b>Country:</b>", 
-                                         idps$countries_name, "</h5>",
-                                         "<h5><b>Subset:</b>",
-                                         idps$group_name,
-                                         "<h5><b>Indicators n:</b>", idps$indicator_num , "</h5>"
-                           )) %>%
-          addCircleMarkers(layerId = isdps_not_camp$id, lng = (isdps_not_camp$longitude+1), 
-                           lat = (isdps_not_camp$latitude+1), radius = isdps_not_camp$indicator_value*15, stroke=FALSE, color = "#4292c6", 
-                           fillOpacity = 0.6, 
-                           popup = paste("<h5><b>Country:</b>", 
-                                         isdps_not_camp$countries_name, "</h5>",
-                                         "<h5><b>Subset:</b>",
-                                         isdps_not_camp$group_name,
-                                         "<h5><b>Indicators n:</b>", idps$indicator_num , "</h5>"
-                           )) %>%
-          addCircleMarkers(layerId = isdps_camp$id, lng = isdps_camp$longitude, 
-                           lat = (isdps_camp$latitude+1), radius = isdps_camp$indicator_value*15, stroke=FALSE, color = "#6baed6", 
-                           fillOpacity = 0.6, 
-                           popup = paste("<h5><b>Country:</b>", 
-                                         isdps_camp$countries_name, "</h5>",
-                                         "<h5><b>Subset:</b>",
-                                         isdps_camp$group_name,
-                                         "<h5><b>Indicators n:</b>", isdps_camp$indicator_num , "</h5>"
-                           )) %>%
-          addCircleMarkers(layerId = asylum_seekers$id, lng = (asylum_seekers$longitude+1), 
-                           lat = (asylum_seekers$latitude-1), radius = asylum_seekers$indicator_value*15, stroke=FALSE, color = "#9ecae1", 
-                           fillOpacity = 0.6, 
-                           popup = paste("<h5><b>Country:</b>", 
-                                         asylum_seekers$countries_name, "</h5>",
-                                         "<h5><b>Subset:</b>",
-                                         asylum_seekers$group_name,
-                                         "<h5><b>Indicators n:</b>", asylum_seekers$indicator_num , "</h5>"
-                           )) 
-    
+        addCircleMarkers(lng = data_maps$longitude, 
+                         lat = data_maps$latitude, radius = 10, stroke=FALSE, color = "blue", 
+                         fillOpacity = 0.6, 
+                         popup = paste("<h5><b>Country:</b>", 
+                                       data_maps$countries_name, "</h5>",
+                                       "<h5><b>Subset:</b>",
+                                       data_maps$group_name,
+                                       "<h5><b>Indicators n:</b>", data_maps$indicator_num , "</h5>"
+                         )) 
     })
     
     ## 
@@ -329,13 +244,17 @@ shinyApp(
 
       output$chart <- renderPlot({
         charts <-ggplot(data = ChartGroupsSdg(), aes(x=year, y=indicator_value)) +
-          geom_line(aes(color = group_name, linetype= group_name, fill="SDGs")) +
-          geom_point(size = 3, alpha = 0.75) +
+          geom_line(aes(color = group_name, linetype= group_name)) +
+          geom_point(aes(color = group_name), size = 3, alpha = 0.75) +
           labs(y="sdg indicators", x = "years")+
           ggtitle("SDG Indicator by indicator") +
-          scale_x_continuous(breaks=years)
-          charts <- charts +
-           scale_fill_discrete(name = "New Legend Title")
+          scale_x_continuous(breaks=years)+
+          scale_y_continuous(limits =c(0,1))+
+          scale_color_discrete("SubSet")+
+          scale_linetype("SubSet")+
+          theme(text = element_text(size = 16))
+
+        
 
         charts
       
@@ -344,10 +263,14 @@ shinyApp(
       output$chartSdgsGroup <- renderPlot({
         charts <-ggplot(data = ChartSdgsGroup(), aes(x=year, y=indicator_value)) +
           geom_line(aes(color = sdg_code, linetype= sdg_code)) +
-          geom_point(size = 3, alpha = 0.75) +
+          geom_point(aes(color = sdg_code), size = 3, alpha = 0.75) +
           labs(y="sdg indicators", x = "years")+
           ggtitle("SDG Indicators by Subset") +
-          scale_x_continuous(breaks=years)
+          scale_x_continuous(breaks=years)+
+          scale_y_continuous(limits =c(0,1))+
+          scale_color_discrete("SDG")+
+          scale_linetype("SDG")+
+          theme(text = element_text(size = 16))
           
         charts
       
