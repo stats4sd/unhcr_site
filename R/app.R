@@ -173,6 +173,34 @@ shinyApp(
       }
       return(data_table)
     })
+    # Update the Subsets and Indicators CheckboxGroupinput after have filter data by country
+    observe({
+      req(input$country)
+     
+      filter_by_country <- subset(indicators, country_code == input$country)  
+      filter_by_country <- filter_by_country  %>% select(countries_name, group_name, year, sdg_code, sdg_description)
+      subsets_list <- sort(unique(setNames(filter_by_country$group_name,as.character(filter_by_country$group_name))))
+  
+      updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', choices = subsets_list)
+      
+      
+    
+      
+      })
+    observe({
+      req(input$country)
+      req(input$filterSubsets)
+      filter_by_country <- subset(indicators, country_code == input$country)  
+      filter_by_country <- filter_by_country  %>% select(countries_name, group_name, year, sdg_code, sdg_description)
+        filter_by_subsets <- subset(filter_by_country, group_name %in% input$filterSubsets) 
+        sdg_list <- setNames(unique(filter_by_subsets$sdg_code),as.character(paste(unique(filter_by_subsets$sdg_code), unique(filter_by_subsets$sdg_description), sep=': ')))
+        sdg_list[!is.na(sdg_list)]
+        sdg_list <- sort(sdg_list)
+        
+        updateCheckboxGroupInput(session = session, inputId = 'filterIndicators', choices = sdg_list)
+        
+      
+    })
   
     
     observe({
@@ -216,11 +244,10 @@ shinyApp(
                                        data_maps$countries_name, "</h5>",
                                        "<h5><b>Subset:</b>",
                                        data_maps$group_name,
-                                       "<h5><b>Indicators n:</b>", data_maps$indicator_num , "</h5>"
+                                       "<h5><b>Description:</b>", data_maps$description , "</h5>"
                          )) 
     })
     
-    ## 
     ## table in main page tab 1
     output$tableTab1 = DT::renderDataTable({
       DT::datatable(
@@ -253,8 +280,6 @@ shinyApp(
           scale_color_discrete("SubSet")+
           scale_linetype("SubSet")+
           theme(text = element_text(size = 16))
-
-        
 
         charts
       
