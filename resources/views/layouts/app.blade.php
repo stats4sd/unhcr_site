@@ -187,6 +187,7 @@ Footer
 </head>
 <body>
     <div class="navbar">
+      <img src="images/logo.png" style="height: 75px;">
       <a href="{{ url('home') }}"><b>Home</b></a>
       <a href="{{ url('sdgs') }}"><b>SDGs Indicstors</b></a>
       <a href="{{ url('lessons') }}"><b>Lessons & Learning</b></a>
