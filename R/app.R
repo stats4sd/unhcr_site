@@ -39,7 +39,7 @@ shinyApp(
     ## navbarPage
     fluidPage(
       fluidRow(
-        column(4,
+        column(2,
                # Control Panel for the indicators
                h3("DISAGGREGATED DATA", align = "center", style = "color:#0072BC"),
                h4("Availability by Location", align = "center", style = "color:#0072BC"),
@@ -71,7 +71,7 @@ shinyApp(
                ),
         ),
         
-        column(8,
+        column(10,
                 br(),
                
                 leafletOutput("mymap", height="85vh"),
@@ -88,7 +88,8 @@ shinyApp(
                                       h5("Filter Indicators"), 
                                       choices = sdg_code_list,
                                       selected = sdg_code_list[[1]]
-                                    )
+                                    ),
+                      downloadButton('downloadSDGByIndicator', 'Download Plot')
                       )
                   ),
                   shinyjs::hidden(
@@ -97,13 +98,15 @@ shinyApp(
                                       h5("Filter Subsets"), 
                                       choices = subsets_list,
                                       selected = subsets_list[[1]]
-                                      )                  
+                                      ),
+                      downloadButton('downloadSDGBySubset', 'Download Plot')
                       )
                   )
                 ),
                 column(8,
-                    plotOutput("chart"),
-                    plotOutput("chartSdgsGroup")
+                      
+                       plotOutput("chart"),
+                       plotOutput("chartSdgsGroup")
                   )
                 ),
         )
@@ -111,6 +114,24 @@ shinyApp(
     )
   ),
   server = function(input, output, session) {
+    #download charts
+    output$downloadSDGByIndicator <- downloadHandler(
+      filename = "chartSDGbyIndicator.png",
+        content = function(file) {
+          device <- function(..., width, height) grDevices::png(..., width = width, height = height, res = 300, units = "in")
+          ggsave(file, plot = plotSdgByIndicator(), device = device)
+        }
+    )
+    
+    output$downloadSDGBySubset <- downloadHandler(
+      filename = "chartSDGbySubset.png",
+      content = function(file) {
+        device <- function(..., width, height) grDevices::png(..., width = width, height = height, res = 300, units = "in")
+        ggsave(file, plot = plotSdgBySubset(), device = device)
+      }
+      
+    )
+    
     # Create the map
     output$mymap <- renderLeaflet({
       leaflet() %>% addTiles() %>% addProviderTiles("Esri.WorldStreetMap")
@@ -125,15 +146,7 @@ shinyApp(
       }
     })
     
-    # Filter data by subset 
-    filter_country <- reactive({
-      if(input$country==""){
-        return(indicators)
-      }else{
-        country_selected <- indicators%>% filter(country_code==input$country)
-        return(country_selected)
-      }
-    })
+
 
     # Create a list of sdg selected from filter
     ChartGroupsSdg <- reactive ({
@@ -171,6 +184,7 @@ shinyApp(
       if(input$years!=""){
         data_table <- subset(data_table, year >= min(input$years) & year <= max(input$years))  
       }
+      
       sdg_code_list <- unique(data_table$sdg_code)
       updateSelectInput(session = session, inputId = 'sdgChartFilter', choices = sdg_code_list)
       
@@ -184,7 +198,7 @@ shinyApp(
     
     observe({
       req(input$country)
-      filter_by_country <- subset(indicators, country_code == input$country)  
+      filter_by_country <- subset(indicators, country_code == input$country & (year >= input$years[1] & year <= input$years[2]))  
       filter_by_country <- filter_by_country  %>% select(countries_name, group_name, year, sdg_code, sdg_description)
       subsets_list <- sort(unique(setNames(filter_by_country$group_name,as.character(filter_by_country$group_name))))
   
@@ -196,15 +210,14 @@ shinyApp(
     
     observe({
       req(input$country)
-      req(input$filterSubsets)
-      filter_by_country <- subset(indicators, country_code == input$country)  
+      filter_by_country <- subset(indicators, country_code == input$country & (year >= input$years[1] & year <= input$years[2]))  
       filter_by_country <- filter_by_country  %>% select(countries_name, group_name, year, sdg_code, sdg_description)
-        filter_by_subsets <- subset(filter_by_country, group_name %in% input$filterSubsets) 
-        sdg_list <- setNames(unique(filter_by_subsets$sdg_code),as.character(paste(unique(filter_by_subsets$sdg_code), unique(filter_by_subsets$sdg_description), sep=': ')))
-        sdg_list[!is.na(sdg_list)]
-        sdg_list <- sort(sdg_list)
+      filter_by_subsets <- subset(filter_by_country, group_name %in% input$filterSubsets) 
+      sdg_list <- setNames(unique(filter_by_subsets$sdg_code),as.character(paste(unique(filter_by_subsets$sdg_code), unique(filter_by_subsets$sdg_description), sep=': ')))
+      sdg_list[!is.na(sdg_list)]
+      sdg_list <- sort(sdg_list)
         
-        updateCheckboxGroupInput(session = session, inputId = 'filterIndicators', choices = sdg_list)
+      updateCheckboxGroupInput(session = session, inputId = 'filterIndicators', choices = sdg_list)
   
     })
   
@@ -256,13 +269,16 @@ shinyApp(
     
     ## table in main page tab 1
     output$tableTab1 = DT::renderDataTable({
+      #select data from selectedData to display on the table 
+      data_download<-selectedData()
+      data_download<-data_download %>% select(countries_name, group_name, year, sdg_code, indicator_value, description, population_definition)
       DT::datatable(
-        selectedData(),
+        data_download,
         filter = 'top',
         extensions = 'Buttons',
         options = list(
           dom = 'Blfrtip',
-          buttons = c(I('colvis'), 'csv', 'pdf'),
+          buttons = c('copy', 'excel', 'pdf', 'print'),
           text = 'Download',
           br()
         ),
@@ -270,11 +286,35 @@ shinyApp(
       )
     })
     
-    ## Chart
+    ## Create the plot for downloading
+    plotSdgByIndicator<- reactive({
+      charts <-ggplot(data = ChartGroupsSdg(), aes(x=year, y=indicator_value)) +
+        geom_line(aes(color = group_name, linetype= group_name)) +
+        geom_point(aes(color = group_name), size = 3, alpha = 0.75) +
+        labs(y="sdg indicators", x = "years")+
+        ggtitle("SDG Indicator by indicator") +
+        scale_x_continuous(breaks=years)+
+        scale_y_continuous(limits =c(0,1))+
+        scale_color_discrete("SubSet")+
+        scale_linetype("SubSet")+
+        theme(text = element_text(size = 16))
+    })
     
+    plotSdgBySubset<- reactive({
+      charts <-ggplot(data = ChartSdgsGroup(), aes(x=year, y=indicator_value)) +
+        geom_line(aes(color = sdg_code, linetype= sdg_code)) +
+        geom_point(aes(color = sdg_code), size = 3, alpha = 0.75) +
+        labs(y="sdg indicators", x = "years")+
+        ggtitle("SDG Indicators by Subset") +
+        scale_x_continuous(breaks=years)+
+        scale_y_continuous(limits =c(0,1))+
+        scale_color_discrete("SDG")+
+        scale_linetype("SDG")+
+        theme(text = element_text(size = 16))
+    })
+    
+    # Display Charts
     observe({
-
-
       output$chart <- renderPlot({
         charts <-ggplot(data = ChartGroupsSdg(), aes(x=year, y=indicator_value)) +
           geom_line(aes(color = group_name, linetype= group_name)) +
@@ -287,7 +327,7 @@ shinyApp(
           scale_linetype("SubSet")+
           theme(text = element_text(size = 16))
 
-        charts
+         charts
       
       })
 
