@@ -171,6 +171,12 @@ shinyApp(
       if(input$years!=""){
         data_table <- subset(data_table, year >= min(input$years) & year <= max(input$years))  
       }
+      sdg_code_list <- unique(data_table$sdg_code)
+      updateSelectInput(session = session, inputId = 'sdgChartFilter', choices = sdg_code_list)
+      
+      subsets_list <- unique(data_table$group_name)
+      updateSelectInput(session = session, inputId = 'groupChartFilter', choices = subsets_list)
+      
       return(data_table)
     })
     
@@ -183,7 +189,7 @@ shinyApp(
       subsets_list <- sort(unique(setNames(filter_by_country$group_name,as.character(filter_by_country$group_name))))
   
       updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', choices = subsets_list)
-
+      
       })
     
     # Update Indicators CheckboxGroupinput after the filter Subsets has been selected
@@ -199,7 +205,7 @@ shinyApp(
         sdg_list <- sort(sdg_list)
         
         updateCheckboxGroupInput(session = session, inputId = 'filterIndicators', choices = sdg_list)
-        
+  
     })
   
     

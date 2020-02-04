@@ -43,7 +43,7 @@ years<-indicators$year
 ##create indicator for the maps included the color for the group
 indicators_map <- indicators %>% group_by(countries_name, group_name, latitude, longitude) %>% summarise('indicator_num'= n()) 
 palette_group <- data.frame('group_name' = unique(indicators_map$group_name), "color"=c("#08306b","#08519c", "#2171b5", "#4292c6", "#6baed6", "#9ecae1"), 
-                            'lat'= c(1,0,0,1,0,-1), 'long'= c(0,-1,1,1,0,1))
+                            'lat'= c(0.5,0,0,0.5,0,-0.5), 'long'= c(0,-0.5,0.5,0.5,0,0.5))
 indicators_map <- merge(x=indicators_map, y=palette_group, by="group_name", all.x=TRUE)
 indicators_map$latitude <- indicators_map$latitude+indicators_map$lat
 indicators_map$longitude <- indicators_map$longitude+indicators_map$long
