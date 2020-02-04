@@ -173,20 +173,21 @@ shinyApp(
       }
       return(data_table)
     })
-    # Update the Subsets and Indicators CheckboxGroupinput after have filter data by country
+    
+    # Update the Subsets after the filter country has been selected
+    
     observe({
       req(input$country)
-     
       filter_by_country <- subset(indicators, country_code == input$country)  
       filter_by_country <- filter_by_country  %>% select(countries_name, group_name, year, sdg_code, sdg_description)
       subsets_list <- sort(unique(setNames(filter_by_country$group_name,as.character(filter_by_country$group_name))))
   
       updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', choices = subsets_list)
-      
-      
-    
-      
+
       })
+    
+    # Update Indicators CheckboxGroupinput after the filter Subsets has been selected
+    
     observe({
       req(input$country)
       req(input$filterSubsets)
@@ -199,7 +200,6 @@ shinyApp(
         
         updateCheckboxGroupInput(session = session, inputId = 'filterIndicators', choices = sdg_list)
         
-      
     })
   
     
