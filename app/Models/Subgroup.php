@@ -16,7 +16,7 @@ class Subgroup extends Model
     */
 
     protected $table = 'subgroups';
-    protected $primaryKey = 'name';
+    protected $primaryKey = 'id';
     // public $timestamps = false;
     //protected $guarded = ['id'];
     protected $fillable = ['name'];
