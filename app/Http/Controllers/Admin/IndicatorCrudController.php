@@ -48,6 +48,11 @@ class IndicatorCrudController extends CrudController
                 'type' => 'text',
             ],
             [
+                'name' => 'subgroup_name',
+                'label' => 'Subgroup name',
+                'type' => 'text',
+            ],
+            [
                 'name' => 'sdg_indicator_id',
                 'label' => 'Sdg Indicator',
                 'type' => 'select',

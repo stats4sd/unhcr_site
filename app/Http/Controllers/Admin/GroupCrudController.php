@@ -35,6 +35,11 @@ class GroupCrudController extends CrudController
                 'label' => 'Name',
                 'type' => 'text',
             ],
+            [
+                'name' => 'subgroup_id',
+                'label' => 'Subgroup',
+                'type' => 'text',
+            ],
         ]);
     }
 
@@ -48,6 +53,11 @@ class GroupCrudController extends CrudController
                 'label' => 'Enter name of group',
                 'type' => 'text',
             ],
+            [
+                'name' => 'subgroup_id',
+                'label' => 'Subgroup',
+                'type' => 'text',
+            ]
         ]);
 
     }
