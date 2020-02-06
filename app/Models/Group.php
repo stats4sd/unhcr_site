@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Indicator;
+use App\Models\Subgroup;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
@@ -39,6 +40,12 @@ class Group extends Model
     {
         return $this->hasMany('App\Models\Indicator');
     }
+
+    public function subgroup()
+    {
+        return $this->hasMany('App\Models\Subgroup');
+    }
+
 
     /*
     |--------------------------------------------------------------------------
