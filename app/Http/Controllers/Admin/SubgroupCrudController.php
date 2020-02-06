@@ -29,7 +29,24 @@ class SubgroupCrudController extends CrudController
     protected function setupListOperation()
     {
         // TODO: remove setFromDb() and manually define Columns, maybe Filters
-        $this->crud->setFromDb();
+        //$this->crud->setFromDb();
+        $this->crud->addColumns([
+            [
+                'name' => 'name',
+                'label' => 'Subgroup name',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'created_at',
+                'label' => 'Created at',
+                'type' => 'datetime',
+            ],
+            [
+                'name' => 'updated_at',
+                'label' => 'Updated at',
+                'type' => 'datetime',
+            ]
+        ]);
     }
 
     protected function setupCreateOperation()
