@@ -23,7 +23,7 @@ class Subgroup extends Model
     protected $fillable = ['name'];
     // protected $hidden = [];
     // protected $dates = [];
-    // public $incrementing = false;
+    public $incrementing = false;
 
     /*
     |--------------------------------------------------------------------------
