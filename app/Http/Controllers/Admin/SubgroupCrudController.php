@@ -54,7 +54,14 @@ class SubgroupCrudController extends CrudController
         $this->crud->setValidation(SubgroupRequest::class);
 
         // TODO: remove setFromDb() and manually define Fields
-        $this->crud->setFromDb();
+        //$this->crud->setFromDb();
+        $this->crud->addColumns([
+            [
+                'name' => 'name',
+                'label' => 'Subgroup name',
+                'type' => 'text',
+            ]
+        ]);
     }
 
     protected function setupUpdateOperation()
