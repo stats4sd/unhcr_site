@@ -55,7 +55,7 @@ class SubgroupCrudController extends CrudController
 
         // TODO: remove setFromDb() and manually define Fields
         //$this->crud->setFromDb();
-        $this->crud->addColumns([
+        $this->crud->addFields([
             [
                 'name' => 'name',
                 'label' => 'Subgroup name',
