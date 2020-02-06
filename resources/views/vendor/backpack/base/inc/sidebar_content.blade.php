@@ -14,3 +14,4 @@
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('group') }}'><i class='nav-icon fa fa-group'></i> Groups</a></li>
 
 <!-- <li class='nav-item'><a class='nav-link' href='{{ backpack_url('country') }}'><i class='nav-icon fa fa-question'></i> Countries</a></li> -->
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('subgroup') }}'><i class='nav-icon fa fa-question'></i> Subgroups</a></li>
