@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Indicator;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,13 +17,13 @@ class Subgroup extends Model
     */
 
     protected $table = 'subgroups';
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'name';
     // public $timestamps = false;
     //protected $guarded = ['id'];
     protected $fillable = ['name'];
     // protected $hidden = [];
     // protected $dates = [];
-    public $incrementing = false;
+    // public $incrementing = false;
 
     /*
     |--------------------------------------------------------------------------
