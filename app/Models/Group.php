@@ -41,7 +41,7 @@ class Group extends Model
         return $this->hasMany('App\Models\Indicator');
     }
 
-    public function subgroup()
+    public function subgroups()
     {
         return $this->belongsTo('App\Models\Subgroup', 'subgroup_id');
     }
