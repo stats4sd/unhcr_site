@@ -6,6 +6,7 @@ use App\Http\Requests\IndicatorRequest;
 use App\Models\Dataset;
 use App\Models\Group;
 use App\Models\SdgIndicator;
+use App\Models\Subgroup;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
