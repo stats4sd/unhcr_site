@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\GroupRequest;
-use App\Models\Subgroup;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -35,15 +34,7 @@ class GroupCrudController extends CrudController
                 'name' => 'name',
                 'label' => 'Name',
                 'type' => 'text',
-            ],
-            [
-                'name' => 'subgroup_id',
-                'label' => 'Subgroup',
-                'type' => 'select',
-                'entity' => 'subgroups',
-                'attribute' => 'name',
-                'model' => Subgroup::class
-            ],
+            ]
         ]);
     }
 
@@ -56,15 +47,7 @@ class GroupCrudController extends CrudController
                 'name' => 'name',
                 'label' => 'Enter name of group',
                 'type' => 'text',
-            ],
-            [
-                'name' => 'subgroup_id',
-                'label' => 'Subgroup',
-                'type' => 'select2',
-                'entity' => 'subgroups',
-                'attribute' => 'name',
-                'model' => Subgroup::class
-            ],
+            ]
         ]);
 
     }
