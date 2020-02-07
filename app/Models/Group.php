@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\Indicator;
-use App\Models\Subgroup;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
