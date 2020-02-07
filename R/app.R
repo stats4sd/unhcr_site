@@ -35,12 +35,14 @@ shinyApp(
         -moz-border-radius: 3px;
     }
     
+    
+    
     "),
     useShinyjs(),  # Set up shinyjs
     ## navbarPage
     fluidPage(
       fluidRow(
-        column(2,
+        column(4,
                # Control Panel for the indicators
                h3("DISAGGREGATED DATA", align = "center", style = "color:#0072BC"),
                h4("Availability by Location", align = "center", style = "color:#0072BC"),
@@ -61,21 +63,26 @@ shinyApp(
                            value = c(min(years), max(years)),
                            sep = ""
                ),
-               
+         
                checkboxGroupInput("filterSubsets", 
-                                  h3("Filter Subsets"), 
-                                  choices = subsets_list,     
+                                  h3("Filter Subsets"),, 
+                                  choices = subsets_list,  
+                                  selected = subsets_list,
                ),
+            
                checkboxGroupInput("filterIndicators", 
                                   h3("Filter Indicators"), 
                                   choices = sdg_list,
+                                  selected = sdg_list,
                ),
         ),
         
-        column(10,
+        column(8,
                 br(),
                
-                leafletOutput("mymap", height="85vh"),
+                div(id='mainmap',
+                  leafletOutput("mymap", height="85vh"),
+                ),
                 br(),
                 absolutePanel( 
 
@@ -109,12 +116,23 @@ shinyApp(
                        plotOutput("chart"),
                        plotOutput("chartSdgsGroup")
                   )
-                ),
+            
+                ),    
         )
       )      
     )
   ),
   server = function(input, output, session) {
+    # Select all the checkboxs when the select All checkbox is selected
+    observe({
+      req(input$filterSubsets)
+      if(input$filterSubsets=="Select All"){
+        updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', choices = subsets_list, selected = subsets_list)
+      }
+      if(input$filterIndicators){
+        updateCheckboxGroupInput(session = session, inputId = 'filterIndicators', choices = sdg_list, selected = sdg_list)
+      }
+    })
     #download charts
     output$downloadSDGByIndicator <- downloadHandler(
       filename = "chartSDGbyIndicator.png",
@@ -141,7 +159,7 @@ shinyApp(
 
     observe({
       req(input$filterIndicators)
-      if(input$filterIndicators!=""){
+      if(input$country!=""){
         shinyjs::show(id = "groupfilter") 
         shinyjs::show(id = "sdgfilter")
       }
@@ -203,7 +221,7 @@ shinyApp(
       filter_by_country <- filter_by_country  %>% select(countries_name, group_name, year, sdg_code, sdg_description)
       subsets_list <- sort(unique(setNames(filter_by_country$group_name,as.character(filter_by_country$group_name))))
   
-      updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', choices = subsets_list)
+      updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', choices = subsets_list, selected = subsets_list)
       
       })
     
@@ -218,15 +236,18 @@ shinyApp(
       sdg_list[!is.na(sdg_list)]
       sdg_list <- sort(sdg_list)
         
-      updateCheckboxGroupInput(session = session, inputId = 'filterIndicators', choices = sdg_list)
+      updateCheckboxGroupInput(session = session, inputId = 'filterIndicators', choices = sdg_list, selected = sdg_list)
   
     })
   
+  
+    
     
     observe({
       
+      
       if(input$country=="") {
-
+        
         leafletProxy("mymap") %>%
           setView(lng = 0, lat = 0, zoom = 2.5) %>%
           addCircleMarkers(lng = indicators_map$longitude, 
@@ -236,6 +257,8 @@ shinyApp(
                                          indicators_map$countries_name, "</h5>",
                                          "<h5><b>Subset:</b>",
                                          indicators_map$group_name,
+                                         "<h5><b>Subgroup:</b>",
+                                         indicators_map$subgroup_name,
                                          "<h5><b>Indicators n:</b>", indicators_map$indicator_num , "</h5>"
                            )) %>% 
           addLegend("bottomright",
@@ -244,29 +267,11 @@ shinyApp(
                     opacity = 0.6)
           
       } else if(input$country!=""){
+        removeUI(selector = "#mainmap", session = session)
+      }
         
-        leafletProxy("mymap") %>%
-          setView(lng = 0, lat = 0, zoom = 2.5) %>%
-          clearMarkers()
-        }
     })
     
-    observe({
-      req(input$filterIndicators)
-        data_maps <- selectedData()
-         
-        leafletProxy("mymap") %>%
-          setView(lng = 0, lat = 0, zoom = 2.5) %>%
-        addCircleMarkers(lng = data_maps$longitude, 
-                         lat = data_maps$latitude, radius = 10, stroke=FALSE, color = "blue", 
-                         fillOpacity = 0.6, 
-                         popup = paste("<h5><b>Country:</b>", 
-                                       data_maps$countries_name, "</h5>",
-                                       "<h5><b>Subset:</b>",
-                                       data_maps$group_name,
-                                       "<h5><b>Description:</b>", data_maps$description , "</h5>"
-                         )) 
-    })
     
     ## table in main page tab 1
     output$tableTab1 = DT::renderDataTable({
