@@ -41,10 +41,6 @@ class Subgroup extends Model
         return $this->hasMany('App\Models\Indicator');
     }
 
-    public function groups()
-    {
-        return $this->hasMany('App\Models\Group');
-    }
 
 
     /*
