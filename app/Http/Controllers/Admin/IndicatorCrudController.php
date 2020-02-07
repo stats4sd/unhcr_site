@@ -115,6 +115,14 @@ class IndicatorCrudController extends CrudController
                 'model' => Group::class
             ],
             [
+                'name' => 'subgroup_name',
+                'label' => 'Subgroup name',
+                'type' => 'select2',
+                'entity' => 'subgroups',
+                'attribute' => 'name',
+                'model' => Subgroup::class
+            ],
+            [
                 'name' => 'sdg_indicator_id',
                 'label' => 'Sdg Indicator',
                 'type' => 'select2',
