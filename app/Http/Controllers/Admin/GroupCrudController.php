@@ -62,7 +62,7 @@ class GroupCrudController extends CrudController
                 'label' => 'Subgroup',
                 'type' => 'select2',
                 'entity' => 'subgroup',
-                'attribute' => 'id',
+                'attribute' => 'name',
                 'model' => Subgroup::class
             ],
         ]);
