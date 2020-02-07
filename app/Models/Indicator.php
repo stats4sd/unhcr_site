@@ -41,7 +41,7 @@ class Indicator extends Model
 
     public function groups()
     {
-        return $this->belongsTo('App\Models\Group', 'group_name', 'subgroup_name');
+        return $this->belongsTo('App\Models\Group', 'group_name');
     }
 
     public function sdg_indicator()
