@@ -43,7 +43,7 @@ class Group extends Model
 
     public function subgroup()
     {
-        return $this->hasMany('App\Models\Subgroup', 'name');
+        return $this->hasMany('App\Models\Subgroup', 'subgroup_name');
     }
 
 
