@@ -43,7 +43,7 @@ class Group extends Model
 
     public function subgroups()
     {
-        return $this->belongsTo('App\Models\Subgroup', 'subgroup_name');
+        return $this->belongsTo('App\Models\Subgroup', 'subgroup_id');
     }
 
 
