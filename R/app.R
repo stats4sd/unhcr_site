@@ -35,7 +35,16 @@ shinyApp(
         -moz-border-radius: 3px;
     }
     
+    div.panel {
+    # background-color: lightblue;
+      width: 100%;
+      height: 900px;
+      overflow: scroll;
+      float:left;
+    }
     
+    
+
     
     "),
     useShinyjs(),  # Set up shinyjs
@@ -43,6 +52,7 @@ shinyApp(
     fluidPage(
       fluidRow(
         column(4,
+               div(class="panel",
                # Control Panel for the indicators
                h3("DISAGGREGATED DATA", align = "center", style = "color:#0072BC"),
                h4("Availability by Location", align = "center", style = "color:#0072BC"),
@@ -75,15 +85,19 @@ shinyApp(
                                   choices = sdg_list,
                                   selected = sdg_list,
                ),
+               )
         ),
         
         column(8,
+               
+             
                 br(),
                
                 div(id='mainmap',
                   leafletOutput("mymap", height="85vh"),
                 ),
                 br(),
+              
                 absolutePanel( 
 
                 p("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."),
@@ -117,7 +131,8 @@ shinyApp(
                        plotOutput("chartSdgsGroup")
                   )
             
-                ),    
+                ),
+                
         )
       )      
     )
@@ -129,7 +144,7 @@ shinyApp(
       if(input$filterSubsets=="Select All"){
         updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', choices = subsets_list, selected = subsets_list)
       }
-      if(input$filterIndicators){
+      if(input$filterIndicators=="Select All"){
         updateCheckboxGroupInput(session = session, inputId = 'filterIndicators', choices = sdg_list, selected = sdg_list)
       }
     })
