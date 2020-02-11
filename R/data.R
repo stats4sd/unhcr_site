@@ -2,6 +2,7 @@ library(DBI)
 library(DT)
 library(maps)
 library(dplyr)
+library(stringi)
 source('dbConfig.R')
 
 
@@ -43,8 +44,11 @@ years<-indicators$year
 
 ##create indicator for the maps included the color for the group
 indicators_map <- indicators %>% group_by(countries_name, group_name, subgroup_name, latitude, longitude) %>% summarise('indicator_num'= n()) 
+#Palette
 palette_group <- data.frame('group_name' = unique(indicators_map$group_name), "color"=c("#08306b","#08519c", "#2171b5", "#4292c6", "#6baed6", "#9ecae1"), 
                             'lat'= c(0.5,0,0,0.5,0,-0.5), 'long'= c(0,-0.5,0.5,0.5,0,0.5))
+palette_indicators = c("#e5243b", "#26bde2", "#fcc30c", '#fd9d24',"#e5243b", "#26bde2", "#fcc30c", '#fd9d24',"#e5243b", "#26bde2", "#fcc30c", '#fd9d24',"#fcc30c", '#fd9d24')
+
 indicators_map <- merge(x=indicators_map, y=palette_group, by="group_name", all.x=TRUE)
 indicators_map$latitude <- indicators_map$latitude+indicators_map$lat
 indicators_map$longitude <- indicators_map$longitude+indicators_map$long
@@ -54,10 +58,21 @@ countries_list <- setNames(indicators$country_code,as.character(indicators$count
 subsets_list <- sort(unique(setNames(indicators$group_name,as.character(indicators$group_name))))
 subsets_list <- append(as.character(subsets_list), 'Select All', after = 0)
 
-sdg_list <- setNames(unique(indicators$sdg_code),as.character(paste(unique(indicators$sdg_code), unique(indicators$sdg_description), sep=': ')))
+#limit to 50 characters the description for the sdg_description
+
+limited_description<-substring(indicators$sdg_description, 0, 30)
+for(i in 1:length(indicators$sdg_description)){
+  if(length(indicators$sdg_description[i])<25){
+    
+    limited_description[i]<-paste(limited_description[i], '[...]')
+  }
+}
+sdg_list <- setNames(unique(indicators$sdg_code),as.character(paste(unique(indicators$sdg_code), unique(limited_description), sep=': ')))
 sdg_list[!is.na(sdg_list)]
 sdg_list <- sort(sdg_list)
+
 sdg_list <- append((sdg_list), 'Select All', after = 0)
+
 sdg_code_list <- unique(indicators$sdg_code)
 
 #data to display in the table

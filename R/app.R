@@ -36,16 +36,47 @@ shinyApp(
     }
     
     div.panel {
-    # background-color: lightblue;
       width: 100%;
       height: 900px;
-      overflow: scroll;
+      overflow: auto;
       float:left;
+      padding:10px;
     }
     
+    div.main_panel {
+      width: 100%;
+      height: 900px;
+      overflow: auto;
+    }
     
-
+    h4 {
+      color:#0072BC;
+      font-weight: bold;
+    }
     
+    h3 {
+      color:#0072BC;
+      font-weight: bold;
+       align:center;
+    }
+    
+    hr{
+       
+      display: block; 
+      height: 5px;
+      border-top: 1px solid #ccc;
+      border-color: #0072BC;
+       
+    }
+    
+    .checkbox { 
+      background: #cce3f2; 
+    }
+      
+    .checkbox:nth-child(odd) { 
+      background: white; 
+      }
+  
     "),
     useShinyjs(),  # Set up shinyjs
     ## navbarPage
@@ -53,38 +84,40 @@ shinyApp(
       fluidRow(
         column(4,
                div(class="panel",
-               # Control Panel for the indicators
-               h3("DISAGGREGATED DATA", align = "center", style = "color:#0072BC"),
-               h4("Availability by Location", align = "center", style = "color:#0072BC"),
-               selectizeInput(
-                 "country", 
-                 "",
-                 countries_list, 
-                 options = list(
-                   placeholder = "Select a Country", 
-                   onInitialize = I('function() { this.setValue(""); }')
-                 )
-               ),
-               
-               sliderInput("years",
-                           h3("Filter Year"), 
-                           min = min(years),
-                           max = max(years),
-                           value = c(min(years), max(years)),
-                           sep = ""
-               ),
-         
-               checkboxGroupInput("filterSubsets", 
-                                  h3("Filter Subsets"),, 
-                                  choices = subsets_list,  
-                                  selected = subsets_list,
-               ),
-            
-               checkboxGroupInput("filterIndicators", 
-                                  h3("Filter Indicators"), 
-                                  choices = sdg_list,
-                                  selected = sdg_list,
-               ),
+                 # Control Panel for the indicators
+                 h3("DISAGGREGATED DATA"),
+                 hr(),
+                 h4("Availability by Location"),
+                 selectizeInput(
+                   "country", 
+                   "",
+                   countries_list, 
+                   options = list(
+                     placeholder = "Select a Country", 
+                     onInitialize = I('function() { this.setValue(""); }')
+                   )
+                 ),
+                 
+                 sliderInput("years",
+                             h4("Filter Year"), 
+                             min = min(years),
+                             max = max(years),
+                             value = c(min(years), max(years)),
+                             sep = ""
+                 ),
+           
+                 checkboxGroupInput("filterSubsets", 
+                                    h4("Filter Subsets"),, 
+                                    choices = subsets_list,  
+                                    selected = subsets_list,
+                 ),
+                 div(class="indicator_checkbox",
+                   checkboxGroupInput("filterIndicators", 
+                                      h4("Filter Indicators"), 
+                                      choices = sdg_list,
+                                      selected = sdg_list,
+                   ),
+                 ),
                )
         ),
         
@@ -97,8 +130,13 @@ shinyApp(
                   leafletOutput("mymap", height="85vh"),
                 ),
                 br(),
-              
-                absolutePanel( 
+            
+                absolutePanel( class="main_panel",
+                        
+                                HTML( '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAm0AAAGnCAYAAADlkGDxAAAACXBIWXMAAAsTAAALEwEAmpwYAAAgAElEQVR4nOydd3ic1ZX/P2+ZKmlU" 
+                               width="400" 
+                               height="300" 
+                               alt="This is alternate text">'),
 
                 p("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."),
                 DT::dataTableOutput("tableTab1"),
@@ -140,13 +178,14 @@ shinyApp(
   server = function(input, output, session) {
     # Select all the checkboxs when the select All checkbox is selected
     observe({
-      req(input$filterSubsets)
-      if(input$filterSubsets=="Select All"){
+     
+      if(input$filterSubsets[1]=="Select All"){
         updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', choices = subsets_list, selected = subsets_list)
       }
-      if(input$filterIndicators=="Select All"){
+      if(input$filterIndicators[1]=="Select All"){
         updateCheckboxGroupInput(session = session, inputId = 'filterIndicators', choices = sdg_list, selected = sdg_list)
       }
+      
     })
     #download charts
     output$downloadSDGByIndicator <- downloadHandler(
@@ -219,9 +258,11 @@ shinyApp(
         data_table <- subset(data_table, year >= min(input$years) & year <= max(input$years))  
       }
       
+      #update the selectInput for SDG Chart Filter
       sdg_code_list <- unique(data_table$sdg_code)
       updateSelectInput(session = session, inputId = 'sdgChartFilter', choices = sdg_code_list)
       
+      #update the selectInput for Group Chart Filter
       subsets_list <- unique(data_table$group_name)
       updateSelectInput(session = session, inputId = 'groupChartFilter', choices = subsets_list)
       
@@ -232,11 +273,14 @@ shinyApp(
     
     observe({
       req(input$country)
+      
       filter_by_country <- subset(indicators, country_code == input$country & (year >= input$years[1] & year <= input$years[2]))  
       filter_by_country <- filter_by_country  %>% select(countries_name, group_name, year, sdg_code, sdg_description)
-      subsets_list <- sort(unique(setNames(filter_by_country$group_name,as.character(filter_by_country$group_name))))
+      subsets_list_filter <- sort(unique(setNames(filter_by_country$group_name,as.character(filter_by_country$group_name))))
+      #subsets_list_filter <- append(as.character(subsets_list_filter), 'Select All', after = 0)# add Select All to the subsets_list
   
-      updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', choices = subsets_list, selected = subsets_list)
+      updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', choices = subsets_list_filter, selected = subsets_list_filter)
+      
       
       })
     
@@ -250,6 +294,7 @@ shinyApp(
       sdg_list <- setNames(unique(filter_by_subsets$sdg_code),as.character(paste(unique(filter_by_subsets$sdg_code), unique(filter_by_subsets$sdg_description), sep=': ')))
       sdg_list[!is.na(sdg_list)]
       sdg_list <- sort(sdg_list)
+      #sdg_list <- append((sdg_list), 'Select All', after = 0)# add Select All to the sdg_list
         
       updateCheckboxGroupInput(session = session, inputId = 'filterIndicators', choices = sdg_list, selected = sdg_list)
   
@@ -309,16 +354,17 @@ shinyApp(
     
     ## Create the plot for downloading
     plotSdgByIndicator<- reactive({
-      charts <-ggplot(data = ChartGroupsSdg(), aes(x=year, y=indicator_value)) +
-        geom_line(aes(color = group_name, linetype= group_name)) +
-        geom_point(aes(color = group_name), size = 3, alpha = 0.75) +
-        labs(y="sdg indicators", x = "years")+
-        ggtitle("SDG Indicator by indicator") +
-        scale_x_continuous(breaks=years)+
-        scale_y_continuous(limits =c(0,1))+
-        scale_color_discrete("SubSet")+
-        scale_linetype("SubSet")+
-        theme(text = element_text(size = 16))
+        charts <-ggplot(data = ChartGroupsSdg(), aes(x=year, y=indicator_value)) +
+          geom_line(aes(color = group_name, linetype= group_name)) +
+          geom_point(aes(color = group_name), size = 3, alpha = 0.75) +
+          labs(y="sdg indicators", x = "years")+
+          ggtitle("SDG Indicator by indicator") +
+          scale_x_continuous(breaks=years)+
+          scale_y_continuous(limits =c(0,1))+
+          #scale_color_discrete("SubSet")+
+          scale_linetype("SubSet")+
+          scale_color_manual("SubSet",values=palette_indicators)+
+          theme(text = element_text(size = 16))
     })
     
     plotSdgBySubset<- reactive({
@@ -329,8 +375,9 @@ shinyApp(
         ggtitle("SDG Indicators by Subset") +
         scale_x_continuous(breaks=years)+
         scale_y_continuous(limits =c(0,1))+
-        scale_color_discrete("SDG")+
+        # scale_color_discrete("SDG")+
         scale_linetype("SDG")+
+        scale_color_manual("SDG",values=palette_indicators)+
         theme(text = element_text(size = 16))
     })
     
@@ -344,8 +391,9 @@ shinyApp(
           ggtitle("SDG Indicator by indicator") +
           scale_x_continuous(breaks=years)+
           scale_y_continuous(limits =c(0,1))+
-          scale_color_discrete("SubSet")+
+          #scale_color_discrete("SubSet")+
           scale_linetype("SubSet")+
+          scale_color_manual("SubSet",values=palette_indicators)+
           theme(text = element_text(size = 16))
 
          charts
@@ -360,8 +408,9 @@ shinyApp(
           ggtitle("SDG Indicators by Subset") +
           scale_x_continuous(breaks=years)+
           scale_y_continuous(limits =c(0,1))+
-          scale_color_discrete("SDG")+
+          # scale_color_discrete("SDG")+
           scale_linetype("SDG")+
+          scale_color_manual("SDG",values=palette_indicators)+
           theme(text = element_text(size = 16))
           
         charts
