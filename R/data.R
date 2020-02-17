@@ -47,7 +47,10 @@ indicators_map <- indicators %>% group_by(countries_name, group_name, subgroup_n
 #Palette
 palette_group <- data.frame('group_name' = unique(indicators_map$group_name), "color"=c("#08306b","#08519c", "#2171b5", "#4292c6", "#6baed6", "#9ecae1"), 
                             'lat'= c(0.5,0,0,0.5,0,-0.5), 'long'= c(0,-0.5,0.5,0.5,0,0.5))
-palette_indicators = c("#e5243b", "#26bde2", "#fcc30c", '#fd9d24',"#e5243b", "#26bde2", "#fcc30c", '#fd9d24',"#e5243b", "#26bde2", "#fcc30c", '#fd9d24',"#fcc30c", '#fd9d24')
+palette_indicators = c("#e5243b", "#dda83a", "#4c9f38", '#c5192d',
+                       "#ff3a21", "#26bde2", "#fcc30b", '#a21942',
+                       "#fd6925", "#dd1367", "#fd9d24", '#bf8b2e',
+                       "#3f7e44", '#0a97d9', '#56c02b', '#00689d', '#19486a')
 
 indicators_map <- merge(x=indicators_map, y=palette_group, by="group_name", all.x=TRUE)
 indicators_map$latitude <- indicators_map$latitude+indicators_map$lat
@@ -95,5 +98,23 @@ SELECT
   ')
 dbDisconnect(con)
 
+#####################################
+# create image for SDG
+#####################################
 
-
+show_image<-function(sdg_number){
+  src_image <- paste("images_app/E-WEB-Goal-0",sdg_number,".png", sep="")
+  alt_image <- paste("sdg",sdg_number, sep="")
+  renderImage({
+   
+      return(list(
+        width = 100,
+        height = 100,
+        src = src_image,
+        contentType = "image/png",
+        alt = alt_image
+      ))
+    
+    
+  }, deleteFile = FALSE)
+}
