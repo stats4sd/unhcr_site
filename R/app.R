@@ -132,11 +132,13 @@ shinyApp(
                 br(),
             
                 absolutePanel( class="main_panel",
-                        
-                                HTML( '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAm0AAAGnCAYAAADlkGDxAAAACXBIWXMAAAsTAAALEwEAmpwYAAAgAElEQVR4nOydd3ic1ZX/P2+ZKmlU" 
-                               width="400" 
-                               height="300" 
-                               alt="This is alternate text">'),
+            
+                imageOutput("imageSdg1",  width = "120px", height = "120px",  inline = TRUE ),
+                imageOutput("imageSdg2",  width = "120px", height = "120px",  inline = TRUE ),
+                imageOutput("imageSdg3",  width = "120px", height = "120px",  inline = TRUE ),
+                imageOutput("imageSdg4",  width = "120px", height = "120px",  inline = TRUE ),
+                imageOutput("imageSdg5",  width = "120px", height = "120px",  inline = TRUE ),
+                
 
                 p("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."),
                 DT::dataTableOutput("tableTab1"),
@@ -176,6 +178,21 @@ shinyApp(
     )
   ),
   server = function(input, output, session) {
+    
+    #####################################
+    # Image SDG
+    #####################################
+    observe({
+      if(input$country!=""){
+        output$imageSdg1 <- show_image(1)
+        output$imageSdg2 <- show_image(2)
+        output$imageSdg3 <- show_image(3)
+        output$imageSdg4 <- show_image(4)
+        output$imageSdg5 <- show_image(5)
+      }
+    })
+    
+    
     # Select all the checkboxs when the select All checkbox is selected
     observe({
      
