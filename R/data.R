@@ -3,9 +3,27 @@ library(DT)
 library(maps)
 library(dplyr)
 library(stringi)
+library(dotenv)
 source('dbConfig.R')
 
-
+get_sql_connection <- function() {
+  
+ 
+  load_dot_env(file = "../.env")
+  
+  con <-  DBI::dbConnect(RMySQL::MySQL(),
+                         dbname = Sys.getenv('DB_DATABASE'),
+                         host = Sys.getenv('DB_HOST'),
+                         port = as.numeric(Sys.getenv('DB_PORT')),
+                         user = Sys.getenv('DB_USERNAME'),
+                         password = Sys.getenv('DB_PASSWORD')
+                        )
+  
+  
+  dbSendQuery(con,"set character set 'utf8mb4'")
+  
+  return(con)
+}
 #indicators
 indicators<-dbGetQuery(con,'
 SELECT
@@ -43,18 +61,19 @@ indicators$group_name <- as.factor(indicators$group_name)
 years<-indicators$year
 
 ##create indicator for the maps included the color for the group
-indicators_map <- indicators %>% group_by(countries_name, group_name, subgroup_name, latitude, longitude) %>% summarise('indicator_num'= n()) 
-#Palette
-palette_group <- data.frame('group_name' = unique(indicators_map$group_name), "color"=c("#08306b","#08519c", "#2171b5", "#4292c6", "#6baed6", "#9ecae1"), 
-                            'lat'= c(0.5,0,0,0.5,0,-0.5), 'long'= c(0,-0.5,0.5,0.5,0,0.5))
-palette_indicators = c("#e5243b", "#dda83a", "#4c9f38", '#c5192d',
-                       "#ff3a21", "#26bde2", "#fcc30b", '#a21942',
-                       "#fd6925", "#dd1367", "#fd9d24", '#bf8b2e',
-                       "#3f7e44", '#0a97d9', '#56c02b', '#00689d', '#19486a')
+indicators_map <- indicators %>% group_by(countries_name, country_code, latitude, longitude) %>% summarise('indicator_num'= n(), icon_url = list_group(country_code)) 
 
-indicators_map <- merge(x=indicators_map, y=palette_group, by="group_name", all.x=TRUE)
-indicators_map$latitude <- indicators_map$latitude+indicators_map$lat
-indicators_map$longitude <- indicators_map$longitude+indicators_map$long
+
+list_group <- function(country_code){
+
+  indic_by_country <- load_indicators(country_code)
+  list_group <- unique(indic_by_country$group_name)
+  string_group<-paste( unlist(list_group), collapse='')
+  print(string_group)
+  return(string_group)
+}
+
+
 
 #list of countries, sdg and sdg_code for the filters
 countries_list <- setNames(indicators$country_code,as.character(indicators$countries_name))
@@ -99,14 +118,47 @@ SELECT
 dbDisconnect(con)
 
 #####################################
+# load data by country code
+#####################################
+load_indicators<-function(country_code){
+  
+  con <- get_sql_connection()
+  sql <- "SELECT
+         indicators.group_name,
+         indicators.indicator_value,
+         datasets.region,
+         datasets.year,
+         datasets.country_code,
+         datasets.description,
+         datasets.population_definition,
+         datasets.source_url,
+         datasets.comment,
+         countries.name as countries_name,
+         sdg_indicators.code as sdg_code
+         FROM indicators
+         LEFT JOIN datasets on datasets.id = indicators.dataset_id
+         LEFT JOIN countries on countries.ISO_code = datasets.country_code
+         LEFT JOIN sdg_indicators on  sdg_indicators.id = indicators.sdg_indicator_id"
+                        
+  if(! is.null(country_code)) {
+    sql <- paste(sql, " WHERE datasets.country_code = '",country_code, "'", sep = "")
+  }
+  
+  indicators <- dbGetQuery(con,paste(sql,";"))
+  dbDisconnect(con)
+  return(indicators)
+  
+}
+
+
+#####################################
 # create image for SDG
 #####################################
 
 show_image<-function(sdg_number){
-  src_image <- paste("images_app/E-WEB-Goal-0",sdg_number,".png", sep="")
+  src_image <- paste("images_app/E-WEB-Goal-",sdg_number,".png", sep="")
   alt_image <- paste("sdg",sdg_number, sep="")
   renderImage({
-   
       return(list(
         width = 100,
         height = 100,
@@ -118,3 +170,19 @@ show_image<-function(sdg_number){
     
   }, deleteFile = FALSE)
 }
+
+
+killDbConnections <- function () {
+  
+  all_cons <- dbListConnections(MySQL())
+  
+  print(all_cons)
+  
+  for(con in all_cons)
+    +  dbDisconnect(con)
+  
+  print(paste(length(all_cons), " connections killed."))
+  
+}
+
+killDbConnections()

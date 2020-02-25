@@ -60,8 +60,7 @@ shinyApp(
        align:center;
     }
     
-    hr{
-       
+    hr{       
       display: block; 
       height: 5px;
       border-top: 1px solid #ccc;
