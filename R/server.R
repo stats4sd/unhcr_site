@@ -151,24 +151,13 @@ server = function(input, output, session) {
       
       leafletProxy("mymap") %>%
         setView(lng = 0, lat = 0, zoom = 2.5) %>%
-        addCircleMarkers(lng = indicators_map$longitude, 
-                         lat = indicators_map$latitude, radius = 10, stroke=FALSE, color = indicators_map$color, 
-                         fillOpacity = 0.6, 
-                         popup = paste("<h5><b>Country:</b>", 
-                                       indicators_map$countries_name, "</h5>",
-                                       "<h5><b>Subset:</b>",
-                                       indicators_map$group_name,
-                                       "<h5><b>Subgroup:</b>",
-                                       indicators_map$subgroup_name,
-                                       "<h5><b>Indicators n:</b>", indicators_map$indicator_num , "</h5>"
-                         )) %>% 
         addMarkers(lng = indicators_map$longitude, 
                    lat = indicators_map$latitude, 
-                   icon = icons(iconUrl = "images_app/markers/IPD.png",iconWidth = 40, iconHeight = 65, iconAnchorX = 20, iconAnchorY = 64),
+                   icon = icons(iconUrl = indicators_map$icon_url,iconWidth = 40, iconHeight = 65, iconAnchorX = 20, iconAnchorY = 64),
                    popup = paste("<h5><b>Country:</b>", 
                                  indicators_map$countries_name, "</h5>",
                                  "<h5><b>Subset:</b>",
-                                 indicators_map$group_name,
+                                 indicators_map$icon_url,
                                  "<h5><b>Subgroup:</b>",
                                  indicators_map$subgroup_name,
                                  "<h5><b>Indicators n:</b>", indicators_map$indicator_num , "</h5>"
