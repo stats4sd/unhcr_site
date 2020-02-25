@@ -6,6 +6,7 @@ UPDATE indicators SET subgroup_name = 'Refugees' WHERE group_name = 'Refugees' ;
 UPDATE indicators SET subgroup_name = 'Asylum Seekers' WHERE group_name = 'Asylum Seekers' ;
 
 INSERT INTO groups (name) VALUE ('Other');
+
 INSERT INTO subgroups (name) VALUE ('IDPs');
 INSERT INTO subgroups (name) VALUE ('in camps or settlements');
 INSERT INTO subgroups (name) VALUE ('not in camp or settlements');

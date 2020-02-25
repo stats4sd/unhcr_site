@@ -68,9 +68,11 @@ list_group <- function(country_code){
 
   indic_by_country <- load_indicators(country_code)
   list_group <- unique(indic_by_country$group_name)
+  list_group<-sort(list_group, decreasing = FALSE)
   string_group<-paste( unlist(list_group), collapse='')
-  print(string_group)
-  return(string_group)
+  icon_url<-paste("images_app/markers/",string_group,".png", sep="")
+  print(icon_url)
+  return(icon_url)
 }
 
 
