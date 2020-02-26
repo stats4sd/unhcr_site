@@ -61,17 +61,23 @@ indicators$group_name <- as.factor(indicators$group_name)
 years<-indicators$year
 
 ##create indicator for the maps included the color for the group
-indicators_map <- indicators %>% group_by(countries_name, country_code, latitude, longitude) %>% summarise('indicator_num'= n(), icon_url = list_group(country_code)) 
+indicators_map <- indicators %>% group_by(countries_name, country_code, latitude, longitude) %>% summarise('indicator_num'= n(), icon_url = create_url_markers(country_code)) 
 
-
-list_group <- function(country_code){
+#####################################
+# Palette indicators for the Charts
+#####################################
+palette_indicators <- c("#e5243b", "#dda83a", "#4c9f38", "#c5192d", "#ff3a21", "#26bde2", "#fcc30b", "#a21942", "#fd6925", "#dd1367", "#fd9d24", "#bf8b2e", "#3f7e44",
+                        "#0a97d9", "#56c02b", "#00689d", "#19486a")
+#####################################
+# Create a url for the indicators image
+#####################################
+create_url_markers <- function(country_code){
 
   indic_by_country <- load_indicators(country_code)
   list_group <- unique(indic_by_country$group_name)
   list_group<-sort(list_group, decreasing = FALSE)
   string_group<-paste( unlist(list_group), collapse='')
   icon_url<-paste("images_app/markers/",string_group,".png", sep="")
-  print(icon_url)
   return(icon_url)
 }
 

@@ -6,6 +6,7 @@ library(RColorBrewer)
 library(ggplot2)
 library(shinyjs)
 library(rgdal)
+
 source('data.R')
 
 
@@ -55,16 +56,15 @@ options(shiny.port = 8002)
     h3 {
       color:#0072BC;
       font-weight: bold;
-       align:center;
+      align:center;
     }
     
     hr{
-       
       display: block; 
       height: 5px;
-      border-top: 1px solid #ccc;
+      border-top: 5px solid #ccc;
       border-color: #0072BC;
-       
+      height: 10px; 
     }
     
     .checkbox { 
@@ -73,9 +73,54 @@ options(shiny.port = 8002)
       
     .checkbox:nth-child(odd) { 
       background: white; 
-      }
-  
+    }
+    
+    table.dataTable tr:nth-child(even) {
+      background: #cce3f2;
+    }
+    
+    table.dataTable tr:nth-child(odd) {
+      background: white;
+    }
+    
+    table.dataTable th {
+      background-color: #0072BC !important;
+      color: white;
+      height: 30px; 
+    }
+     
+    #downloadSDGByIndicator {
+      color: #0072BC !important;
+      border-color: #0072BC;
+    }
+    
+    #downloadSDGBySubset {
+      color: #0072BC !important;
+      border-color: #0072BC;
+    }
+    
+    .navbar-default {
+      background-color: #0072BC!important;
+      color: white!important;
+    }
+    
+    
+    #navbar_country {
+     color: white !important;
+     background-color: #0072BC!important;
+     width: 300px;
+    }
+   button.dt-button, div.dt-button, a.dt-button{ 
+    background:white;
+    color: #0072BC!important;
+    border-color: white;
+    font-weight: bold;
+   
+   } 
+                   
+    
     "),
+    
     useShinyjs(),  # Set up shinyjs
     ## navbarPage
     fluidPage(
@@ -129,6 +174,12 @@ options(shiny.port = 8002)
                ),
                br(),
                
+               navbarPage(title=htmlOutput("navbar_country"),
+              ##########################################
+              # AVAILABLE DATA PAGE
+              ##########################################
+              tabPanel("AVAILABLE DATA",
+                          
                absolutePanel( class="main_panel",
                               
                               imageOutput("imageSdg1",  width = "120px", height = "120px",  inline = TRUE ),
@@ -147,13 +198,24 @@ options(shiny.port = 8002)
                               imageOutput("imageSdg15",  width = "120px", height = "120px",  inline = TRUE ),
                               imageOutput("imageSdg16",  width = "120px", height = "120px",  inline = TRUE ),
                               imageOutput("imageSdg17",  width = "120px", height = "120px",  inline = TRUE ),
+                              htmlOutput("info_indicators"),
+                              hr(),
                               
-                              p("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."),
                               DT::dataTableOutput("tableTab1"),
-                              column(4, 
+                              br(),
+                              hr(),
+                              br(),
+                              column(8, 
                                      
+                                     plotOutput("chart"),
+                                     plotOutput("chartSdgsGroup")
+                              ),
+                              column(4,
+                                     
+                               
                                      shinyjs::hidden(
                                        div(style="display: inline-block;vertical-align:top; width: 200px; ", id="sdgfilter",
+                                           
                                            selectizeInput("sdgChartFilter", 
                                                           h5("Filter Indicators"), 
                                                           choices = sdg_code_list,
@@ -172,14 +234,17 @@ options(shiny.port = 8002)
                                            downloadButton('downloadSDGBySubset', 'Download Plot')
                                        )
                                      )
-                              ),
-                              column(8,
-                                     
-                                     plotOutput("chart"),
-                                     plotOutput("chartSdgsGroup")
                               )
                               
-               ),
+                            )
+                          ),
+               ##########################################
+               # METADATA PAGE
+               ##########################################
+               
+               tabPanel("METADATA"),
+              tabPanel("x")
+               )
         )
       )      
     )

@@ -1,5 +1,41 @@
 server = function(input, output, session) {
-  
+  #####################################
+  # Info diplayed below Sdg image
+  #####################################
+  observe({
+    req(input$country)
+    indicators_country <- indicators_map %>% filter(country_code == input$country)
+    output$info_indicators <- renderUI({ 
+    
+     
+      HTML(paste0(
+        "<br><br><b>Indicators: </b>",indicators_country$indicator_num, "<br>",
+        "<b>Datasets: </b>",indicators_country$indicator_num, "<br>",
+        "<b>Population Definitions: </b>",indicators_country$indicator_num, "<br>",
+        "<b>Description: </b>", indicators_country$countries_name, "<br><br>",
+        "<b>Source: </b>",indicators_country$indicator_num, "<br>"
+        
+      ))
+    
+    })
+  })
+  #####################################
+  # navbar Country 
+  #####################################
+  observe({
+    req(input$country)
+    indicators_country <- indicators_map %>% filter(country_code == input$country)
+    output$  navbar_country <- renderUI({ 
+      
+      
+      HTML(paste0(
+        "<b>", toupper(indicators_country$countries_name), "</b>"
+        
+      ))
+      
+    })
+  })
+
   #####################################
   # Images SDG
   #####################################
@@ -11,7 +47,6 @@ server = function(input, output, session) {
     for(indicator in sdg_code){
       sdg_number <- as.numeric(strsplit(indicator, ".", fixed = TRUE)[[1]][1])
       image_sdg_number <- paste("imageSdg",sdg_number, sep = "")
-      print(image_sdg_number)
       output[[image_sdg_number]] <- show_image(sdg_number)
     }
   })
@@ -48,7 +83,8 @@ server = function(input, output, session) {
   
   # Create the map
   output$mymap <- renderLeaflet({
-    leaflet() %>% addTiles() %>% addProviderTiles("Esri.WorldStreetMap")
+    leaflet() %>% addTiles( options = providerTileOptions(minZoom = 2, maxZoom = 10)) %>% 
+      addProviderTiles("Esri.WorldStreetMap", options = providerTileOptions(minZoom = 2, maxZoom = 10))
   })
   
   
@@ -89,13 +125,13 @@ server = function(input, output, session) {
     req(input$filterIndicators)
     data_table <- subset(indicators, country_code == input$country)  
     data_table <- data_table  %>% select(countries_name, group_name, year, sdg_code, indicator_value, description, population_definition, comment, latitude, longitude)
-    if(!is.na(input$filterSubsets)){
+    if(length(input$filterSubsets)>1){
       data_table <- subset(data_table, group_name %in% input$filterSubsets)  
     }
-    if(input$filterIndicators!=""){
+    if(length(input$filterIndicators)>=1){
       data_table <- subset(data_table, sdg_code %in% input$filterIndicators)  
     }
-    if(input$years!=""){
+    if(length(input$years)>=1){
       data_table <- subset(data_table, year >= min(input$years) & year <= max(input$years))  
     }
     
@@ -164,8 +200,8 @@ server = function(input, output, session) {
                    )
                    ) %>% 
         addLegend("bottomright",
-                  colors = unique(indicators_map$color),
-                  labels = unique(indicators_map$group_name),
+                  colors = c('#e5243b','#26bde2', '#fcc30c'),
+                  labels = c('IDPs', 'Refugees', 'Other'),
                   opacity = 0.6)
       
     } else if(input$country!=""){
@@ -179,20 +215,27 @@ server = function(input, output, session) {
   output$tableTab1 = DT::renderDataTable({
     #select data from selectedData to display on the table 
     data_download<-selectedData()
-    data_download<-data_download %>% select(countries_name, group_name, year, sdg_code, indicator_value, description, population_definition)
+    data_download<-data_download %>% select(sdg_code, countries_name, group_name, year, indicator_value, description, population_definition)
     DT::datatable(
       data_download,
-      filter = 'top',
       extensions = 'Buttons',
       options = list(
-        dom = 'Blfrtip',
-        buttons = c('copy', 'excel', 'pdf', 'print'),
+        bSort=FALSE,
+        dom = '<"float-left"B><"float-right"f>rt<"row"<"col-sm-4"i><"col-sm-4"l><"col-sm-4"p>>',
+        buttons = list(list(extend = "csv", text = '<span class="glyphicon glyphicon-download-alt"></span>'),
+                       list(extend = "copy", text = '<span>Copy</span>'), 
+                       list(extend = "excel", text = '<span>Excel</span>'), 
+                       list(extend = "pdf", text = '<span>PDF</span>'), 
+                       list(extend = "print", text = '<span>Print</span>')),
         text = 'Download',
         br()
       ),
       class = "display"
-    )
+    ) %>% 
+      formatStyle('sdg_code', fontWeight = 'bold') %>% 
+      formatStyle('countries_name', color = '#0072BC') 
   })
+ 
   
   ## Create the plot for downloading
   plotSdgByIndicator<- reactive({
