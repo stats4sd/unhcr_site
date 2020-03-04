@@ -39,7 +39,7 @@ options(shiny.port = 8002)
       height: 900px;
       overflow: auto;
       float:left;
-      padding:10px;
+      #padding:10px;
     }
     
     div.main_panel {
@@ -125,7 +125,7 @@ options(shiny.port = 8002)
     ## navbarPage
     fluidPage(
       fluidRow(
-        column(4,
+        column(3,
                div(class="panel",
                    # Control Panel for the indicators
                    h3("DISAGGREGATED DATA"),
@@ -164,7 +164,7 @@ options(shiny.port = 8002)
                )
         ),
         
-        column(8,
+        column(9,
                
                
                br(),
