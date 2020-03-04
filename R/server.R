@@ -200,7 +200,7 @@ server = function(input, output, session) {
                    )
                    ) %>% 
         addLegend("bottomright",
-                  colors = c('#e5243b','#26bde2', '#fcc30c'),
+                  colors = c('#18375f','#0072bc', '#00b398'),
                   labels = c('IDPs', 'Refugees', 'Other'),
                   opacity = 0.6)
       
