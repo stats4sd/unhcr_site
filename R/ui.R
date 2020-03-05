@@ -39,7 +39,7 @@ options(shiny.port = 8002)
       height: 900px;
       overflow: auto;
       float:left;
-      #padding:10px;
+      padding:5px;
     }
     
     div.main_panel {
@@ -104,18 +104,17 @@ options(shiny.port = 8002)
       color: white!important;
     }
     
-    
     #navbar_country {
      color: white !important;
      background-color: #0072BC!important;
      width: 300px;
     }
-   button.dt-button, div.dt-button, a.dt-button{ 
-    background:white;
-    color: #0072BC!important;
-    border-color: white;
-    font-weight: bold;
-   
+    
+    button.dt-button, div.dt-button, a.dt-button{ 
+      background:white;
+      color: #0072BC!important;
+      border-color: white;
+      font-weight: bold;
    } 
                    
     
@@ -134,7 +133,7 @@ options(shiny.port = 8002)
                    selectizeInput(
                      "country", 
                      "",
-                     countries_list, 
+                     countries_list(), 
                      options = list(
                        placeholder = "Select a Country", 
                        onInitialize = I('function() { this.setValue(""); }')
@@ -143,22 +142,22 @@ options(shiny.port = 8002)
                    
                    sliderInput("years",
                                h4("Filter Year"), 
-                               min = min(years),
-                               max = max(years),
-                               value = c(min(years), max(years)),
+                               min = min(years()),
+                               max = max(years()),
+                               value = c(min(years()), max(years())),
                                sep = ""
                    ),
                    
                    checkboxGroupInput("filterSubsets", 
                                       h4("Filter Subsets"),, 
-                                      choices = subsets_list,  
-                                      selected = subsets_list,
+                                      choices = subsets_list(),  
+                                      selected = subsets_list(),
                    ),
                    div(class="indicator_checkbox",
                        checkboxGroupInput("filterIndicators", 
                                           h4("Filter Indicators"), 
-                                          choices = sdg_list,
-                                          selected = sdg_list,
+                                          choices = sdg_list(),
+                                          selected = sdg_list(),
                        ),
                    ),
                )
@@ -173,7 +172,8 @@ options(shiny.port = 8002)
                    leafletOutput("mymap", height="85vh"),
                ),
                br(),
-               
+               shinyjs::hidden(
+                 div(id="available_data",
                navbarPage(title=htmlOutput("navbar_country"),
               ##########################################
               # AVAILABLE DATA PAGE
@@ -210,41 +210,45 @@ options(shiny.port = 8002)
                                      plotOutput("chart"),
                                      plotOutput("chartSdgsGroup")
                               ),
+                           
                               column(4,
                                      
                                
-                                     shinyjs::hidden(
+                                     
                                        div(style="display: inline-block;vertical-align:top; width: 200px; ", id="sdgfilter",
                                            
                                            selectizeInput("sdgChartFilter", 
                                                           h5("Filter Indicators"), 
-                                                          choices = sdg_code_list,
-                                                          selected = sdg_code_list[[1]]
+                                                          choices = sdg_code_list(),
+                                                          selected = sdg_code_list()[[1]]
                                            ),
                                            downloadButton('downloadSDGByIndicator', 'Download Plot')
-                                       )
+                                       
                                      ),
-                                     shinyjs::hidden(
+                                   
                                        div(style="vertical-align:top; width: 200px; padding-top: 300px;", id="groupfilter",
                                            selectizeInput("groupChartFilter", 
                                                           h5("Filter Subsets"), 
-                                                          choices = subsets_list,
-                                                          selected = subsets_list[[1]]
+                                                          choices = subsets_list(),
+                                                          selected = subsets_list()[[1]]
                                            ),
                                            downloadButton('downloadSDGBySubset', 'Download Plot')
                                        )
-                                     )
+                                     
                               )
                               
                             )
+            
                           ),
                ##########################################
                # METADATA PAGE
                ##########################################
                
                tabPanel("METADATA"),
-              tabPanel("x")
+               tabPanel("x")
                )
+              )
+            )
         )
       )      
     )
