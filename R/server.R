@@ -4,7 +4,7 @@ server = function(input, output, session) {
   #####################################
   observe({
     req(input$country)
-    indicators_country <- indicators_map %>% filter(country_code == input$country)
+    indicators_country <- load_indicators_map() %>% filter(country_code == input$country)
     output$info_indicators <- renderUI({ 
     
      
@@ -22,17 +22,14 @@ server = function(input, output, session) {
   #####################################
   # navbar Country 
   #####################################
+  
   observe({
     req(input$country)
-    indicators_country <- indicators_map %>% filter(country_code == input$country)
-    output$  navbar_country <- renderUI({ 
-      
-      
+    indicators_country <- load_indicators_map() %>% filter(country_code == input$country)
+    output$navbar_country <- renderUI({ 
       HTML(paste0(
         "<b>", toupper(indicators_country$countries_name), "</b>"
-        
       ))
-      
     })
   })
 
@@ -56,7 +53,7 @@ server = function(input, output, session) {
   observe({
     
     if(input$filterSubsets[1]=="Select All"){
-      updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', choices = subsets_list, selected = subsets_list)
+      updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', choices = subsets_list(), selected = subsets_list())
     }
     #if(input$filterIndicators[1]=="Select All"){
     #  updateCheckboxGroupInput(session = session, inputId = 'filterIndicators', choices = sdg_list, selected = sdg_list)
@@ -91,8 +88,7 @@ server = function(input, output, session) {
   observe({
     req(input$filterIndicators)
     if(input$country!=""){
-      shinyjs::show(id = "groupfilter") 
-      shinyjs::show(id = "sdgfilter")
+      shinyjs::show(id = "available_data")
     }
   })
   
@@ -123,7 +119,7 @@ server = function(input, output, session) {
     req(input$filterSubsets)
     req(input$years)
     req(input$filterIndicators)
-    data_table <- subset(indicators, country_code == input$country)  
+    data_table <- subset(load_all_indicators(), country_code == input$country)  
     data_table <- data_table  %>% select(countries_name, group_name, year, sdg_code, indicator_value, description, population_definition, comment, latitude, longitude)
     if(length(input$filterSubsets)>1){
       data_table <- subset(data_table, group_name %in% input$filterSubsets)  
@@ -151,7 +147,7 @@ server = function(input, output, session) {
   observe({
     req(input$country)
     
-    filter_by_country <- subset(indicators, country_code == input$country & (year >= input$years[1] & year <= input$years[2]))  
+    filter_by_country <- subset(load_all_indicators(), country_code == input$country & (year >= input$years[1] & year <= input$years[2]))  
     filter_by_country <- filter_by_country  %>% select(countries_name, group_name, year, sdg_code, sdg_description)
     subsets_list_filter <- sort(unique(setNames(filter_by_country$group_name,as.character(filter_by_country$group_name))))
     #subsets_list_filter <- append(as.character(subsets_list_filter), 'Select All', after = 0)# add Select All to the subsets_list
@@ -165,7 +161,7 @@ server = function(input, output, session) {
   
   observe({
     req(input$country)
-    filter_by_country <- subset(indicators, country_code == input$country & (year >= input$years[1] & year <= input$years[2]))  
+    filter_by_country <- subset(load_all_indicators(), country_code == input$country & (year >= input$years[1] & year <= input$years[2]))  
     filter_by_country <- filter_by_country  %>% select(countries_name, group_name, year, sdg_code, sdg_description)
     filter_by_subsets <- subset(filter_by_country, group_name %in% input$filterSubsets) 
     sdg_list <- setNames(unique(filter_by_subsets$sdg_code),as.character(paste(unique(filter_by_subsets$sdg_code), unique(filter_by_subsets$sdg_description), sep=': ')))
@@ -187,16 +183,16 @@ server = function(input, output, session) {
       
       leafletProxy("mymap") %>%
         setView(lng = 0, lat = 0, zoom = 2.5) %>%
-        addMarkers(lng = indicators_map$longitude, 
-                   lat = indicators_map$latitude, 
-                   icon = icons(iconUrl = indicators_map$icon_url,iconWidth = 40, iconHeight = 65, iconAnchorX = 20, iconAnchorY = 64),
+        addMarkers(lng = as.numeric(load_indicators_map()$longitude), 
+                   lat = as.numeric(load_indicators_map()$latitude), 
+                   icon = icons(iconUrl = load_indicators_map()$icon_url,iconWidth = 40, iconHeight = 65, iconAnchorX = 20, iconAnchorY = 64),
                    popup = paste("<h5><b>Country:</b>", 
-                                 indicators_map$countries_name, "</h5>",
+                                 load_indicators_map()$countries_name, "</h5>",
                                  "<h5><b>Subset:</b>",
-                                 indicators_map$icon_url,
+                                 load_indicators_map()$icon_url,
                                  "<h5><b>Subgroup:</b>",
-                                 indicators_map$subgroup_name,
-                                 "<h5><b>Indicators n:</b>", indicators_map$indicator_num , "</h5>"
+                                 load_indicators_map()$subgroup_name,
+                                 "<h5><b>Indicators n:</b>", load_indicators_map()$indicator_num , "</h5>"
                    )
                    ) %>% 
         addLegend("bottomright",
@@ -244,11 +240,11 @@ server = function(input, output, session) {
       geom_point(aes(color = group_name), size = 3, alpha = 0.75) +
       labs(y="sdg indicators", x = "years")+
       ggtitle("SDG Indicator by indicator") +
-      scale_x_continuous(breaks=years)+
+      scale_x_continuous(breaks=years())+
       scale_y_continuous(limits =c(0,1))+
       #scale_color_discrete("SubSet")+
       scale_linetype("SubSet")+
-      scale_color_manual("SubSet",values=palette_indicators)+
+      scale_color_manual("SubSet",values=palette_indicators())+
       theme(text = element_text(size = 16))
   })
   
@@ -258,27 +254,28 @@ server = function(input, output, session) {
       geom_point(aes(color = sdg_code), size = 3, alpha = 0.75) +
       labs(y="sdg indicators", x = "years")+
       ggtitle("SDG Indicators by Subset") +
-      scale_x_continuous(breaks=years)+
+      scale_x_continuous(breaks=years())+
       scale_y_continuous(limits =c(0,1))+
       # scale_color_discrete("SDG")+
       scale_linetype("SDG")+
-      scale_color_manual("SDG",values=palette_indicators)+
+      scale_color_manual("SDG",values=palette_indicators())+
       theme(text = element_text(size = 16))
   })
   
   # Display Charts
   observe({
+
     output$chart <- renderPlot({
       charts <-ggplot(data = ChartGroupsSdg(), aes(x=year, y=indicator_value)) +
         geom_line(aes(color = group_name, linetype= group_name)) +
         geom_point(aes(color = group_name), size = 3, alpha = 0.75) +
         labs(y="sdg indicators", x = "years")+
         ggtitle("SDG Indicator by indicator") +
-        scale_x_continuous(breaks=years)+
+        scale_x_continuous(breaks=years())+
         scale_y_continuous(limits =c(0,1))+
         #scale_color_discrete("SubSet")+
         scale_linetype("SubSet")+
-        scale_color_manual("SubSet",values=palette_indicators)+
+        scale_color_manual("SubSet",values=palette_indicators())+
         theme(text = element_text(size = 16))
       
       charts
@@ -291,11 +288,11 @@ server = function(input, output, session) {
         geom_point(aes(color = sdg_code), size = 3, alpha = 0.75) +
         labs(y="sdg indicators", x = "years")+
         ggtitle("SDG Indicators by Subset") +
-        scale_x_continuous(breaks=years)+
+        scale_x_continuous(breaks=years())+
         scale_y_continuous(limits =c(0,1))+
         # scale_color_discrete("SDG")+
         scale_linetype("SDG")+
-        scale_color_manual("SDG",values=palette_indicators)+
+        scale_color_manual("SDG",values=palette_indicators())+
         theme(text = element_text(size = 16))
       
       charts
