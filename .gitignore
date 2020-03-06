@@ -14,4 +14,5 @@ yarn-error.log
 .Rproj.user
 R/packrat/lib*/
 R/packrat/src*/
-
+R/.RData
+R/.Rhistory
