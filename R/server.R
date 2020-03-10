@@ -1,5 +1,6 @@
-source('data.R')
+
 server = function(input, output, session) {
+
   #####################################
   # load indicators and maps info
   #####################################
@@ -9,10 +10,7 @@ server = function(input, output, session) {
   })
   
  
-  indicators_map<-load_indicators_map()  
   
-  unique_years <- unique(indicators$year)
-  years <- as.numeric(unlist(unique_years))
   #####################################
   # Info diplayed below Sdg image
   #####################################

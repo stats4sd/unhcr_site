@@ -1,0 +1,15 @@
+library(shiny)
+library(leaflet)
+library(DT)
+library(dplyr)
+library(RColorBrewer)
+library(ggplot2)
+library(shinyjs)
+library(rgdal)
+
+source('data.R')
+
+indicators_map<-load_indicators_map()  
+indicators<-load_indicators(NULL) 
+unique_years <- unique(indicators$year)
+years <- as.numeric(unlist(unique_years))

@@ -44,7 +44,6 @@ load_indicators_map<-function(){
   return(indicators_map)
 }
 
-load_indicators_map()
 
 #####################################
 # Palette indicators for the Charts
@@ -123,9 +122,9 @@ subsets_list<-function(){
 #############################################
 
 limited_description<-function(){
-  description<-substring(load_all_indicators()$sdg_description, 0, 30)
-  for(i in 1:length(load_all_indicators()$sdg_description)){
-    if(length(load_all_indicators()$sdg_description[i])<25){
+  description<-substring(load_indicators(NULL)$sdg_description, 0, 30)
+  for(i in 1:length(load_indicators(NULL)$sdg_description)){
+    if(length(load_indicators(NULL)$sdg_description[i])<25){
       description[i]<-paste(description[i], '[...]')
     }
   }
@@ -199,13 +198,16 @@ load_indicators<-function(country_code){
     sql <- paste(sql, " WHERE datasets.country_code = '",country_code, "'", sep = "")
   }
   
+  indicators <- dbGetQuery(con,paste(sql,";"))
+  
   indicators$countries_name <- as.factor(indicators$countries_name )
   indicators$year <- as.numeric(indicators$year)
   indicators$latitude <- as.numeric(indicators$latitude)
   indicators$longitude <- as.numeric(indicators$longitude)
   indicators$group_name <- as.factor(indicators$group_name)
   indicators$subgroup_name <- as.factor(indicators$subgroup_name)
-  indicators <- dbGetQuery(con,paste(sql,";"))
+  
+
   dbDisconnect(con)
   
   return(indicators)
@@ -246,4 +248,3 @@ killDbConnections <- function () {
   
 }
 
-killDbConnections()

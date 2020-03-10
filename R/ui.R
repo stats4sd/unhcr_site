@@ -142,9 +142,9 @@ options(shiny.port = 8002)
                    
                    sliderInput("years",
                                h4("Filter Year"), 
-                               min = min(years()),
-                               max = max(years()),
-                               value = c(min(years()), max(years())),
+                               min = min(years),
+                               max = max(years),
+                               value = c(min(years), max(years)),
                                sep = ""
                    ),
                    
