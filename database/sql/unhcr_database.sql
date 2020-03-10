@@ -368,9 +368,9 @@ CREATE TABLE IF NOT EXISTS `indicators` (
   CONSTRAINT `FK_indicators_group` FOREIGN KEY (`group_name`) REFERENCES `groups` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table unhcr.indicator: ~0 rows (approximately)
-/*!40000 ALTER TABLE `indicators` DISABLE KEYS */;
-/*!40000 ALTER TABLE `indicators` ENABLE KEYS */;
+-- Dumping data for table unhcr.indicators: ~0 rows (approximately)
+/*!40000 ALTER TABLE `indicator` DISABLE KEYS */;
+/*!40000 ALTER TABLE `indicator` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
