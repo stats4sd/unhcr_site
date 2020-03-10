@@ -20,7 +20,7 @@ class Group extends Model
     protected $primaryKey = 'name';
     // public $timestamps = false;
     // protected $guarded = ['id'];
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'subgroup_id'];
     // protected $hidden = [];
     // protected $dates = [];
     public $incrementing = false;
@@ -39,6 +39,7 @@ class Group extends Model
     {
         return $this->hasMany('App\Models\Indicator');
     }
+
 
     /*
     |--------------------------------------------------------------------------

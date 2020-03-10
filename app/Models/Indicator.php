@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Dataset;
 use App\Models\Group;
 use App\Models\SdgIndicator;
+use App\Models\Subgroup;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
@@ -46,6 +47,11 @@ class Indicator extends Model
     public function sdg_indicator()
     {
         return $this->belongsTo('App\Models\SdgIndicator', 'sdg_indicator_id');
+    }
+
+    public function subgroups()
+    {
+        return $this->belongsTo('App\Models\Subgroup', 'subgroup_name');
     }
 
     /*

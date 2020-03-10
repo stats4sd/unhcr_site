@@ -34,7 +34,7 @@ class GroupCrudController extends CrudController
                 'name' => 'name',
                 'label' => 'Name',
                 'type' => 'text',
-            ],
+            ]
         ]);
     }
 
@@ -42,12 +42,12 @@ class GroupCrudController extends CrudController
     {
         $this->crud->setValidation(GroupRequest::class);
 
-        $this->crud->setColumns([
+        $this->crud->addFields([
             [
                 'name' => 'name',
                 'label' => 'Enter name of group',
                 'type' => 'text',
-            ],
+            ]
         ]);
 
     }

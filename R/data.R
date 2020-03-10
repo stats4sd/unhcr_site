@@ -1,68 +1,249 @@
 library(DBI)
 library(DT)
-# library(data.table)
-library(ggplot2)
 library(maps)
-library(ggthemes)
-#library(readr)
 library(dplyr)
+library(stringi)
+library(dotenv)
 source('dbConfig.R')
-quakes <- read.csv("query.csv")
-#View(quakes)
-#available data maps 
-url_csv <- 'https://raw.githubusercontent.com/d4tagirl/R-Ladies-growth-maps/master/rladies.csv'
-rladies <- read.csv(url(url_csv)) %>% 
-  select(-1)
 
-datatable(rladies, rownames = FALSE,
-          options = list(pageLength = 5))
+#####################################
+# Get connection with the database
+#####################################
 
-world <- ggplot() +
-  borders("world", colour = "gray85", fill = "gray80") +
-  theme_map() 
-
-map <- world +
-  geom_point(aes(x = lon, y = lat, size = followers),
-             data = rladies, 
-             colour = 'purple', alpha = .5) +
-  scale_size_continuous(range = c(1, 8), 
-                        breaks = c(250, 500, 750, 1000)) +
-  labs(size = 'Followers')
-
-
-#use con for connecting to database 
-indicator_table_db<-dbGetQuery(con,'
-  select *
-  from indicator
-  group by id')
-
-# country table
-country_table<-dbGetQuery(con,'
-  select *
-  from country')
-#filter data fo data available map
-sdg <-quakes  %>% filter(mag<=4)
-refugee <-quakes %>% filter(mag>4) 
+get_sql_connection <- function() {
+  
+ 
+  load_dot_env(file = "../.env")
+  
+  con <-  DBI::dbConnect(RMySQL::MySQL(),
+                         dbname = Sys.getenv('DB_DATABASE'),
+                         host = Sys.getenv('DB_HOST'),
+                         port = as.numeric(Sys.getenv('DB_PORT')),
+                         user = Sys.getenv('DB_USERNAME'),
+                         password = Sys.getenv('DB_PASSWORD')
+                        )
+  
+  
+  dbSendQuery(con,"set character set 'utf8mb4'")
+  
+  return(con)
+}
 
 
-####################
-### Commented out temporarily as I don't have the source file to read.
-# - DEGM, 2019-11-22
-# # indicators table from csv
-# indicator_table <- read.csv("C:/Users/LuciaFalcinelli/Documents/R/unhcr/data/Colombia Iraq SDG indicators for displaced people.csv")
-# 
-# # indicator_table1 for Basic needs and living conditions
-# indicator_table1<-indicator_table %>% select('Country', 'Year', 'SDG_2.2.1', 'SDG_3.2.1', 'SDG_6.6.1', 'SDG_11.1.1')
-# 
-# # indicator_table2 for Livelihoods and economic self-reliance
-# indicator_table2<-indicator_table %>% select('Country', 'Year', 'SDG_1.2.1', 'SDG_4.1.1.a.i', 'SDG_7.1.1', 'SDG_8.3.1', 'SDG_8.5.2.male', 'SDG_8.5.2.female')
-# 
-# # indicator_table3 for Livelihoods and economic self-reliance
-# indicator_table3<-indicator_table %>% select('Country', 'Year', 'SDG_1.4.2.a', 'SDG_1.4.2.b', 'SDG_16.1.4', 'SDG_16.9.1')
-###################
+#############################################
+# Create the information for the map, 
+# include the url for the markers
+#############################################
+
+load_indicators_map<-function(){
+  
+  indicators_map <- load_indicators(NULL) %>% group_by(countries_name, country_code, latitude, longitude) %>% 
+  summarise('indicator_num'= n(), icon_url = create_url_markers(country_code), description=paste(unique(description),collapse="; "),
+            population_definition=paste(unique(population_definition),collapse="; "), source_url=paste('<a href="',unique(source_url),'">',unique(source_url), '</a>', sep="", collapse='; '))
+  
+  return(indicators_map)
+}
+
+load_indicators_map()
+
+#####################################
+# Palette indicators for the Charts
+#####################################
+
+palette_indicators<-function(){
+  palette_indicators <- c("#e5243b", "#dda83a", "#4c9f38", "#c5192d", "#ff3a21", 
+                          "#26bde2", "#fcc30b", "#a21942", "#fd6925", "#dd1367", 
+                          "#fd9d24", "#bf8b2e", "#3f7e44","#0a97d9", "#56c02b", 
+                          "#00689d", "#19486a")
+  
+  return(palette_indicators)
+}
+
+#########################################
+# Create a url for the markers in the map
+#########################################
+
+create_url_markers <- function(country_code){
+
+  indic_by_country <- load_indicators(country_code)
+  list_group <- unique(indic_by_country$group_name)
+  list_group <- sort(list_group, decreasing = FALSE)
+  string_group <- paste( unlist(list_group), collapse='')
+  icon_url <- paste("images_app/markers/",string_group,".png", sep="")
+  
+  return(icon_url)
+}
+
+############################################
+# Create a list of countries for the dropdown
+#############################################
+
+countries_list<-function(){
+  con <- get_sql_connection()
+  
+  sql<-"SELECT
+            
+            datasets.country_code,
+            countries.name as countries_name
+
+            FROM datasets
+            
+            LEFT JOIN countries on datasets.country_code = countries.ISO_code;"
+  
+  countries_list_df <- dbGetQuery(con, sql)
+  dbDisconnect(con)
+  countries_list <- setNames(countries_list_df$country_code,as.character(countries_list_df$countries_name))
+  return(countries_list)
+}
+
+############################################
+# Create a list of groups.name for the 
+# subsets checkbox
+#############################################
+
+subsets_list<-function(){
+  con <- get_sql_connection()
+  
+  sql<-"SELECT
+            groups.name
+            FROM groups;"
+  
+  groups_name_df <- dbGetQuery(con, sql)
+  dbDisconnect(con)
+  
+  subsets_list <- sort(setNames(groups_name_df$name,as.character(groups_name_df$name)))
+  subsets_list <- append(as.character(subsets_list), 'Select All', after = 0)
+  
+  return(subsets_list)  
+}
+
+############################################
+# limit to 50 characters the description 
+# for the sdg_description
+#############################################
+
+limited_description<-function(){
+  description<-substring(load_all_indicators()$sdg_description, 0, 30)
+  for(i in 1:length(load_all_indicators()$sdg_description)){
+    if(length(load_all_indicators()$sdg_description[i])<25){
+      description[i]<-paste(description[i], '[...]')
+    }
+  }
+  return(description)
+}
+
+############################################
+# Create sdg list for the control panel
+#############################################
+
+sdg_list <- function(){
+  
+  sdg_list <- setNames(unique(indicators$sdg_code),as.character(paste(unique(indicators$sdg_code), unique(limited_description()), sep=': ')))
+  sdg_list[!is.na(sdg_list)]
+  sdg_list <- sort(sdg_list)
+  sdg_list <- append((sdg_list), 'Select All', after = 0)
+  
+  return(sdg_list)
+}
+
+############################################
+# Create sdg code list for the SDG filter
+#############################################
+
+sdg_code_list <- function(){
+  con <- get_sql_connection()
+  
+  sql<-"SELECT sdg_indicators.code as sdg_code
+           
+        FROM sdg_indicators;"
+  
+  sdg_code_df <- dbGetQuery(con, sql)
+  dbDisconnect(con)
+  sdg_code_list <- unique(sdg_code_df$sdg_code)
+  
+  return(sdg_code_list)
+}
+
+#####################################
+# load data by country code
+#####################################
+
+load_indicators<-function(country_code){
+  
+  con <- get_sql_connection()
+
+  sql <- "SELECT
+            indicators.dataset_id,
+            indicators.group_name,
+            indicators.subgroup_name,
+            indicators.sdg_indicator_id,
+            indicators.indicator_value,
+            datasets.region,
+            datasets.country_code,
+            datasets.year,
+            datasets.description,
+            datasets.population_definition,
+            datasets.source_url,
+            datasets.comment,
+            countries.name as countries_name,
+            countries.longitude,
+            countries.latitude,
+            sdg_indicators.code as sdg_code,
+            sdg_indicators.description as sdg_description
+            FROM indicators
+            LEFT JOIN datasets on indicators.dataset_id = datasets.id
+            LEFT JOIN countries on datasets.country_code = countries.ISO_code
+            LEFT JOIN sdg_indicators on indicators.sdg_indicator_id = sdg_indicators.id"
+                        
+  if(! is.null(country_code)) {
+    sql <- paste(sql, " WHERE datasets.country_code = '",country_code, "'", sep = "")
+  }
+  
+  indicators$countries_name <- as.factor(indicators$countries_name )
+  indicators$year <- as.numeric(indicators$year)
+  indicators$latitude <- as.numeric(indicators$latitude)
+  indicators$longitude <- as.numeric(indicators$longitude)
+  indicators$group_name <- as.factor(indicators$group_name)
+  indicators$subgroup_name <- as.factor(indicators$subgroup_name)
+  indicators <- dbGetQuery(con,paste(sql,";"))
+  dbDisconnect(con)
+  
+  return(indicators)
+}
 
 
-dbDisconnect(con)
+#####################################
+# Create src for the SDG image
+#####################################
+
+show_image<-function(sdg_number){
+  src_image <- paste("images_app/E-WEB-Goal-",sdg_number,".png", sep="")
+  alt_image <- paste("sdg",sdg_number, sep="")
+  renderImage({
+      return(list(
+        width = 100,
+        height = 100,
+        src = src_image,
+        contentType = "image/png",
+        alt = alt_image
+      ))
+    
+    
+  }, deleteFile = FALSE)
+}
 
 
+killDbConnections <- function () {
+  
+  all_cons <- dbListConnections(MySQL())
+  
+  print(all_cons)
+  
+  for(con in all_cons)
+    +  dbDisconnect(con)
+  
+  print(paste(length(all_cons), " connections killed."))
+  
+}
 
+killDbConnections()

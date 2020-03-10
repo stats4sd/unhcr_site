@@ -6,6 +6,7 @@ use App\Http\Requests\IndicatorRequest;
 use App\Models\Dataset;
 use App\Models\Group;
 use App\Models\SdgIndicator;
+use App\Models\Subgroup;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -32,7 +33,7 @@ class IndicatorCrudController extends CrudController
     protected function setupListOperation()
     {
         // TODO: remove setFromDb() and manually define Columns, maybe Filters
-        
+
          $this->crud->addColumns([
             [
                 'name' => 'dataset_id',
@@ -46,7 +47,12 @@ class IndicatorCrudController extends CrudController
                 'name' => 'group_name',
                 'label' => 'Group name',
                 'type' => 'text',
-            ], 
+            ],
+            [
+                'name' => 'subgroup_name',
+                'label' => 'Subgroup name',
+                'type' => 'text',
+            ],
             [
                 'name' => 'sdg_indicator_id',
                 'label' => 'Sdg Indicator',
@@ -59,6 +65,7 @@ class IndicatorCrudController extends CrudController
                 'name' => 'indicator_value',
                 'label' => 'Indicator Value',
                 'type' => 'number',
+                'decimals' => 5,
             ],
             [
                 'name' => 'fake',
@@ -84,7 +91,7 @@ class IndicatorCrudController extends CrudController
         $this->crud->setValidation(IndicatorRequest::class);
 
         // TODO: remove setFromDb() and manually define Fields
-       
+
         //$this->crud->setFromDb();
         $this->crud->addFields([
             [
@@ -109,6 +116,14 @@ class IndicatorCrudController extends CrudController
                 'model' => Group::class
             ],
             [
+                'name' => 'subgroup_name',
+                'label' => 'Subgroup name',
+                'type' => 'select2',
+                'entity' => 'subgroups',
+                'attribute' => 'name',
+                'model' => Subgroup::class
+            ],
+            [
                 'name' => 'sdg_indicator_id',
                 'label' => 'Sdg Indicator',
                 'type' => 'select2',
@@ -119,6 +134,9 @@ class IndicatorCrudController extends CrudController
             [
                 'name' => 'indicator_value',
                 'label' => 'Indicator Value',
+                'attributes' => [
+                    'step' => 'any',
+                ],
                 'type' => 'number',
             ],
             [

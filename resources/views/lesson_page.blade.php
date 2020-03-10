@@ -1,8 +1,8 @@
 @extends('layouts.app')
-@section('navbar')
+@section('content')
 <style type="text/css">
 	.lesson_page {
-            background: url('{{$lesson_page->image}}') center center / cover no-repeat;
+            background: url('{{Storage::url($lesson_page->image_background)}}') center center / cover no-repeat;
         }
 </style>
 <body>
@@ -11,24 +11,27 @@
 </div>
 
 <div class="row">
-	<div class="col-sm-8 center" style="padding: 100px 100px;"> 
+	<div class="col-sm-8 center" style="padding: 100px 100px;">
 	    <section class="content mb-5" id="introduction">
 		        <p><b>{{ $lesson_page->comment }}</b></p>
 		        <p>{{ $lesson_page->body_1 }}</p>
-		        @if( $lesson_page->table_title!=null )
+		        @if( $lesson_page->table_title_1 != null )
 		        <div class="w3-container">
 	  				<hr>
 	  					<div class="w3-center">
-	    					<p w3-class="w3-large"><b>Table 1.1 {{ $lesson_page->table_title }}</b></p>
+	    					<p w3-class="w3-large"><b>Table 1.1 {{ $lesson_page->table_title_1 }}</b></p>
+	    				
 	  					</div>
 					<div class="w3-responsive w3-card-4">
 					<table class="w3-table w3-striped w3-bordered">
 						<thead>
+							
 							<tr class="w3-theme">
-								<th>First Name</th>
+								<th>First name </th>
 								<th>Last Name</th>
 								<th>Points</th>
 							</tr>
+						
 						</thead>
 						<tbody>
 						<tr>

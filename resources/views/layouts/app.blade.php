@@ -28,7 +28,7 @@ body {
 .header {
   /*text-align: center;*/
   background: #1abc9c;
-  color: white;
+  color: black;
 }
 
 /* Increase the font size of the heading */
@@ -38,8 +38,8 @@ body {
 
 /* Sticky navbar - toggles between relative and fixed, depending on the scroll position. It is positioned relative until a given offset position is met in the viewport - then it "sticks" in place (like position:fixed). The sticky value is not supported in IE or Edge 15 and earlier versions. However, for these versions the navbar will inherit default position */
 .navbar {
-  overflow: hidden;
-  background-color: #333;
+ /* overflow: hidden;*/
+  background-color: white;
   position: sticky;
   position: -webkit-sticky;
   top: 0;
@@ -49,8 +49,8 @@ body {
 .navbar a {
   float: left;
   display: block;
-  color: white;
-  /*text-align: center;*/
+  color: black;
+  text-align: center;
   padding: 14px 20px;
   text-decoration: none;
 }
@@ -63,18 +63,18 @@ body {
 
 /* Change color on hover */
 .navbar a:hover {
-  background-color: #ddd;
-  color: black;
+  background-color: #0072BC;
+  color: white;
 }
 
 /* Active/current link */
 .navbar a.active {
-  background-color: #666;
+  background-color: #0072BC;
   color: white;
 }
 
 /* Column container */
-.row {  
+.row {
   display: -ms-flexbox; /* IE10 */
   display: flex;
   -ms-flex-wrap: wrap; /* IE10 */
@@ -91,7 +91,7 @@ body {
 }
 
 /* Main column */
-.main {   
+.main {
   -ms-flex: 70%; /* IE10 */
   flex: 70%;
   background-color: white;
@@ -100,16 +100,9 @@ body {
 
 
 
-/* Footer */
-.footer {
-  padding: 20px;
-  text-align: center;
-  background: #ddd;
-}
-
 /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 700px) {
-  .row {   
+  .row {
     flex-direction: column;
   }
 }
@@ -149,22 +142,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Float four columns side by side */
-/*.column {
-  float: left;
-  width: 100%;
-  padding: 0 10px;
-}*/
 
-/* Remove extra left and right margins, due to padding in columns */
-/*.row {margin: 0 -5px;}*/
-
-/* Clear floats after the columns */
-/*.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}*/
 
 /* Style the counter cards */
 .card {
@@ -194,102 +172,34 @@ Lessons & Learning
 /*------------------------
 Footer
 ------------------------*/
-/* Style all font awesome icons */
-.fa {
-  padding: 20px;
-  font-size: 30px;
-  width: 50px;
-  text-align: center;
-  text-decoration: none;
-}
-
-/* Add a hover effect if you want */
-.fa:hover {
-  opacity: 0.7;
-}
-
-/* Set a specific color for each brand */
-
-/* Facebook */
-.fa-facebook {
-  background: #3B5998;
-  color: white;
-}
-
-/* Twitter */
-.fa-twitter {
-  background: #55ACEE;
-  color: white;
-}
-
-.fa-google {
-  background: #dd4b39;
-  color: white;
-}
-
-.fa-linkedin {
-  background: #007bb5;
-  color: white;
-}
-
-.fa-youtube {
-  background: #bb0000;
-  color: white;
-}
-
-.fa-instagram {
-  background: #125688;
-  color: white;
-}
-
-
-.fa-skype {
-  background: #00aff0;
-  color: white;
-}
-
-
-.fa {
-  text-align: center;
-  text-decoration: none;
-  border-radius: 50%;
-}
 
 .footer {
   /*overflow: hidden;*/
-  background-color: #333;
+  background-color: #0072BC;
   position: sticky;
   position: -webkit-sticky;
+  padding: 20px;
+  text-align: center;
   top: 0;
 }
-
 
 </style>
 </head>
 <body>
-@section('navbar')
-<div class="navbar">
-  <a href="home">Home</a>
-  <a href="http://127.0.0.1:8001">Available Data</a>
-  <a href="http://127.0.0.1:8001">SDG</a>
-  <!-- <a href="admin">Admin</a> -->
-  <a href="lessons">Lessons & Learning</a>
-</div>
-@yield('navbar')
+    <div class="navbar">
+      <img src="images/logo.png" style="height: 75px;">
+      <a href="{{ url('home') }}"><b>Home</b></a>
+      <a href="{{ url('sdgs') }}"><b>SDGs Indicstors</b></a>
+      <a href="{{ url('lessons') }}"><b>Lessons & Learning</b></a>
+    </div>
+@yield('content')
 
-@section('footer')
+
 <div class="footer">
   <!-- Add icon library -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
 <!-- Add font awesome icons -->
-<a href="#" class="fa fa-facebook"></a>
-<a href="#" class="fa fa-twitter"></a>
-<a href="#" class="fa fa-google"></a>
-<a href="#" class="fa fa-linkedin"></a>
-<a href="#" class="fa fa-youtube"></a>
-<a href="#" class="fa fa-instagram"></a>
-<a href="#" class="fa fa-skype"></a>
+    <a href="{{ url('login') }}" class="text">Admin Login</a>
 
 
 </div>

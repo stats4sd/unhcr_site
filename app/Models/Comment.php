@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    use CrudTrait;
+    use CrudTrait, \Spatie\Tags\HasTags;
 
     /*
     |--------------------------------------------------------------------------
@@ -18,7 +18,7 @@ class Comment extends Model
     protected $table = 'comments';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
-    protected $guarded = ['id'];
+    protected $guarded = ['id','spatie_tags'];
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];

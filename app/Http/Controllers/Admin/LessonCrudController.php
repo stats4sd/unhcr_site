@@ -50,17 +50,118 @@ class LessonCrudController extends CrudController
                 'label' => 'Lesson title',
             ],
             [
+                'name' => 'image_background',
+                'label' => 'Image background',
+                'type' => 'upload',
+                'upload' => true,
+                'disk' => 'uploads',
+            ],
+            [
                 'type' => 'text',
                 'name' => 'comment',
                 'label' => 'Insert a short descrition for the lesson page',
             ],
-            [   // TinyMCE
-                'name' => 'body_1',
-                'label' => 'Body_1',
-                'type' => 'tinymce',
-                // optional overwrite of the configuration array
-                // 'options' => [ 'selector' => 'textarea.tinymce',  'skin' => 'dick-light', 'plugins' => 'image,link,media,anchor' ],
+            [
+                'type' => 'text',
+                'name' => 'card',
+                'label' => 'Insert a short note for the right card',
             ],
+            [   
+                'name' => 'body_1',
+                'label' => 'Body 1',
+                'type' => 'textarea',
+            ],
+            [
+                'name' => 'table_title_1',
+                'label' => 'Table title 1',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'table_body_1',
+                'label' => 'Table Body 1 ',
+                'type' => 'table',
+                'entity_singular' => 'option', // used on the "Add X" button
+                'columns' => [
+                    'option1' => 'Option 1',
+                    'option2' => 'Option 2',
+                    'option3' => 'Option 3',
+                    'option4' => 'Option 4',
+                    'option5' => 'Option 5',
+                ],
+                'max' => 20, // maximum rows allowed in the table
+                'min' => 0, // minimum rows allowed in the table
+            ],
+            [
+                'name' => 'image_1',
+                'label' => 'Image body 1',
+                'type' => 'upload',
+                'upload' => true,
+                'disk' => 'uploads',
+            ],
+            [   
+                'name' => 'body_2',
+                'label' => 'Body 2',
+                'type' => 'textarea',
+            ],
+            [
+                'name' => 'table_title_2',
+                'label' => 'Table title 2',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'table_body_2',
+                'label' => 'Table Body 2 ',
+                'type' => 'table',
+                'entity_singular' => 'option', // used on the "Add X" button
+                'columns' => [
+                    'option1' => 'Option 1',
+                    'option2' => 'Option 2',
+                    'option3' => 'Option 3',
+                    'option4' => 'Option 4',
+                    'option5' => 'Option 5',
+                ],
+                'max' => 20, // maximum rows allowed in the table
+                'min' => 0, // minimum rows allowed in the table
+            ],
+            [
+                'name' => 'image_2',
+                'label' => 'Image body 2',
+                'type' => 'upload',
+                'upload' => true,
+                'disk' => 'uploads',
+            ],
+            [   
+                'name' => 'body_3',
+                'label' => 'Body 3',
+                'type' => 'textarea',
+            ],
+            [
+                'name' => 'table_title_3',
+                'label' => 'Table title 3',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'table_body_3',
+                'label' => 'Table Body 3 ',
+                'type' => 'table',
+                'entity_singular' => 'option', // used on the "Add X" button
+                'columns' => [
+                    'option1' => 'Option 1',
+                    'option2' => 'Option 2',
+                    'option3' => 'Option 3',
+                    'option4' => 'Option 4',
+                    'option5' => 'Option 5',
+                ],
+                'max' => 20, // maximum rows allowed in the table
+                'min' => 0, // minimum rows allowed in the table
+            ],
+            [
+                'name' => 'image_3',
+                'label' => 'Image body 3',
+                'type' => 'upload',
+                'upload' => true,
+                'disk' => 'uploads',
+            ]
                        
         ]);
     }
@@ -69,4 +170,5 @@ class LessonCrudController extends CrudController
     {
         $this->setupCreateOperation();
     }
+
 }
