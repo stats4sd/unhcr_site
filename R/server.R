@@ -1,3 +1,4 @@
+source('data.R')
 server = function(input, output, session) {
   #####################################
   # load indicators and maps info
