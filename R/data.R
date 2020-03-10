@@ -29,65 +29,6 @@ get_sql_connection <- function() {
   return(con)
 }
 
-#####################################
-# load all data about indicators 
-#####################################
-
-load_all_indicators <- function(){
-  con <- get_sql_connection()
-  
-  sql<-'SELECT
-            indicators.dataset_id,
-            indicators.group_name,
-            indicators.subgroup_name,
-            indicators.sdg_indicator_id,
-            indicators.indicator_value,
-            datasets.region,
-            datasets.country_code,
-            datasets.year,
-            datasets.description,
-            datasets.population_definition,
-            datasets.source_url,
-            datasets.comment,
-            countries.name as countries_name,
-            countries.longitude,
-            countries.latitude,
-            sdg_indicators.code as sdg_code,
-            sdg_indicators.description as sdg_description
-            FROM indicators
-            LEFT JOIN datasets on indicators.dataset_id = datasets.id
-            LEFT JOIN countries on datasets.country_code = countries.ISO_code
-            LEFT JOIN sdg_indicators on indicators.sdg_indicator_id = sdg_indicators.id;'
-  
-  indicators <- dbGetQuery(con, sql)
-  
-  indicators$countries_name <- as.factor(indicators$countries_name )
-  indicators$year <- as.numeric(indicators$year)
-  indicators$latitude <- as.numeric(indicators$latitude)
-  indicators$longitude <- as.numeric(indicators$longitude)
-  indicators$group_name <- as.factor(indicators$group_name)
-
-  dbDisconnect(con)
-  return(indicators)
-}
-
-#############################################
-# return a list of year for the range slider
-#############################################
-
-years<-function(){
-  con <- get_sql_connection()
-  
-  sql<-"SELECT
-            datasets.year
-            FROM datasets"
-
-  df_years <- dbGetQuery(con, sql)
-  unique_years <- unique(df_years)
-  years <- as.numeric(unlist(unique_years))
-  dbDisconnect(con)
-  return(years)
-}
 
 #############################################
 # Create the information for the map, 
@@ -96,12 +37,14 @@ years<-function(){
 
 load_indicators_map<-function(){
   
-  indicators_map <- load_all_indicators() %>% group_by(countries_name, country_code, latitude, longitude) %>% 
-  summarise('indicator_num'= n(), icon_url = create_url_markers(country_code)) 
-
+  indicators_map <- load_indicators(NULL) %>% group_by(countries_name, country_code, latitude, longitude) %>% 
+  summarise('indicator_num'= n(), icon_url = create_url_markers(country_code), description=paste(unique(description),collapse="; "),
+            population_definition=paste(unique(population_definition),collapse="; "), source_url=paste('<a href="',unique(source_url),'">',unique(source_url), '</a>', sep="", collapse='; '))
+  
   return(indicators_map)
-
 }
+
+load_indicators_map()
 
 #####################################
 # Palette indicators for the Charts
@@ -228,28 +171,40 @@ sdg_code_list <- function(){
 load_indicators<-function(country_code){
   
   con <- get_sql_connection()
+
   sql <- "SELECT
-         indicators.group_name,
-         indicators.subgroup_name,
-         indicators.indicator_value,
-         datasets.region,
-         datasets.year,
-         datasets.country_code,
-         datasets.description,
-         datasets.population_definition,
-         datasets.source_url,
-         datasets.comment,
-         countries.name as countries_name,
-         sdg_indicators.code as sdg_code
-         FROM indicators
-         LEFT JOIN datasets on datasets.id = indicators.dataset_id
-         LEFT JOIN countries on countries.ISO_code = datasets.country_code
-         LEFT JOIN sdg_indicators on  sdg_indicators.id = indicators.sdg_indicator_id"
+            indicators.dataset_id,
+            indicators.group_name,
+            indicators.subgroup_name,
+            indicators.sdg_indicator_id,
+            indicators.indicator_value,
+            datasets.region,
+            datasets.country_code,
+            datasets.year,
+            datasets.description,
+            datasets.population_definition,
+            datasets.source_url,
+            datasets.comment,
+            countries.name as countries_name,
+            countries.longitude,
+            countries.latitude,
+            sdg_indicators.code as sdg_code,
+            sdg_indicators.description as sdg_description
+            FROM indicators
+            LEFT JOIN datasets on indicators.dataset_id = datasets.id
+            LEFT JOIN countries on datasets.country_code = countries.ISO_code
+            LEFT JOIN sdg_indicators on indicators.sdg_indicator_id = sdg_indicators.id"
                         
   if(! is.null(country_code)) {
     sql <- paste(sql, " WHERE datasets.country_code = '",country_code, "'", sep = "")
   }
   
+  indicators$countries_name <- as.factor(indicators$countries_name )
+  indicators$year <- as.numeric(indicators$year)
+  indicators$latitude <- as.numeric(indicators$latitude)
+  indicators$longitude <- as.numeric(indicators$longitude)
+  indicators$group_name <- as.factor(indicators$group_name)
+  indicators$subgroup_name <- as.factor(indicators$subgroup_name)
   indicators <- dbGetQuery(con,paste(sql,";"))
   dbDisconnect(con)
   
@@ -291,4 +246,4 @@ killDbConnections <- function () {
   
 }
 
-#killDbConnections()
+killDbConnections()
