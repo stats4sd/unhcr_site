@@ -16,12 +16,34 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://use.typekit.net/qiu2fvt.css">
 <style>
 
 /* Style the body */
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  margin: 0;
+
+body, html {
+    font-family: proxima-nova, sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    }
+.nav {
+    height: 100px;
+}
+
+.navitem {
+   margin: auto;
+text-align: center;
+font-weight: 700;
+}
+.active{
+  
+        border-bottom: 5px solid #0072BC;
+    
+}
+.nav:hover {
+    background-color: #0072BC;
+    color: #ffffff;
+
 }
 
 /* Header/logo Title */
@@ -59,18 +81,6 @@ body {
 /* Right-aligned link */
 .navbar a.right {
   float: right;
-}
-
-/* Change color on hover */
-.navbar a:hover {
-  background-color: #0072BC;
-  color: white;
-}
-
-/* Active/current link */
-.navbar a.active {
-  background-color: #0072BC;
-  color: white;
 }
 
 /* Column container */
@@ -186,11 +196,29 @@ Footer
 </style>
 </head>
 <body>
-    <div class="navbar">
-      <img src="images/logo.png" style="height: 75px;">
+
+    <!-- <div class="navbar">
+      <img src="images/logo.png" style="height: 100px;">
       <a href="{{ url('home') }}"><b>Home</b></a>
       <a href="{{ url('sdgs') }}"><b>SDGs Indicstors</b></a>
       <a href="{{ url('lessons') }}"><b>Lessons & Learning</b></a>
+    </div> -->
+
+    <div class="container w-100 px-0"></div>
+      <div class="row">
+          <div class="col-3 px-0">
+            <img src="images/logo.png" style="height: 100px; padding-left: 50px;">
+          </div>
+          <div class="col-3 nav px-0">    
+            <div class="navitem" onclick="window.location.href = '{{ url('home') }}';">Home</div>
+          </div>
+          <div class="col-3 nav active px-0">    
+            <div class="navitem" onclick="window.location.href = '{{ url('sdgs') }}';">SDG Indicators</div>
+          </div>       
+          <div class="col-3 nav px-0">    
+            <div class="navitem" onclick="window.location.href = '{{ url('lessons') }}';">Lessons and Recommendations</div>
+          </div>
+      </div>
     </div>
 @yield('content')
 

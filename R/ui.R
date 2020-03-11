@@ -1,14 +1,3 @@
-library(shiny)
-library(leaflet)
-library(DT)
-library(dplyr)
-library(RColorBrewer)
-library(ggplot2)
-library(shinyjs)
-library(rgdal)
-
-source('data.R')
-
 
 options(shiny.host = '127.0.0.1')
 options(shiny.port = 8002)
