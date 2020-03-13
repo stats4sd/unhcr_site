@@ -117,6 +117,27 @@ subsets_list<-function(){
 }
 
 ############################################
+# Create a list of subgroups.name for the 
+# subgroup checkbox
+#############################################
+
+subgroup_list<-function(){
+  con <- get_sql_connection()
+  
+  sql<-"SELECT
+            subgroups.name
+            FROM subgroups;"
+  
+  subgroups_name <- dbGetQuery(con, sql)
+  dbDisconnect(con)
+  
+  subgroup_list <- sort(setNames(subgroups_name$name,as.character(subgroups_name$name)))
+  subgroup_list <- append(as.character(subgroup_list), 'Select All', after = 0)
+  
+  return(subgroup_list)  
+}
+
+############################################
 # limit to 50 characters the description 
 # for the sdg_description
 #############################################

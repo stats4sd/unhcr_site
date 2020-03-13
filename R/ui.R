@@ -138,9 +138,14 @@ options(shiny.port = 8002)
                    ),
                    
                    checkboxGroupInput("filterSubsets", 
-                                      h4("Filter Subsets"),, 
+                                      h4("Filter Subsets"), 
                                       choices = subsets_list(),  
                                       selected = subsets_list(),
+                   ),
+                   checkboxGroupInput("filterSubgroups", 
+                                      h4("Filter Subgroups"), 
+                                      choices = subgroup_list(),  
+                                      selected = subgroup_list(),
                    ),
                    div(class="indicator_checkbox",
                        checkboxGroupInput("filterIndicators", 
@@ -194,12 +199,15 @@ options(shiny.port = 8002)
                               br(),
                               hr(),
                               br(),
+                              div(class="alert alert-info", style="width:90%;",
+                                  "To filter indicators, please tick/untick on the left-hand column"
+                                  ),
                               column(8, 
                                      
                                      plotOutput("chart"),
                                      plotOutput("chartSdgsGroup")
                               ),
-                           
+                              
                               column(4,
                                      
                                
