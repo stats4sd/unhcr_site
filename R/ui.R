@@ -1,7 +1,7 @@
 
 options(shiny.host = '127.0.0.1')
 options(shiny.port = 8002)
-
+jscode <- "shinyjs.refresh = function() { location.reload(); }"
   ui <- tagList(
     tags$style("
     .irs-bar {
@@ -110,6 +110,7 @@ options(shiny.port = 8002)
     "),
     
     useShinyjs(),  # Set up shinyjs
+    extendShinyjs(text = jscode, functions = "refresh"),
     ## navbarPage
     fluidPage(
       fluidRow(
@@ -173,7 +174,7 @@ options(shiny.port = 8002)
                br(),
                shinyjs::hidden(
                  div(id="available_data",
-               navbarPage(title=htmlOutput("navbar_country"),
+               navbarPage(title=htmlOutput("navbar_country"), id = "countrybar",
               ##########################################
               # AVAILABLE INDICATORS PAGE
               ##########################################
@@ -247,7 +248,7 @@ options(shiny.port = 8002)
                ##########################################
                
                tabPanel("ADDITIONAL INFORMATION"),
-               tabPanel("back to the map")
+               tabPanel("back to the map", value = "refresh")
                )
               )
             )

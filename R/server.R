@@ -2,6 +2,14 @@
 server = function(input, output, session) {
   
   #####################################
+  # refresh page when click on back to the map
+  #####################################
+  observe({
+    if (input$countrybar == "refresh") {
+      js$refresh();
+    }
+  })
+  #####################################
   # load indicators and maps info
   #####################################
   observe({
