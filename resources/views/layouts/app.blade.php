@@ -31,9 +31,9 @@ body, html {
 }
 
 .navitem {
-   margin: auto;
-text-align: center;
-font-weight: 700;
+  margin: auto;
+  text-align: center;
+  font-weight: 700;
 }
 .active{
   
@@ -209,9 +209,9 @@ Footer
           <div class="col-3 px-0">
             <img src="images/logo.png" style="height: 100px; padding-left: 50px;">
           </div>
-          <div class="col-3 nav px-0">    
-            <div class="navitem" onclick="window.location.href = '{{ url('home') }}';">Home</div>
-          </div>
+          <a class="col-3 nav px-0" href="{{ url('home') }}" style="text-decoration:none;">    
+            <div class="navitem">Home</div>
+          </a>
           <div class="col-3 nav active px-0">    
             <div class="navitem" onclick="window.location.href = '{{ url('sdgs') }}';">SDG Indicators</div>
           </div>       
