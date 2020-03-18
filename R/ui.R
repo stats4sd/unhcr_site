@@ -138,7 +138,7 @@ options(shiny.port = 8002)
                    ),
                    
                    checkboxGroupInput("filterSubsets", 
-                                      h4("Filter Subsets"), 
+                                      h4("Filter Groups"), 
                                       choices = subsets_list(),  
                                       selected = subsets_list(),
                    ),
@@ -170,9 +170,9 @@ options(shiny.port = 8002)
                  div(id="available_data",
                navbarPage(title=htmlOutput("navbar_country"),
               ##########################################
-              # AVAILABLE DATA PAGE
+              # AVAILABLE INDICATORS PAGE
               ##########################################
-              tabPanel("AVAILABLE DATA",
+              tabPanel("AVAILABLE INDICATORS",
                           
                absolutePanel( class="main_panel",
                               

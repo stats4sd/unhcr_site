@@ -206,18 +206,20 @@ Footer
 
     <div class="container w-100 px-0"></div>
       <div class="row">
-          <div class="col-3 px-0">
+          <div class="col-4 px-0">
             <img src="images/logo.png" style="height: 100px; padding-left: 50px;">
           </div>
+
           <a class="col-3 nav px-0" href="{{ url('home') }}" style="text-decoration:none;">    
             <div class="navitem">Home</div>
           </a>
           <div class="col-3 nav active px-0">    
+
             <div class="navitem" onclick="window.location.href = '{{ url('sdgs') }}';">SDG Indicators</div>
           </div>       
-          <div class="col-3 nav px-0">    
+         <!--  <div class="col-3 nav px-0">    
             <div class="navitem" onclick="window.location.href = '{{ url('lessons') }}';">Lessons and Recommendations</div>
-          </div>
+          </div> -->
       </div>
     </div>
 @yield('content')

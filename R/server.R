@@ -17,11 +17,9 @@ server = function(input, output, session) {
     req(input$country)
     indicators_country <- indicators_map %>% filter(country_code == input$country)
     output$info_indicators <- renderUI({ 
-    
      
       HTML(paste0(
-        "<br><br><b>Indicators: </b>",indicators_country$indicator_num, "<br>",
-        "<b>Datasets: </b>",indicators_country$country_code, "<br>",
+        "<br><br><b>Total number of indicators: </b>",indicators_country$indicator_num, "<br>",
         "<b>Population Definitions: </b>",indicators_country$population_definition, "<br>",
         "<b>Description: </b>", indicators_country$description, "<br><br>",
         "<b>Source: </b>",indicators_country$source_url, "<br>"
@@ -169,11 +167,11 @@ server = function(input, output, session) {
   
   })
   
-  observe({
-    req(input$filterSubsets)
+  observeEvent(input$filterSubsets,{
+    
     if(input$filterSubsets=="Select All"){
       updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', selected = subsets_list())
-    }
+    } 
   })
   
   observe({
@@ -257,12 +255,10 @@ server = function(input, output, session) {
     charts <-ggplot(data = data, aes(x=as.numeric(year), y=indicator_value)) +
       geom_line(aes(color = group_name, linetype= group_name)) +
       geom_point(aes(color = group_name), size = 3, alpha = 0.75) +
-      labs(y="sdg indicators", x = "year") +
-      geom_smooth() + 
-      ggtitle(paste(data$countries_name," \n","SDG Indicator ",  data$sdg_code,"\n",wrapper(data$sdg_description[1], width = 70),"\n", sep = "")) +
+      labs(y="SDG Indicator", x = "year") +
+      ggtitle(paste(data$countries_name," \n","SDG Indicator ",  data$sdg_code,"\n",wrapper(data$sdg_description[1], width = 60),"\n", sep = "")) +
       scale_x_continuous(breaks=years) +
       scale_y_continuous(limits =c(0,1)) +
-      #scale_color_discrete("SubSet") +
       scale_linetype("SubSet") +
       scale_color_manual("SubSet",values=palette_indicators()) +
       theme(text = element_text(size = 16), 
@@ -276,11 +272,10 @@ server = function(input, output, session) {
     charts <-ggplot(data = data, aes(x=as.numeric(year), y=indicator_value)) +
       geom_line(aes(color = sdg_code, linetype= sdg_code)) +
       geom_point(aes(color = sdg_code), size = 3, alpha = 0.75) +
-      labs(y="sdg indicators", x = "year")+
+      labs(y="SDG Indicator", x = "year")+
       ggtitle(paste(data$countries_name," \n","SDG Indicator for ",data$group_name," ",data$subgroup_name," ","\n", sep = "")) +
       scale_x_continuous(breaks=years)+
       scale_y_continuous(limits =c(0,1))+
-      # scale_color_discrete("SDG")+
       scale_linetype("SDG")+
       scale_color_manual("SDG",values=palette_indicators())+
       theme(text = element_text(size = 16),
@@ -295,12 +290,10 @@ server = function(input, output, session) {
       charts <-ggplot(data = data, aes(x=as.numeric(year), y=indicator_value)) +
         geom_line(aes(color = group_name, linetype= group_name)) +
         geom_point(aes(color = group_name), size = 3, alpha = 0.75) +
-        labs(y="sdg indicators", x = "year") +
-        geom_smooth() + 
-        ggtitle(paste(data$countries_name," \n","SDG Indicator ",  data$sdg_code,"\n",wrapper(data$sdg_description[1], width = 70),"\n", sep = "")) +
+        labs(y="SDG Indicator", x = "year") +
+        ggtitle(paste(data$countries_name," \n","SDG Indicator ",  data$sdg_code,"\n",wrapper(data$sdg_description[1], width = 60),"\n", sep = "")) +
         scale_x_continuous(breaks=years) +
         scale_y_continuous(limits =c(0,1)) +
-        #scale_color_discrete("SubSet") +
         scale_linetype("SubSet") +
         scale_color_manual("SubSet",values=palette_indicators()) +
         theme(text = element_text(size = 16), 
@@ -316,11 +309,10 @@ server = function(input, output, session) {
       charts <-ggplot(data = data, aes(x=as.numeric(year), y=indicator_value)) +
         geom_line(aes(color = sdg_code, linetype= sdg_code)) +
         geom_point(aes(color = sdg_code), size = 3, alpha = 0.75) +
-        labs(y="sdg indicators", x = "year")+
+        labs(y="SDG Indicator", x = "year")+
         ggtitle(paste(data$countries_name," \n","SDG Indicator for ",data$group_name," ",data$subgroup_name," ","\n", sep = "")) +
         scale_x_continuous(breaks=years)+
         scale_y_continuous(limits =c(0,1))+
-        # scale_color_discrete("SDG")+
         scale_linetype("SDG")+
         scale_color_manual("SDG",values=palette_indicators())+
         theme(text = element_text(size = 16),
