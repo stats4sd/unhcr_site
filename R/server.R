@@ -21,9 +21,8 @@ server = function(input, output, session) {
       HTML(paste0(
         "<br><br><b>Total number of indicators: </b>",indicators_country$indicator_num, "<br>",
         "<b>Population Definitions: </b>",indicators_country$population_definition, "<br>",
-        "<b>Description: </b>", indicators_country$description, "<br><br>",
-        "<b>Source: </b>",indicators_country$source_url, "<br>"
-        
+        #"<b>Description: </b>", indicators_country$description, "<br><br>",
+        "<b>Data sources: </b>","<br>", indicators_country$source_url, "<br>"
       ))
     
     })
@@ -149,45 +148,37 @@ server = function(input, output, session) {
     
     data <- subset(indicators, country_code == input$country)
     subsets_list_filter <- sort(unique(setNames(data$group_name,as.character(data$group_name))))
-    subsets_list_filter <- append(as.character(subsets_list_filter), 'Select All', after = 0)# add Select All to the subsets_list
     
     updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', choices = subsets_list_filter, selected = subsets_list_filter)
     
     subgroups_list_filter <- sort(unique(setNames(data$subgroup_name,as.character(data$subgroup_name))))
-    subgroups_list_filter <- append(as.character(subgroups_list_filter), 'Select All', after = 0)# add Select All to the subsets_list
     
     updateCheckboxGroupInput(session = session, inputId = 'filterSubgroups', choices = subgroups_list_filter, selected = subgroups_list_filter)
     
     sdg_description_list <- setNames(unique(data$sdg_code),as.character(paste(unique(data$sdg_code), unique(data$sdg_description), sep=': ')))
     sdg_description_list[!is.na(sdg_description_list)]
     sdg_description_list <- sort(sdg_description_list)
-    sdg_description_list <- append((sdg_description_list), 'Select All', after = 0)
     
     updateCheckboxGroupInput(session = session, inputId = 'filterIndicators', choices = sdg_description_list, selected = sdg_description_list)
   
   })
   
-  observeEvent(input$filterSubsets,{
-    
-    if(input$filterSubsets=="Select All"){
-      updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', selected = subsets_list())
-    } 
-  })
-  
+  #update checkboxGroup if the Select All is unticked/ticked
   observe({
-    req(input$filterSubgroups)
-    if(input$filterSubgroups=="Select All"){
-      updateCheckboxGroupInput(session = session, inputId = 'filterSubgroups', selected = subgroup_list())
-    }
-  })
     
-  observe({
-    req(input$filterIndicators)
-    if(input$filterIndicators=="Select All"){
-      updateCheckboxGroupInput(session = session, inputId = 'filterIndicators', selected = sdg_list())
-    }
-  })
+    updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', selected = if(input$select_all_groups) subsets_list())
+    updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', selected = if(!input$select_all_groups) FALSE)
+    
+    updateCheckboxGroupInput(session = session, inputId = 'filterSubgroups', selected = if(input$select_all_subgroups) subgroup_list())
+    updateCheckboxGroupInput(session = session, inputId = 'filterSubgroups', selected = if(!input$select_all_subgroups) FALSE)
+    
+    updateCheckboxGroupInput(session = session, inputId = 'filterIndicators', selected = if(input$select_all_sdg) sdg_list())
+    updateCheckboxGroupInput(session = session, inputId = 'filterIndicators', selected = if(!input$select_all_sdg) FALSE)
+    
+    })
   
+  
+
   observe({
     
     if(input$country=="") {

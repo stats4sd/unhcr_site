@@ -38,8 +38,11 @@ get_sql_connection <- function() {
 load_indicators_map<-function(){
   
   indicators_map <- load_indicators(NULL) %>% group_by(countries_name, country_code, latitude, longitude) %>% 
-  summarise('indicator_num'= n(), icon_url = create_url_markers(country_code), description=paste(unique(description),collapse="; "),
-            population_definition=paste(unique(population_definition),collapse="; "), source_url=paste('<a href="',unique(source_url),'">',unique(source_url), '</a>', sep="", collapse='; '))
+  summarise('indicator_num'= n(), icon_url = create_url_markers(country_code),
+            population_definition=paste(unique(population_definition),collapse="; "), 
+            source_url=paste(unique(description),';','<br>','<a href="',
+                             unique(source_url),'">',unique(source_url), 
+                             '</a>',';','<br>', sep="", collapse=' '))
   
   return(indicators_map)
 }
@@ -111,7 +114,6 @@ subsets_list<-function(){
   dbDisconnect(con)
   
   subsets_list <- sort(setNames(groups_name_df$name,as.character(groups_name_df$name)))
-  subsets_list <- append(as.character(subsets_list), 'Select All', after = 0)
   
   return(subsets_list)  
 }
@@ -132,7 +134,6 @@ subgroup_list<-function(){
   dbDisconnect(con)
   
   subgroup_list <- sort(setNames(subgroups_name$name,as.character(subgroups_name$name)))
-  subgroup_list <- append(as.character(subgroup_list), 'Select All', after = 0)
   
   return(subgroup_list)  
 }
@@ -227,6 +228,7 @@ load_indicators<-function(country_code){
   indicators$longitude <- as.numeric(indicators$longitude)
   indicators$group_name <- as.factor(indicators$group_name)
   indicators$subgroup_name <- as.factor(indicators$subgroup_name)
+  indicators$indicator_value <- round(indicators$indicator_value, 2)
   
 
   dbDisconnect(con)

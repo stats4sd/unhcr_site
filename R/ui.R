@@ -136,20 +136,25 @@ options(shiny.port = 8002)
                                value = c(min(years), max(years)),
                                sep = ""
                    ),
-                   
+                   h4("Filter Groups"), 
+                   checkboxInput('select_all_groups', 'Select All', value = TRUE),
                    checkboxGroupInput("filterSubsets", 
-                                      h4("Filter Groups"), 
+                                      label = NULL,
                                       choices = subsets_list(),  
                                       selected = subsets_list(),
                    ),
+                   h4("Filter Subgroups"), 
+                   checkboxInput('select_all_subgroups', 'Select All', value = TRUE),
                    checkboxGroupInput("filterSubgroups", 
-                                      h4("Filter Subgroups"), 
+                                      label = NULL,
                                       choices = subgroup_list(),  
                                       selected = subgroup_list(),
                    ),
                    div(class="indicator_checkbox",
+                       h4("Filter Indicators"), 
+                       checkboxInput('select_all_sdg', 'Select All', value = TRUE),
                        checkboxGroupInput("filterIndicators", 
-                                          h4("Filter Indicators"), 
+                                          label = NULL,
                                           choices = sdg_list(),
                                           selected = sdg_list(),
                        ),
@@ -238,11 +243,11 @@ options(shiny.port = 8002)
             
                           ),
                ##########################################
-               # METADATA PAGE
+               # ADDITIONAL INFORMATION TAB
                ##########################################
                
-               tabPanel("METADATA"),
-               tabPanel("x")
+               tabPanel("ADDITIONAL INFORMATION"),
+               tabPanel("back to the map")
                )
               )
             )
