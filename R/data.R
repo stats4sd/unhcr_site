@@ -107,17 +107,18 @@ subsets_list<-function(){
   con <- get_sql_connection()
   
   sql<-"SELECT
-            groups.name
+            groups.name,
+            groups.lft
             FROM groups;"
   
   groups_name_df <- dbGetQuery(con, sql)
   dbDisconnect(con)
-  groups_name_df <- c("Refugees", "IDPs", "Other")
-  subsets_list <- setNames(groups_name_df,as.character(groups_name_df))
+  groups_name_df <- groups_name_df[order(groups_name_df$lft),]
+  subsets_list <- setNames(groups_name_df$name,as.character(groups_name_df$name))
   
   return(subsets_list)  
 }
-subsets_list()
+
 ############################################
 # Create a list of subgroups.name for the 
 # subgroup checkbox
@@ -127,13 +128,14 @@ subgroup_list<-function(){
   con <- get_sql_connection()
   
   sql<-"SELECT
-            subgroups.name
+            subgroups.name,
+            subgroups.lft
             FROM subgroups;"
   
-  subgroups_name <- dbGetQuery(con, sql)
+  subgroups <- dbGetQuery(con, sql)
   dbDisconnect(con)
-  
-  subgroup_list <- sort(setNames(subgroups_name$name,as.character(subgroups_name$name)))
+  subgroups <- subgroups[order(subgroups$lft),]
+  subgroup_list <- setNames(subgroups$name,as.character(subgroups$name))
   
   return(subgroup_list)  
 }
@@ -270,4 +272,4 @@ killDbConnections <- function () {
   print(paste(length(all_cons), " connections killed."))
   
 }
-#killDbConnections()
+killDbConnections()
