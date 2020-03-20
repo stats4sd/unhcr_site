@@ -9,6 +9,7 @@ server = function(input, output, session) {
       js$refresh();
     }
   })
+  
   #####################################
   # load indicators and maps info
   #####################################
@@ -17,7 +18,6 @@ server = function(input, output, session) {
     indicators <- load_indicators(input$country)   
   })
   
- 
   #####################################
   # Info diplayed below Sdg image
   #####################################
