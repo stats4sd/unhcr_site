@@ -1,6 +1,6 @@
 
 server = function(input, output, session) {
-  
+
   #####################################
   # refresh page when click on back to the map
   #####################################

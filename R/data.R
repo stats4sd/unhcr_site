@@ -160,14 +160,23 @@ limited_description<-function(){
 #############################################
 
 sdg_list <- function(){
+  con <- get_sql_connection()
+
+  sql<-"SELECT
+            sdg_indicators.code,
+            sdg_indicators.description,
+            sdg_indicators.lft
+            FROM sdg_indicators;"
   
-  sdg_list <- setNames(unique(indicators$sdg_code),as.character(paste(unique(indicators$sdg_code), unique(limited_description()), sep=': ')))
-  sdg_list[!is.na(sdg_list)]
-  sdg_list <- sort(sdg_list)
-  sdg_list <- append((sdg_list), 'Select All', after = 0)
+  sdg_indicators <- dbGetQuery(con, sql)
+  dbDisconnect(con)
+  sdg_indicators <- sdg_indicators[order(sdg_indicators$lft),]
+  
+  sdg_list <- setNames(as.character(sdg_indicators$code),paste(sdg_indicators$code,":",sdg_indicators$description))
   
   return(sdg_list)
 }
+
 
 ############################################
 # Create sdg code list for the SDG filter
@@ -272,4 +281,4 @@ killDbConnections <- function () {
   print(paste(length(all_cons), " connections killed."))
   
 }
-killDbConnections()
+#killDbConnections()
