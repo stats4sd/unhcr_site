@@ -35,6 +35,21 @@ class GroupCrudController extends CrudController
                 'name' => 'name',
                 'label' => 'Name',
                 'type' => 'text',
+            ],
+            [
+                'name' => 'lft',
+                'label' => 'Left',
+                'type' => 'number',
+            ],
+            [
+                'name' => 'rgt',
+                'label' => 'Left',
+                'type' => 'number',
+            ],
+            [
+                'name' => 'depth',
+                'label' => 'Depth',
+                'type' => 'number',
             ]
         ]);
     }
