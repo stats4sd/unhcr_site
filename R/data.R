@@ -112,12 +112,12 @@ subsets_list<-function(){
   
   groups_name_df <- dbGetQuery(con, sql)
   dbDisconnect(con)
-  
-  subsets_list <- sort(setNames(groups_name_df$name,as.character(groups_name_df$name)))
+  groups_name_df <- c("Refugees", "IDPs", "Other")
+  subsets_list <- setNames(groups_name_df,as.character(groups_name_df))
   
   return(subsets_list)  
 }
-
+subsets_list()
 ############################################
 # Create a list of subgroups.name for the 
 # subgroup checkbox
