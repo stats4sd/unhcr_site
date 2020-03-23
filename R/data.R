@@ -103,9 +103,9 @@ countries_list<-function(){
 # subsets checkbox
 #############################################
 
-subsets_list<-function(){
+subsets_list<-function(country_code){
+ 
   con <- get_sql_connection()
-  
   sql<-"SELECT
             groups.name,
             groups.lft
@@ -113,18 +113,22 @@ subsets_list<-function(){
   
   groups_name_df <- dbGetQuery(con, sql)
   dbDisconnect(con)
+  if(! is.null(country_code)) {
+    groups_country <- unique(load_indicators(country_code)$group_name)
+    groups_name_df <- filter(groups_name_df,name %in% groups_country)
+  }
   groups_name_df <- groups_name_df[order(groups_name_df$lft),]
   subsets_list <- setNames(groups_name_df$name,as.character(groups_name_df$name))
   
+  
   return(subsets_list)  
 }
-
 ############################################
 # Create a list of subgroups.name for the 
 # subgroup checkbox
 #############################################
 
-subgroup_list<-function(){
+subgroup_list<-function(country_code){
   con <- get_sql_connection()
   
   sql<-"SELECT
@@ -132,14 +136,18 @@ subgroup_list<-function(){
             subgroups.lft
             FROM subgroups;"
   
-  subgroups <- dbGetQuery(con, sql)
+  
+  subgroups_name_df <- dbGetQuery(con,sql)
   dbDisconnect(con)
-  subgroups <- subgroups[order(subgroups$lft),]
-  subgroup_list <- setNames(subgroups$name,as.character(subgroups$name))
+  if(! is.null(country_code)) {
+    groups_country <- unique(load_indicators(country_code)$subgroup_name)
+    subgroups_name_df <- filter(subgroups_name_df,name %in% groups_country)
+  }
+  subgroups_name_df <- subgroups_name_df[order(subgroups_name_df$lft),]
+  subgroup_list <- setNames(subgroups_name_df$name,as.character(subgroups_name_df$name))
   
   return(subgroup_list)  
 }
-
 ############################################
 # limit to 50 characters the description 
 # for the sdg_description
@@ -159,18 +167,21 @@ limited_description<-function(){
 # Create sdg list for the control panel
 #############################################
 
-sdg_list <- function(){
+sdg_list <- function(country_code){
   con <- get_sql_connection()
-
   sql<-"SELECT
             sdg_indicators.code,
             sdg_indicators.description,
             sdg_indicators.lft
             FROM sdg_indicators;"
   
+  
   sdg_indicators <- dbGetQuery(con, sql)
   dbDisconnect(con)
-
+  if(! is.null(country_code)) {
+    sdg_code_country <- unique(load_indicators(country_code)$sdg_code)
+    sdg_indicators <- filter(sdg_indicators,code %in% sdg_code_country)
+  }
   sdg_indicators <- sdg_indicators[order(sdg_indicators$lft),]
   sdg_list <- setNames(as.character(sdg_indicators$code),paste(sdg_indicators$code,":",sdg_indicators$description))
   
@@ -282,4 +293,4 @@ killDbConnections <- function () {
   print(paste(length(all_cons), " connections killed."))
   
 }
-#killDbConnections()
+killDbConnections()

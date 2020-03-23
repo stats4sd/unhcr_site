@@ -3,7 +3,7 @@ options(shiny.host = '127.0.0.1')
 options(shiny.port = 8002)
 jscode <- "shinyjs.refresh = function() { location.reload(); }"
   ui <- tagList(
-    tags$style("
+    tags$style(HTML("
     .irs-bar {
       height: 8px;
       top: 25px;
@@ -23,6 +23,10 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
         -moz-border-radius: 3px;
     }
     
+    .shiny-input-container:not(.shiny-input-container-inline) {
+      max-width: 100%;
+    }
+    
     div.panel {
       width: 100%;
       height: 900px;
@@ -38,34 +42,46 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
     }
     
     h4 {
-      color:#0072BC;
-      font-weight: bold;
+      color: #0072BC;
+      font-weight: 450;
     }
-    
+
     h3 {
-      color:#0072BC;
+      color: #0072BC;
       font-weight: bold;
-      align:center;
+      text-align: center;
+      font-size: 27px;
     }
+
     
-    hr{
-      display: block; 
-      height: 5px;
-      border-top: 5px solid #ccc;
+    hr {
+      display: block;
+      /* height: 5px; */
+      border-top: 3px solid #ccc;
       border-color: #0072BC;
-      height: 10px; 
+      height: 10px;
+    }
+
+    .checkbox, .radio {
+      position: relative;
+      display: block;
+      margin-top: 10px;
+      padding-bottom: 3px;
+      padding-top: 3px;
+      background: #EFF6FB;
+      width: 300px;
     }
     
-    .checkbox { 
-      background: #cce3f2; 
+   .checkbox + .checkbox, .radio + .radio {
+      margin-top: 0px;
     }
-      
+
     .checkbox:nth-child(odd) { 
       background: white; 
     }
     
     table.dataTable tr:nth-child(even) {
-      background: #cce3f2;
+      background: #EFF6FB;
     }
     
     table.dataTable tr:nth-child(odd) {
@@ -77,7 +93,15 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
       color: white;
       height: 30px; 
     }
-     
+    
+    .dataTables_wrapper {
+      position: relative;
+      clear: both;
+      *zoom: 1;
+      zoom: 1;
+      overflow-x: scroll;
+    }
+
     #downloadSDGByIndicator {
       color: #0072BC !important;
       border-color: #0072BC;
@@ -99,15 +123,30 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
      width: 300px;
     }
     
+    .container-fluid > .nav > li > a[data-value='AVAILABLE INDICATORS']{
+      background-color: #0072BC;   
+      color:white;
+    }  
+    
+    .container-fluid > .nav > li > a[data-value='ADDITIONAL INFORMATION']{
+      background-color: #0072BC;   
+      color:white;
+    }  
+    
+    .container-fluid > .nav > li > a[data-value='Return to Map   X']{
+      background-color: #0072BC;   
+      color:white;
+    }    
+    
     button.dt-button, div.dt-button, a.dt-button{ 
       background:white;
       color: #0072BC!important;
       border-color: white;
       font-weight: bold;
-   } 
+    } 
                    
     
-    "),
+    ")),
     
     useShinyjs(),  # Set up shinyjs
     extendShinyjs(text = jscode, functions = "refresh"),
@@ -141,23 +180,23 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                    checkboxInput('select_all_groups', 'Select All', value = TRUE),
                    checkboxGroupInput("filterSubsets", 
                                       label = NULL,
-                                      choices = subsets_list(),  
-                                      selected = subsets_list(),
+                                      choices = subsets_list(NULL),  
+                                      selected = subsets_list(NULL),
                    ),
                    h4("Filter Subgroups"), 
                    checkboxInput('select_all_subgroups', 'Select All', value = TRUE),
                    checkboxGroupInput("filterSubgroups", 
                                       label = NULL,
-                                      choices = subgroup_list(),  
-                                      selected = subgroup_list(),
+                                      choices = subgroup_list(NULL),  
+                                      selected = subgroup_list(NULL),
                    ),
                    div(class="indicator_checkbox",
                        h4("Filter Indicators"), 
                        checkboxInput('select_all_sdg', 'Select All', value = TRUE),
                        checkboxGroupInput("filterIndicators", 
                                           label = NULL,
-                                          choices = sdg_list(),
-                                          selected = sdg_list(),
+                                          choices = sdg_list(NULL),
+                                          selected = sdg_list(NULL),
                        ),
                    ),
                )
@@ -174,7 +213,7 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                br(),
                shinyjs::hidden(
                  div(id="available_data",
-               navbarPage(title=htmlOutput("navbar_country"), id = "countrybar",
+               navbarPage(title=htmlOutput("navbar_country"), id = "countrybar", 
               ##########################################
               # AVAILABLE INDICATORS PAGE
               ##########################################
@@ -198,20 +237,38 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                               imageOutput("imageSdg15",  width = "120px", height = "120px",  inline = TRUE ),
                               imageOutput("imageSdg16",  width = "120px", height = "120px",  inline = TRUE ),
                               imageOutput("imageSdg17",  width = "120px", height = "120px",  inline = TRUE ),
+                              HTML("<h4 style='color:black; padding-top:30px;'><b>Overall Summary</b></h4>"),
                               htmlOutput("info_indicators"),
+                              HTML("<h5><i class='fa fa-info-circle' style='font-size:24px; color: #0072BC;'> Notes:</i></h5>
+                                   <p>It is vital to understand the context of the source data when considering the indicators 
+                                   given below. Please refer to the <b>Additional Information</b> tab for details of the scope, 
+                                   coverage, limitations and other factors that may affect the relevance, accurancy or
+                                   applicability of the indicator information provided.</p>
+                                   "),
                               hr(),
-                              
+                              HTML("<h4 style='color:black; padding-top:30px;'><b>Explore Available Indicators</b></h4>"),
+                              HTML("<div class='alert alert-info', style='width:90%;'>
+                                  Use the options in the left-hand column to filter the indicators displayed below by years, 
+                                  group or SDG indicator</div>"
+                              ),
+                              HTML("<h5><b>Tabulated Data</h5></b>"),
                               DT::dataTableOutput("tableTab1"),
                               br(),
                               hr(),
                               br(),
-                              div(class="alert alert-info", style="width:90%;",
-                                  "To filter indicators, please tick/untick on the left-hand column"
-                                  ),
+                  
                               column(8, 
                                      
                                      plotOutput("chart"),
-                                     plotOutput("chartSdgsGroup")
+                                     plotOutput("chartSdgsGroup"),
+                                     HTML("<div class='alert alert-info', style='width:90%;'>
+                                            <b>Note</b>: where there are multiple values for the same indicator, 
+                                            goup and year, this is where we have multiple datasets giving different
+                                            figures. In most cases, these are from sources with different population 
+                                            coverage. You can review the details in the Addition Information tab to 
+                                            understand more about how these values were derived.
+                                            </div>
+                                          "),
                               ),
                               
                               column(4,
@@ -232,8 +289,8 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                                        div(style="vertical-align:top; width: 200px; padding-top: 300px;", id="groupfilter",
                                            selectizeInput("groupChartFilter", 
                                                           h5("Filter Subsets"), 
-                                                          choices = subsets_list(),
-                                                          selected = subsets_list()[[1]]
+                                                          choices = subsets_list(NULL),
+                                                          selected = subsets_list(NULL)[[1]]
                                            ),
                                            downloadButton('downloadSDGBySubset', 'Download Plot')
                                        )
@@ -247,8 +304,18 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                # ADDITIONAL INFORMATION TAB
                ##########################################
                
-               tabPanel("ADDITIONAL INFORMATION"),
-               tabPanel("back to the map X", value = "refresh")
+               tabPanel("ADDITIONAL INFORMATION",
+                        HTML("<h4 style='color:black; padding-top:30px;'><b>Additional Information</b></h4>
+                              <p>Here you can find important metadata and other information regarding the datasets used
+                              to provide SDG indicator values and how those values were derived. This may include general comments, 
+                              warnings and scripts used to make calculations where applicabile.</p>
+  
+                            "),
+                        hr(),
+                        htmlOutput("additional_info"),
+                        ),
+                  
+               tabPanel("Return to Map   X", value = "refresh")
                )
               )
             )

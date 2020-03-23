@@ -27,14 +27,30 @@ server = function(input, output, session) {
     output$info_indicators <- renderUI({ 
      
       HTML(paste0(
-        "<br><br><b>Total number of indicators: </b>",indicators_country$indicator_num, "<br>",
+        "<b>Number of Indicators Availble: </b>",indicators_country$indicator_num, "<br>",
         "<b>Population Definitions: </b>",indicators_country$population_definition, "<br>",
-        #"<b>Description: </b>", indicators_country$description, "<br><br>",
         "<b>Data sources: </b>","<br>", indicators_country$source_url, "<br>"
       ))
     
     })
   })
+  #####################################
+  # Info diplayed in Additional info Tab
+  #####################################
+  observe({
+    req(input$country)
+    indicators_country <- indicators %>% filter(country_code == input$country)
+    output$additional_info <- renderUI({ 
+      
+      HTML(paste0(
+        "<h4><b>",indicators_country$description,"</b></h4><br>",
+        "<h5><b>Population Definitions: </b></h5>",indicators_country$source_url, "<br>",
+        "<h5><b>Comments: </b>","<br></h5>", indicators_country$comment, "<br>"
+      ))
+      
+    })
+  })
+  
   #####################################
   # Country Name in navbar
   #####################################
@@ -127,7 +143,6 @@ server = function(input, output, session) {
     req(input$country)
     indicators_by_country <- indicators %>% filter(country_code == input$country)
     data_table <- indicators_by_country %>% select(countries_name, group_name, subgroup_name, year, sdg_code, sdg_description, indicator_value, description, population_definition, comment, latitude, longitude)
-    
     if(length(input$filterSubsets)>1){
       data_table <- subset(data_table, group_name %in% input$filterSubsets)  
     }
@@ -156,34 +171,25 @@ server = function(input, output, session) {
   
   observe({
     req(input$country)
+ 
+    updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', choices = subsets_list(input$country), selected = subsets_list(input$country))
     
-    data <- subset(indicators, country_code == input$country)
-    subsets_list_filter <- unique(setNames(data$group_name,as.character(data$group_name)))
-    
-    updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', choices = subsets_list_filter, selected = subsets_list_filter)
-    
-    subgroups_list_filter <- sort(unique(setNames(data$subgroup_name,as.character(data$subgroup_name))))
-    
-    updateCheckboxGroupInput(session = session, inputId = 'filterSubgroups', choices = subgroups_list_filter, selected = subgroups_list_filter)
-    
-    sdg_description_list <- setNames(unique(data$sdg_code),as.character(paste(unique(data$sdg_code), unique(data$sdg_description), sep=': ')))
-    sdg_description_list[!is.na(sdg_description_list)]
-    sdg_description_list <- sort(sdg_description_list)
-    
-    updateCheckboxGroupInput(session = session, inputId = 'filterIndicators', choices = sdg_description_list, selected = sdg_description_list)
+    updateCheckboxGroupInput(session = session, inputId = 'filterSubgroups', choices = subgroup_list(input$country), selected = subgroup_list(input$country))
+
+    updateCheckboxGroupInput(session = session, inputId = 'filterIndicators', choices = sdg_list(input$country), selected = sdg_list(input$country))
   
   })
   
   #update checkboxGroup if the Select All is unticked/ticked
   observe({
     
-    updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', selected = if(input$select_all_groups) subsets_list())
+    updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', selected = if(input$select_all_groups) subsets_list(NULL))
     updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', selected = if(!input$select_all_groups) FALSE)
     
-    updateCheckboxGroupInput(session = session, inputId = 'filterSubgroups', selected = if(input$select_all_subgroups) subgroup_list())
+    updateCheckboxGroupInput(session = session, inputId = 'filterSubgroups', selected = if(input$select_all_subgroups) subgroup_list(NULL))
     updateCheckboxGroupInput(session = session, inputId = 'filterSubgroups', selected = if(!input$select_all_subgroups) FALSE)
     
-    updateCheckboxGroupInput(session = session, inputId = 'filterIndicators', selected = if(input$select_all_sdg) sdg_list())
+    updateCheckboxGroupInput(session = session, inputId = 'filterIndicators', selected = if(input$select_all_sdg) sdg_list(NULL))
     updateCheckboxGroupInput(session = session, inputId = 'filterIndicators', selected = if(!input$select_all_sdg) FALSE)
     
     })
@@ -227,7 +233,7 @@ server = function(input, output, session) {
     data_download<-data_download %>% select(sdg_code, countries_name, group_name, subgroup_name, year, indicator_value, description, population_definition)
     DT::datatable(
       data_download,
-     
+      colnames = c('SDG Indicator', 'Country', 'Group', 'Subgroup', 'Year', 'Indicator Value', 'Dataset', 'Population Definition'),
       extensions = 'Buttons',
       options = list(
         bSort=FALSE,
