@@ -6,7 +6,6 @@ library(RColorBrewer)
 library(ggplot2)
 library(shinyjs)
 library(rgdal)
-library(tidyr)
 
 source('data.R')
 
