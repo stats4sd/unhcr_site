@@ -54,6 +54,11 @@ server = function(input, output, session) {
   #####################################
   observe({
     req(input$country)
+    #clean the image sdg displayed 
+    for (i in 1:16){
+      image_sdg_number <- paste("imageSdg",i, sep = "")
+      output[[image_sdg_number]] <- NULL
+    }
     data_selected <- selectedData()
     sdg_code<-unique(data_selected$sdg_code)
     
@@ -98,8 +103,6 @@ server = function(input, output, session) {
     }
   })
   
-  
-  
   # Create a list of sdg selected from filter
   ChartGroupsSdg <- reactive ({
     req(input$sdgChartFilter)
@@ -119,11 +122,11 @@ server = function(input, output, session) {
     
   })
   
-  # Filter data by subsets
+  # Filter data by filters in the control panel
   selectedData <- reactive({
     req(input$country)
-
-    data_table <- load_indicators(input$country) %>% select(countries_name, group_name, subgroup_name, year, sdg_code, sdg_description, indicator_value, description, population_definition, comment, latitude, longitude)
+    indicators_by_country <- indicators %>% filter(country_code == input$country)
+    data_table <- indicators_by_country %>% select(countries_name, group_name, subgroup_name, year, sdg_code, sdg_description, indicator_value, description, population_definition, comment, latitude, longitude)
     
     if(length(input$filterSubsets)>1){
       data_table <- subset(data_table, group_name %in% input$filterSubsets)  
@@ -155,7 +158,7 @@ server = function(input, output, session) {
     req(input$country)
     
     data <- subset(indicators, country_code == input$country)
-    subsets_list_filter <- sort(unique(setNames(data$group_name,as.character(data$group_name))))
+    subsets_list_filter <- unique(setNames(data$group_name,as.character(data$group_name)))
     
     updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', choices = subsets_list_filter, selected = subsets_list_filter)
     
@@ -195,7 +198,7 @@ server = function(input, output, session) {
         setView(lng = 0, lat = 0, zoom = 2.5) %>%
         addMarkers(lng = as.numeric(indicators_map$longitude), 
                    lat = as.numeric(indicators_map$latitude), 
-                   icon = icons(iconUrl = indicators_map$icon_url,iconWidth = 40, iconHeight = 65, iconAnchorX = 20, iconAnchorY = 64),
+                   icon = icons(iconUrl = indicators_map$icon_url,iconWidth = 34, iconHeight = 55, iconAnchorX = 17, iconAnchorY = 54),
                    popup = paste("<h5><b>Country:</b>", 
                                  indicators_map$countries_name, "</h5>",
                                  "<h5><b>Subset:</b>",

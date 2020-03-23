@@ -248,7 +248,7 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                ##########################################
                
                tabPanel("ADDITIONAL INFORMATION"),
-               tabPanel("back to the map", value = "refresh")
+               tabPanel("back to the map X", value = "refresh")
                )
               )
             )

@@ -170,8 +170,8 @@ sdg_list <- function(){
   
   sdg_indicators <- dbGetQuery(con, sql)
   dbDisconnect(con)
+
   sdg_indicators <- sdg_indicators[order(sdg_indicators$lft),]
-  
   sdg_list <- setNames(as.character(sdg_indicators$code),paste(sdg_indicators$code,":",sdg_indicators$description))
   
   return(sdg_list)
@@ -221,6 +221,7 @@ load_indicators<-function(country_code){
             countries.longitude,
             countries.latitude,
             sdg_indicators.code as sdg_code,
+            sdg_indicators.lft as sdg_lft,
             sdg_indicators.description as sdg_description
             FROM indicators
             LEFT JOIN datasets on indicators.dataset_id = datasets.id

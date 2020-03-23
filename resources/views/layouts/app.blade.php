@@ -137,11 +137,17 @@ body, html {
 /* Bottom right text */
 .text-block {
   position: absolute;
-  bottom: 20px;
+  top: 450px;
   left: 20px;
   color: white;
   padding-left: 20px;
   padding-right: 20px;
+}
+
+#image_home_page{
+  width:100%;  
+  object-fit:cover; 
+  height:500px;
 }
 
 * {
@@ -168,8 +174,8 @@ Lessons & Learning
 */
 
 .lessons_top {
-            background: url('/images/lessons_top.jpg') center center / cover no-repeat;
-        }
+  background: url('/images/lessons_top.jpg') center center / cover no-repeat;
+}
 
 
 .center {
@@ -196,14 +202,6 @@ Footer
 </style>
 </head>
 <body>
-
-    <!-- <div class="navbar">
-      <img src="images/logo.png" style="height: 100px;">
-      <a href="{{ url('home') }}"><b>Home</b></a>
-      <a href="{{ url('sdgs') }}"><b>SDGs Indicstors</b></a>
-      <a href="{{ url('lessons') }}"><b>Lessons & Learning</b></a>
-    </div> -->
-
     <div class="container w-100 px-0"></div>
       <div class="row">
           <div class="col-3 px-0">
