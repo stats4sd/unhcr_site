@@ -148,6 +148,36 @@ subgroup_list<-function(country_code){
   
   return(subgroup_list)  
 }
+
+############################################
+# load dataset for additional info tab
+#############################################
+
+load_dataset<-function(country_code){
+  con <- get_sql_connection()
+  
+  sql<-"SELECT *
+          
+            FROM datasets"
+  
+  if(! is.null(country_code)) {
+    sql <- paste(sql, " WHERE datasets.country_code = '",country_code, "'", sep = "")
+  }
+  datasets <- dbGetQuery(con,paste(sql,";"))
+  
+  datasets$countries_name <- as.factor(datasets$country_code)
+  datasets$year <- as.numeric(datasets$year)
+  datasets$region <- as.factor(datasets$region)
+  datasets$description <- as.factor(datasets$description)
+  datasets$population_definition <- as.factor(datasets$population_definition)
+  datasets$source_url <- as.factor(datasets$source_url)
+  datasets$scripts_url <- as.factor(datasets$scripts_url)
+  datasets$comment <- as.factor(datasets$comment)
+  
+  dbDisconnect(con)
+  return(datasets)  
+}
+#load_dataset(NULL)
 ############################################
 # limit to 50 characters the description 
 # for the sdg_description

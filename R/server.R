@@ -39,13 +39,15 @@ server = function(input, output, session) {
   #####################################
   observe({
     req(input$country)
-    indicators_country <- indicators %>% filter(country_code == input$country)
+    datasets <- load_dataset(input$country) 
     output$additional_info <- renderUI({ 
-      
+     
       HTML(paste0(
-        "<h4><b>",indicators_country$description,"</b></h4><br>",
-        "<h5><b>Population Definitions: </b></h5>",indicators_country$source_url, "<br>",
-        "<h5><b>Comments: </b>","<br></h5>", indicators_country$comment, "<br>"
+        "<h4><b>",datasets$description,"</b></h4><br>",
+        "<h5><b>Population Definitions: </b>","<br></h5>","<a href=", datasets$source_url,">", datasets$source_url,"</a>","<br>",
+        "<h5><b>Comments: </b></h5>",datasets$comment, "<br>",
+        "<h5><b>Scripts Used: </b></h5>",datasets$scripts_url, "<br>",
+        "<hr>"
       ))
       
     })
@@ -267,8 +269,8 @@ server = function(input, output, session) {
       ggtitle(paste(data$countries_name," \n","SDG Indicator ",  data$sdg_code,"\n",wrapper(data$sdg_description[1], width = 60),"\n", sep = "")) +
       scale_x_continuous(breaks=years) +
       scale_y_continuous(limits =c(0,1)) +
-      scale_linetype("SubSet") +
-      scale_color_manual("SubSet",values=palette_indicators()) +
+      scale_linetype("Groups") +
+      scale_color_manual("Groups",values=palette_indicators()) +
       theme(text = element_text(size = 16), 
             plot.title = element_text(size = 14, face = "bold")
             
@@ -302,8 +304,8 @@ server = function(input, output, session) {
         ggtitle(paste(data$countries_name," \n","SDG Indicator ",  data$sdg_code,"\n",wrapper(data$sdg_description[1], width = 60),"\n", sep = "")) +
         scale_x_continuous(breaks=years) +
         scale_y_continuous(limits =c(0,1)) +
-        scale_linetype("SubSet") +
-        scale_color_manual("SubSet",values=palette_indicators()) +
+        scale_linetype("Groups") +
+        scale_color_manual("Groups",values=palette_indicators()) +
         theme(text = element_text(size = 16), 
                 plot.title = element_text(size = 14, face = "bold")
               )

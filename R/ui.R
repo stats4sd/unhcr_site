@@ -133,7 +133,7 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
       color:white;
     }  
     
-    .container-fluid > .nav > li > a[data-value='Return to Map   X']{
+    .container-fluid > .nav > li > a[data-value='refresh']{
       background-color: #0072BC;   
       color:white;
     }    
@@ -277,8 +277,9 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                                      
                                        div(style="display: inline-block;vertical-align:top; width: 200px; ", id="sdgfilter",
                                            
-                                           selectizeInput("sdgChartFilter", 
-                                                          h5("Filter Indicators"), 
+                                           selectizeInput("sdgChartFilter",
+                                                          label = NULL,
+                                                         # h5("Filter Indicators"), 
                                                           choices = sdg_code_list(),
                                                           selected = sdg_code_list()[[1]]
                                            ),
@@ -288,7 +289,8 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                                    
                                        div(style="vertical-align:top; width: 200px; padding-top: 300px;", id="groupfilter",
                                            selectizeInput("groupChartFilter", 
-                                                          h5("Filter Subsets"), 
+                                                          label = NULL,
+                                                          #h5("Filter Subsets"), 
                                                           choices = subsets_list(NULL),
                                                           selected = subsets_list(NULL)[[1]]
                                            ),
