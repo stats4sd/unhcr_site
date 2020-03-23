@@ -293,4 +293,4 @@ killDbConnections <- function () {
   print(paste(length(all_cons), " connections killed."))
   
 }
-killDbConnections()
+#killDbConnections()
