@@ -209,11 +209,9 @@ server = function(input, output, session) {
                    icon = icons(iconUrl = indicators_map$icon_url,iconWidth = 34, iconHeight = 55, iconAnchorX = 17, iconAnchorY = 54),
                    popup = paste("<h5><b>Country:</b>", 
                                  indicators_map$countries_name, "</h5>",
-                                 "<h5><b>Subset:</b>",
-                                 indicators_map$icon_url,
-                                 "<h5><b>Subgroup:</b>",
-                                 indicators_map$subgroup_name,
-                                 "<h5><b>Indicators n:</b>", indicators_map$indicator_num , "</h5>"
+                                 "<h5><b>Total number of indicators available:</b>", indicators_map$indicator_num , "</h5>",
+                                 "<h5><b>Periods covered:</b> ",indicators_map$min_year,"-",indicators_map$max_year, "</h5>",
+                                 "<h5>Select the country in the filter to see the indicators</h5>"
                    )
                    ) %>% 
         addLegend("bottomright",

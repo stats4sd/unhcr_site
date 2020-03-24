@@ -42,7 +42,9 @@ load_indicators_map<-function(){
             population_definition=paste(unique(population_definition),collapse="; "), 
             source_url=paste(unique(description),';','<br>','<a href="',
                              unique(source_url),'">',unique(source_url), 
-                             '</a>',';','<br>', sep="", collapse=' '))
+                             '</a>',';','<br>', sep="", collapse=' '),
+            max_year=max(year), min_year=min(year)
+            )
   
   return(indicators_map)
 }
