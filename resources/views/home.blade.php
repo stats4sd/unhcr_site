@@ -6,7 +6,7 @@
 <div class="header">
     <img src="images/iraq-children.jpg" id="image_home_page"/>
     <div class="text-block">
-        <h1>SDG Indicators disaggregated by Forcibly Displaced Populations</h1>
+        SDG Indicators disaggregated by Forcibly Displaced Populations
     </div>
 </div>
 

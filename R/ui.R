@@ -4,6 +4,12 @@ options(shiny.port = 8002)
 jscode <- "shinyjs.refresh = function() { location.reload(); }"
   ui <- tagList(
     tags$style(HTML("
+    body, html {
+    font-family: proxima-nova, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    }
+    
     .irs-bar {
       height: 8px;
       top: 25px;
@@ -78,6 +84,10 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
 
     .checkbox:nth-child(odd) { 
       background: white; 
+    }
+    
+    #select_all_group_id{
+     background: #EFF6FB;
     }
     
     table.dataTable tr:nth-child(even) {
@@ -176,8 +186,10 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                                value = c(min(years), max(years)),
                                sep = ""
                    ),
-                   h4("Filter Groups"), 
-                   checkboxInput('select_all_groups', 'Select All', value = TRUE),
+                   h4("Filter Groups"),
+                   div(id="select_all_group_id",
+                   checkboxInput('select_all_groups', 'Select All', value = TRUE)
+                   ),
                    checkboxGroupInput("filterSubsets", 
                                       label = NULL,
                                       choices = subsets_list(NULL),  
@@ -239,7 +251,7 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                               imageOutput("imageSdg17",  width = "120px", height = "120px",  inline = TRUE ),
                               HTML("<h4 style='color:black; padding-top:30px;'><b>Overall Summary</b></h4>"),
                               htmlOutput("info_indicators"),
-                              HTML("<h5><i class='fa fa-info-circle' style='font-size:24px; color: #0072BC;'> Notes:</i></h5>
+                              HTML("<h5 style='color:#0072BC;'><i class='fa fa-info-circle' style='font-size:24px; color: #0072BC;'></i><b> Notes:</b></h5>
                                    <p>It is vital to understand the context of the source data when considering the indicators 
                                    given below. Please refer to the <b>Additional Information</b> tab for details of the scope, 
                                    coverage, limitations and other factors that may affect the relevance, accurancy or

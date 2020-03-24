@@ -23,7 +23,7 @@
 
 body, html {
     font-family: proxima-nova, sans-serif;
-    font-weight: 700;
+    font-weight: 400;
     font-style: normal;
     }
 .nav {
@@ -44,6 +44,16 @@ body, html {
     background-color: #0072BC;
     color: #ffffff;
 
+}
+
+.disable:hover {
+    background-color: white;
+    color: #444444;
+
+}
+
+.disable {
+  color: #444444;
 }
 
 /* Header/logo Title */
@@ -125,6 +135,8 @@ body, html {
   }
 }
 
+
+
 /*-------------
     Home page
 -------------*/
@@ -138,10 +150,11 @@ body, html {
 .text-block {
   position: absolute;
   top: 450px;
-  left: 20px;
   color: white;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-bottom: 50px; 
+  font-weight: 700;
+  text-align: center;
+  font-size: 55px;
 }
 
 #image_home_page{
@@ -152,10 +165,6 @@ body, html {
 
 * {
   box-sizing: border-box;
-}
-
-body {
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 
@@ -213,7 +222,7 @@ Footer
           <a class="col-3 nav px-0 {{ (request()->is('sdgs')) ? 'active' : '' }}" href="{{ url('sdgs') }}" style="text-decoration:none;">    
             <div class="navitem">SDG Indicators</div>
           </a>       
-          <a class="col-3 nav px-0 {{ (request()->is('lessons')) ? 'active' : '' }}" href="#" style="text-decoration:none;">    
+          <a class="col-3 nav disable px-0 {{ (request()->is('lessons')) ? 'active' : '' }}" href="#" style="text-decoration:none;">    
             <div class="navitem">Recommendations</div>
           </a>
       </div>
@@ -225,7 +234,7 @@ Footer
   <!-- Add icon library -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <!-- Add font awesome icons -->
-    <a href="{{ url('login') }}" class="text">Admin Login</a>
+    <!-- <a href="{{ url('login') }}" class="text">Admin Login</a> -->
 
 
 </div>
