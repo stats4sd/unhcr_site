@@ -67,4 +67,15 @@ class Dataset extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+
+    public function setScriptsUrlAttribute($value)
+    {
+        $attribute_name = "scripts_url";
+        $disk = "public";
+        $destination_path = "script";
+
+        $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
+
+    // return $this->attributes[{$attribute_name}]; // uncomment if this is a translatable field
+    }
 }
