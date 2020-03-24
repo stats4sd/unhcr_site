@@ -44,7 +44,7 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
     }
     
     div.main_panel {
-      width: 100%;
+      max-width: 100%;
       height: 900px;
       overflow: auto;
     }
