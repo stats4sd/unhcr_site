@@ -70,6 +70,7 @@ class DatasetCrudController extends CrudController
                 'type' => 'url',
                 'label' => 'Scripts url',
             ],
+           
             [
                 'name' => 'fake',
                 'type' => 'check',
@@ -143,8 +144,10 @@ class DatasetCrudController extends CrudController
             ],
             [
                 'name' => 'scripts_url',
-                'type' => 'url',
+                'type' => 'upload',
                 'label' => 'If the scripts used to generate the linked indicators are available online, enter the url where they can be found',
+                'upload' => true,
+           
             ],
             [
                 'name' => 'fake',
