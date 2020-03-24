@@ -1,5 +1,6 @@
 
 server = function(input, output, session) {
+  indicators_map<-load_indicators_map()  
 
   #####################################
   # refresh page when click on back to the map
@@ -210,7 +211,7 @@ server = function(input, output, session) {
                    popup = paste("<h5><b>Country:</b>", 
                                  indicators_map$countries_name, "</h5>",
                                  "<h5><b>Total number of indicators available:</b>", indicators_map$indicator_num , "</h5>",
-                                 "<h5><b>Periods covered:</b> ",indicators_map$min_year,"-",indicators_map$max_year, "</h5>",
+                                 "<h5><b>Period covered:</b> ",indicators_map$min_year,"-",indicators_map$max_year, "</h5>",
                                  "<h5>Select the country in the filter to see the indicators</h5>"
                    )
                    ) %>% 
