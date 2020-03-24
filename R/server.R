@@ -1,7 +1,17 @@
 
 server = function(input, output, session) {
   indicators_map<-load_indicators_map()  
-
+  #####################################
+  # download script for addtional info tab
+  #####################################
+  output$downloadScript <-  renderUI({
+    load_dot_env(file = "../.env")
+    Sys.getenv("APP_ENV")
+    
+    script_url <- paste(Sys.getenv("APP_ENV"),storage,script,)
+    a("Example script", href=script_url, target="_blank")
+    
+  })
   #####################################
   # refresh page when click on back to the map
   #####################################

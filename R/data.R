@@ -30,6 +30,18 @@ get_sql_connection <- function() {
 }
 
 
+
+#####################################
+# Get url for downloding
+#####################################
+
+download_script <- function() {
+  
+  load_dot_env(file = "../.env")
+  Sys.getenv("APP_ENV")
+}
+
+download_script()
 #############################################
 # Create the information for the map, 
 # include the url for the markers
@@ -92,13 +104,16 @@ countries_list<-function(){
 
             FROM datasets
             
-            LEFT JOIN countries on datasets.country_code = countries.ISO_code;"
+            LEFT JOIN countries on datasets.country_code = countries.ISO_code
+            WHERE datasets.fake = 0
+        "
   
   countries_list_df <- dbGetQuery(con, sql)
   dbDisconnect(con)
   countries_list <- setNames(countries_list_df$country_code,as.character(countries_list_df$countries_name))
   return(countries_list)
 }
+
 
 ############################################
 # Create a list of groups.name for the 
@@ -160,10 +175,13 @@ load_dataset<-function(country_code){
   
   sql<-"SELECT *
           
-            FROM datasets"
+            FROM datasets
+            
+            WHERE datasets.fake = 0
+  "
   
   if(! is.null(country_code)) {
-    sql <- paste(sql, " WHERE datasets.country_code = '",country_code, "'", sep = "")
+    sql <- paste(sql, " AND datasets.country_code = '",country_code, "'", sep = "")
   }
   datasets <- dbGetQuery(con,paste(sql,";"))
   
@@ -179,7 +197,9 @@ load_dataset<-function(country_code){
   dbDisconnect(con)
   return(datasets)  
 }
-#load_dataset(NULL)
+
+
+
 ############################################
 # limit to 50 characters the description 
 # for the sdg_description
@@ -325,4 +345,4 @@ killDbConnections <- function () {
   print(paste(length(all_cons), " connections killed."))
   
 }
-#killDbConnections()
+killDbConnections()

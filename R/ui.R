@@ -88,8 +88,16 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
       background: white; 
     }
     
-    #select_all_group_id{
+    #select_all_groups_id{
      background: #EFF6FB;
+    }
+    
+    #select_all_subgroups_id{
+     background: #EFF6FB;
+    }
+    
+    #select_all_sdg_id{
+      background: #EFF6FB;
     }
     
     table.dataTable tr:nth-child(even) {
@@ -99,8 +107,6 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
     table.dataTable.display tbody tr.odd {
       background-color: white;
     }
-     
-    
     
     table.dataTable table.dataTable tr:nth-child(odd) {
     background-color: #EFF6FB !important;
@@ -141,6 +147,11 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
      width: 200px;
     }
     
+    .navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
+       background-color: #4089c8;   
+      color:white;
+    }
+    
     .container-fluid > .nav > li > a[data-value='AVAILABLE INDICATORS']{
       background-color: #0072BC;   
       color:white;
@@ -177,8 +188,9 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
       border-color: white;
       font-weight: bold;
     } 
+    .leaflet-popup {bottom: 50px !important;}
     
-  
+   
     ")),
     
     useShinyjs(),  # Set up shinyjs
@@ -210,16 +222,31 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                                sep = ""
                    ),
                    h4("Filter Groups"),
-                   div(id="select_all_group_id",
-                   checkboxInput('select_all_groups', 'Select All', value = TRUE)
-                   ),
+                   HTML('<div class="form-group shiny-input-container">
+                        	<div class="checkbox" id="select_all_groups_id">
+                        		<label>
+                        			<input id="select_all_groups" type="checkbox" checked="checked" data-shinyjs-resettable-id="select_all_groups" data-shinyjs-resettable-type="Checkbox" data-shinyjs-resettable-value="true" class="shinyjs-resettable shiny-bound-input">
+                        			<span>Select All</span>
+                        		</label>
+                        	</div>
+                        </div>
+                   '),
+                   
                    checkboxGroupInput("filterSubsets", 
                                       label = NULL,
                                       choices = subsets_list(NULL),  
                                       selected = subsets_list(NULL),
                    ),
                    h4("Filter Subgroups"), 
-                   checkboxInput('select_all_subgroups', 'Select All', value = TRUE),
+                   HTML('<div class="form-group shiny-input-container">
+                        	<div class="checkbox" id="select_all_subgroups_id">
+                        		<label>
+                        			<input id="select_all_subgroups" type="checkbox" checked="checked" data-shinyjs-resettable-id="select_all_groups" data-shinyjs-resettable-type="Checkbox" data-shinyjs-resettable-value="true" class="shinyjs-resettable shiny-bound-input">
+                        			<span>Select All</span>
+                        		</label>
+                        	</div>
+                        </div>
+                   '),
                    checkboxGroupInput("filterSubgroups", 
                                       label = NULL,
                                       choices = subgroup_list(NULL),  
@@ -227,7 +254,15 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                    ),
                    div(class="indicator_checkbox",
                        h4("Filter Indicators"), 
-                       checkboxInput('select_all_sdg', 'Select All', value = TRUE),
+                       HTML('<div class="form-group shiny-input-container">
+                        	<div class="checkbox" id="select_all_sdg_id">
+                        		<label>
+                        			<input id="select_all_sdg" type="checkbox" checked="checked" data-shinyjs-resettable-id="select_all_groups" data-shinyjs-resettable-type="Checkbox" data-shinyjs-resettable-value="true" class="shinyjs-resettable shiny-bound-input">
+                        			<span>Select All</span>
+                        		</label>
+                        	</div>
+                        </div>
+                   '),
                        checkboxGroupInput("filterIndicators", 
                                           label = NULL,
                                           choices = sdg_list(NULL),
@@ -357,6 +392,7 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                             "),
                         hr(),
                         htmlOutput("additional_info"),
+                       
                         ),
                   
                tabPanel("Return to Map   X", value = "refresh")
