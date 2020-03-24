@@ -30,8 +30,10 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
     }
     
     .shiny-input-container:not(.shiny-input-container-inline) {
-      max-width: 100%;
+      width: 100%;
     }
+    
+    
     
     div.panel {
       width: 100%;
@@ -75,7 +77,7 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
       padding-bottom: 3px;
       padding-top: 3px;
       background: #EFF6FB;
-      width: 300px;
+      
     }
     
    .checkbox + .checkbox, .radio + .radio {
@@ -90,12 +92,13 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
      background: #EFF6FB;
     }
     
-    table.dataTable tr:nth-child(even) {
-      background: #EFF6FB;
+    
+    table.dataTable td, table.dataTable table.dataTable tr.even tr:nth-child(even) {
+    background-color: #EFF6FB !important;
     }
     
-    table.dataTable tr:nth-child(odd) {
-      background: white;
+    table.dataTable td, table.dataTable table.dataTable tr.odd tr:nth-child(odd) {
+    background-color: white !important;
     }
     
     table.dataTable th {
@@ -130,11 +133,16 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
     #navbar_country {
      color: white !important;
      background-color: #0072BC!important;
-     width: 300px;
+     width: 200px;
     }
     
     .container-fluid > .nav > li > a[data-value='AVAILABLE INDICATORS']{
       background-color: #0072BC;   
+      color:white;
+    } 
+    
+    .container-fluid > .nav > li > a[data-value='AVAILABLE INDICATORS']:hover{
+      background-color: #4089c8;   
       color:white;
     }  
     
@@ -142,11 +150,21 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
       background-color: #0072BC;   
       color:white;
     }  
+   .container-fluid > .nav > li > a[data-value='ADDITIONAL INFORMATION']:hover{
+      background-color: #4089c8;   
+      color:white;
+    }  
     
     .container-fluid > .nav > li > a[data-value='refresh']{
       background-color: #0072BC;   
       color:white;
-    }    
+      
+    }
+    
+    .container-fluid > .nav > li > a[data-value='refresh']:hover{
+      background-color: #4089c8;   
+      color:white;
+    }  
     
     button.dt-button, div.dt-button, a.dt-button{ 
       background:white;
@@ -154,8 +172,8 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
       border-color: white;
       font-weight: bold;
     } 
-                   
     
+  
     ")),
     
     useShinyjs(),  # Set up shinyjs
@@ -163,7 +181,7 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
     ## navbarPage
     fluidPage(
       fluidRow(
-        column(3,
+        column(4,
                div(class="panel",
                    # Control Panel for the indicators
                    h3("DISAGGREGATED DATA"),
@@ -214,10 +232,8 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                )
         ),
         
-        column(9,
-               
-               
-               br(),
+        column(8,
+              
                
                div(id='mainmap',
                    leafletOutput("mymap", height="85vh"),

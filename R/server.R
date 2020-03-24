@@ -30,7 +30,8 @@ server = function(input, output, session) {
       HTML(paste0(
         "<b>Number of Indicators Availble: </b>",indicators_country$indicator_num, "<br>",
         "<b>Population Definitions: </b>",indicators_country$population_definition, "<br>",
-        "<b>Data sources: </b>","<br>", indicators_country$source_url, "<br>"
+        "<br><b>Data sources: </b>", "<br>", indicators_country$source_url,
+        "<br>"
       ))
     
     })
@@ -208,6 +209,7 @@ server = function(input, output, session) {
         addMarkers(lng = as.numeric(indicators_map$longitude), 
                    lat = as.numeric(indicators_map$latitude), 
                    icon = icons(iconUrl = indicators_map$icon_url,iconWidth = 34, iconHeight = 55, iconAnchorX = 17, iconAnchorY = 54),
+                
                    popup = paste("<h5><b>Country:</b>", 
                                  indicators_map$countries_name, "</h5>",
                                  "<h5><b>Total number of indicators available:</b>", indicators_map$indicator_num , "</h5>",

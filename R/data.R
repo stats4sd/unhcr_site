@@ -40,9 +40,9 @@ load_indicators_map<-function(){
   indicators_map <- load_indicators(NULL) %>% group_by(countries_name, country_code, latitude, longitude) %>% 
   summarise('indicator_num'= n(), icon_url = create_url_markers(country_code),
             population_definition=paste(unique(population_definition),collapse="; "), 
-            source_url=paste(unique(description),';','<br>','<a href="',
+            source_url=paste('<br style="margin-bottom: 0px;">',unique(description),';','<br style="margin-bottom: 7px;">','<a href="',
                              unique(source_url),'">',unique(source_url), 
-                             '</a>',';','<br>', sep="", collapse=' '),
+                             '</a>',';','<br style="margin-bottom: 7px;">', sep="", collapse=' '),
             max_year=max(year), min_year=min(year)
             )
   
