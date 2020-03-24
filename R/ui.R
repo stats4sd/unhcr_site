@@ -64,10 +64,10 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
     
     hr {
       display: block;
-      /* height: 5px; */
       border-top: 3px solid #ccc;
       border-color: #0072BC;
       height: 10px;
+      margin-bottom: 0px;
     }
 
     .checkbox, .radio {
@@ -92,13 +92,18 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
      background: #EFF6FB;
     }
     
-    
-    table.dataTable td, table.dataTable table.dataTable tr.even tr:nth-child(even) {
-    background-color: #EFF6FB !important;
+    table.dataTable tr:nth-child(even) {
+      background: #EFF6FB;
     }
+   
+    table.dataTable.display tbody tr.odd {
+      background-color: white;
+    }
+     
     
-    table.dataTable td, table.dataTable table.dataTable tr.odd tr:nth-child(odd) {
-    background-color: white !important;
+    
+    table.dataTable table.dataTable tr:nth-child(odd) {
+    background-color: #EFF6FB !important;
     }
     
     table.dataTable th {
@@ -281,15 +286,22 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                               ),
                               HTML("<h5><b>Tabulated Data</h5></b>"),
                               DT::dataTableOutput("tableTab1"),
-                              br(),
                               hr(),
+                              HTML("<h5><b>Charts</b></h5>"),
                               br(),
+                              HTML("<div class='alert alert-info', style='width:90%;'>
+                                  Use the options in the left-hand column to filter the indicators displayed below by years, 
+                                  group or SDG indicator</div>"
+                              ),
                   
                               column(8, 
                                      
                                      plotOutput("chart"),
+                                     br(),
+                                     br(),
                                      plotOutput("chartSdgsGroup"),
-                                     HTML("<div class='alert alert-info', style='width:90%;'>
+                                     
+                                     HTML("<div class='alert alert-info', style='width:90%; margin-top:25px;'>
                                             <b>Note</b>: where there are multiple values for the same indicator, 
                                             goup and year, this is where we have multiple datasets giving different
                                             figures. In most cases, these are from sources with different population 
@@ -314,8 +326,10 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                                            downloadButton('downloadSDGByIndicator', 'Download Plot')
                                        
                                      ),
+                                    
+                                     
                                    
-                                       div(style="vertical-align:top; width: 200px; padding-top: 300px;", id="groupfilter",
+                                       div(style="vertical-align:top; width: 200px; padding-top: 300px; margin-top:50px;", id="groupfilter",
                                            selectizeInput("groupChartFilter", 
                                                           label = NULL,
                                                           #h5("Filter Subsets"), 

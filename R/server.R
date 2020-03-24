@@ -266,15 +266,18 @@ server = function(input, output, session) {
     charts <-ggplot(data = data, aes(x=as.numeric(year), y=indicator_value)) +
       geom_line(aes(color = group_name, linetype= group_name)) +
       geom_point(aes(color = group_name), size = 3, alpha = 0.75) +
-      labs(y="SDG Indicator", x = "year") +
+      labs(y="SDG Indicator", x = "Year") +
       ggtitle(paste(data$countries_name," \n","SDG Indicator ",  data$sdg_code,"\n",wrapper(data$sdg_description[1], width = 60),"\n", sep = "")) +
       scale_x_continuous(breaks=years) +
       scale_y_continuous(limits =c(0,1)) +
       scale_linetype("Groups") +
       scale_color_manual("Groups",values=palette_indicators()) +
-      theme(text = element_text(size = 16), 
-            plot.title = element_text(size = 14, face = "bold")
-            
+      theme(text = element_text(size = 16, family ="proxima-nova"), 
+            plot.title = element_text(margin=margin(0,0,30,0),size = 14, face ="bold", family ="proxima-nova"),
+            panel.background = element_blank(),
+            panel.grid.major = element_line(colour = "grey"),
+            axis.title.x = element_text(margin=margin(30,0,0,0)), 
+            axis.title.y = element_text(margin=margin(0,30,0,0))
       )
   })
   
@@ -283,14 +286,18 @@ server = function(input, output, session) {
     charts <-ggplot(data = data, aes(x=as.numeric(year), y=indicator_value)) +
       geom_line(aes(color = sdg_code, linetype= sdg_code)) +
       geom_point(aes(color = sdg_code), size = 3, alpha = 0.75) +
-      labs(y="SDG Indicator", x = "year")+
+      labs(y="SDG Indicator", x = "Year")+
       ggtitle(paste(data$countries_name," \n","SDG Indicator for ",data$group_name," ",data$subgroup_name," ","\n", sep = "")) +
       scale_x_continuous(breaks=years)+
       scale_y_continuous(limits =c(0,1))+
       scale_linetype("SDG")+
       scale_color_manual("SDG",values=palette_indicators())+
-      theme(text = element_text(size = 16),
-            plot.title = element_text(size = 14, face = "bold")
+      theme(text = element_text(size = 16, family ="proxima-nova"), 
+            plot.title = element_text(margin=margin(0,0,30,0),size = 14, face ="bold", family ="proxima-nova"),
+            panel.background = element_blank(),
+            panel.grid.major = element_line(colour = "grey"),
+            axis.title.x = element_text(margin=margin(30,0,0,0)), 
+            axis.title.y = element_text(margin=margin(0,30,0,0))
       )
   })
   
@@ -301,14 +308,18 @@ server = function(input, output, session) {
       charts <-ggplot(data = data, aes(x=as.numeric(year), y=indicator_value)) +
         geom_line(aes(color = group_name, linetype= group_name)) +
         geom_point(aes(color = group_name), size = 3, alpha = 0.75) +
-        labs(y="SDG Indicator", x = "year") +
+        labs(y="SDG Indicator", x = "Year") +
         ggtitle(paste(data$countries_name," \n","SDG Indicator ",  data$sdg_code,"\n",wrapper(data$sdg_description[1], width = 60),"\n", sep = "")) +
         scale_x_continuous(breaks=years) +
         scale_y_continuous(limits =c(0,1)) +
         scale_linetype("Groups") +
         scale_color_manual("Groups",values=palette_indicators()) +
-        theme(text = element_text(size = 16), 
-                plot.title = element_text(size = 14, face = "bold")
+        theme(text = element_text(size = 16, family ="proxima-nova"), 
+                plot.title = element_text(margin=margin(0,0,30,0),size = 14, face ="bold", family ="proxima-nova"),
+                panel.background = element_blank(),
+                panel.grid.major = element_line(colour = "grey"),
+                axis.title.x = element_text(margin=margin(30,0,0,0)), 
+                axis.title.y = element_text(margin=margin(0,30,0,0))
               )
       
       charts
@@ -320,15 +331,19 @@ server = function(input, output, session) {
       charts <-ggplot(data = data, aes(x=as.numeric(year), y=indicator_value)) +
         geom_line(aes(color = sdg_code, linetype= sdg_code)) +
         geom_point(aes(color = sdg_code), size = 3, alpha = 0.75) +
-        labs(y="SDG Indicator", x = "year")+
+        labs(y="SDG Indicator", x = "Year")+
         ggtitle(paste(data$countries_name," \n","SDG Indicator for ",data$group_name," ",data$subgroup_name," ","\n", sep = "")) +
         scale_x_continuous(breaks=years)+
         scale_y_continuous(limits =c(0,1))+
         scale_linetype("SDG")+
         scale_color_manual("SDG",values=palette_indicators())+
-        theme(text = element_text(size = 16),
-              plot.title = element_text(size = 14, face = "bold")
-              )
+        theme(text = element_text(size = 16, family ="proxima-nova"), 
+              plot.title = element_text(margin=margin(0,0,30,0),size = 14, face ="bold", family ="proxima-nova"),
+              panel.background = element_blank(),
+              panel.grid.major = element_line(colour = "grey"),
+              axis.title.x = element_text(margin=margin(30,0,0,0)), 
+              axis.title.y = element_text(margin=margin(0,30,0,0))
+        )
       
       charts
       
