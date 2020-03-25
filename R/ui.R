@@ -272,7 +272,7 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                )
         ),
         
-        column(8,
+        column(8, style="padding-left: 0px;",
               
                
                div(id='mainmap',
@@ -308,10 +308,7 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                               HTML("<h4 style='color:black; padding-top:30px;'><b>Overall Summary</b></h4>"),
                               htmlOutput("info_indicators"),
                               HTML("<h5 style='color:#0072BC;'><i class='fa fa-info-circle' style='font-size:24px; color: #0072BC;'></i><b> Notes:</b></h5>
-                                   <p>It is vital to understand the context of the source data when considering the indicators 
-                                   given below. Please refer to the <b>Additional Information</b> tab for details of the scope, 
-                                   coverage, limitations and other factors that may affect the relevance, accurancy or
-                                   applicability of the indicator information provided.</p>
+                                   <p>Please refer to the Additional Information tab for important details regarding the scope, coverage, limitations and other factors that may affect the relevance, accuracy or applicability of the indicator information provided.</p>
                                    "),
                               hr(),
                               HTML("<h4 style='color:black; padding-top:30px;'><b>Explore Available Indicators</b></h4>"),

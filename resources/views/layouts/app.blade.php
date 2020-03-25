@@ -48,7 +48,7 @@ body, html {
 
 .disable:hover {
     background-color: white;
-    color: #444444;
+    color: #aaaaaa;
 
 }
 
