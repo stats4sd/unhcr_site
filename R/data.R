@@ -191,8 +191,8 @@ load_dataset<-function(country_code){
   datasets$description <- as.factor(datasets$description)
   datasets$population_definition <- as.factor(datasets$population_definition)
   datasets$source_url <- as.factor(datasets$source_url)
-  datasets$scripts_url <- as.factor(datasets$scripts_url)
   datasets$comment <- as.factor(datasets$comment)
+  datasets$scripts_description <- as.factor(datasets$scripts_description)
   
   dbDisconnect(con)
   return(datasets)  
@@ -200,6 +200,29 @@ load_dataset<-function(country_code){
 
 
 
+additional_info<-function(country_code){
+  load_dot_env(file = "../.env")
+  Sys.getenv('APP_ENV')
+  datasets_by_country <- load_dataset(country_code)
+  script_download <- c()
+  for(i in 1:nrow(datasets_by_country)) {
+    row <- datasets_by_country[i,]
+    if(!is.na(row$scripts_url)){
+    
+      script_json <- fromJSON(row$scripts_url)
+      for (i in 1:length(script_json)) {
+        if(!is.na(script_json[i])){
+          script_download <- script_download %>%  append(paste("<a href=https://'",Sys.getenv('APP_ENV'),"/storage/", script_json[i],
+                                 "'><i class='fa fa-download' style='color:#0072BC'>"," Example script",
+                                 "</i></a>", sep = ""))
+        }
+      }
+    }
+  }
+
+  return(script_download)
+}
+additional_info('IRQ')
 ############################################
 # limit to 50 characters the description 
 # for the sdg_description

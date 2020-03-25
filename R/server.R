@@ -1,17 +1,7 @@
 
 server = function(input, output, session) {
   indicators_map<-load_indicators_map()  
-  #####################################
-  # download script for addtional info tab
-  #####################################
-  output$downloadScript <-  renderUI({
-    load_dot_env(file = "../.env")
-    Sys.getenv("APP_ENV")
-    
-    script_url <- paste(Sys.getenv("APP_ENV"),storage,script,)
-    a("Example script", href=script_url, target="_blank")
-    
-  })
+  
   #####################################
   # refresh page when click on back to the map
   #####################################
@@ -58,7 +48,8 @@ server = function(input, output, session) {
         "<h4><b>",datasets$description,"</b></h4><br>",
         "<h5><b>Population Definitions: </b>","<br></h5>","<a href=", datasets$source_url,">", datasets$source_url,"</a>","<br>",
         "<h5><b>Comments: </b></h5>",datasets$comment, "<br>",
-        "<h5><b>Scripts Used: </b></h5>",datasets$scripts_url, "<br>",
+        "<h5><b>Scripts Used: </b></h5>",additional_info(input$country), "<br>",
+        "<h5>Description:",datasets$scripts_description, "</h5><br>",
         "<hr>"
       ))
       

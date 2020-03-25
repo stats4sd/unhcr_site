@@ -157,7 +157,7 @@ class DatasetCrudController extends CrudController
             [
                 'name' => 'scripts_description',
                 'type' => 'text',
-                'label' => 'If the scripts used to generate the linked indicators are available online, enter the url where they can be found',
+                'label' => 'Include a description for scripts that could help users understand the purpose of your script.',
                 
             ],
             [
