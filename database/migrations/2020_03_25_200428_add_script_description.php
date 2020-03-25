@@ -14,6 +14,7 @@ class AddScriptDescription extends Migration
     public function up()
     {
         Schema::table('datasets', function (Blueprint $table) {
+            $table->dropColumn('scripts_description');
             $table->text('scripts_description')->nullable();
             $table->dropColumn('script_description');
         });
