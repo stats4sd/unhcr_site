@@ -211,7 +211,7 @@ additional_info<-function(country_code){
       script_json <- fromJSON(row$scripts_url)
       for (i in 1:length(script_json)) {
         if(!is.na(script_json[i])){
-          script_download <- script_download %>%  append(paste('<a href="https://',Sys.getenv('APP_URL'),'/storage/', script_json[i],
+          script_download <- script_download %>%  append(paste('<a href="',Sys.getenv('APP_URL'),'/storage/', script_json[i],
                                  '"><i class="fa fa-download" style="color:#0072BC">',' Example script',
                                  '</i></a>', sep = ""))
         }
