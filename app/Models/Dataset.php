@@ -24,6 +24,9 @@ class Dataset extends Model
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
+    protected $casts = [
+        'scripts_url' => 'array'
+    ];
 
     /*
     |--------------------------------------------------------------------------
@@ -74,6 +77,7 @@ class Dataset extends Model
         $disk = "public";
         $destination_path = "script";
 
-        $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
+        $this->uploadMultipleFilesToDisk($value, $attribute_name, $disk, $destination_path);
     }
+
 }
