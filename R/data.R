@@ -202,7 +202,7 @@ load_dataset<-function(country_code){
 
 additional_info<-function(country_code){
   load_dot_env(file = "../.env")
-  Sys.getenv('APP_ENV')
+  Sys.getenv('APP_URL')
   datasets_by_country <- load_dataset(country_code)
   script_download <- c()
   for(i in 1:nrow(datasets_by_country)) {
