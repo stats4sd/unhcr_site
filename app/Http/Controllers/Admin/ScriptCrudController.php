@@ -101,7 +101,7 @@ class ScriptCrudController extends CrudController
                 'label' => 'SGD Indicators Calculated',
                 'type' => 'select2_multiple',
                 'entity' => 'indicators',
-                'attribute' => 'getIndicatorsCalculatedAttribute',
+                'attribute' => 'code',
                 'model' => Indicator::class,
                 
                 // 'options'   => (function ($query) {
