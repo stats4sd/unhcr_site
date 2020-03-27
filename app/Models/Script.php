@@ -64,7 +64,7 @@ class Script extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getSdgIndicatorsAttribute()
+    public function getIndicatorsCalculatedAttribute()
     {
         $indicators = $this->indicators;
         $sdgs = [];
@@ -74,7 +74,7 @@ class Script extends Model
         dd($sdgs);
         return $sdgs;
     }
-dd(getSdgIndicatorsAttribute());
+
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
