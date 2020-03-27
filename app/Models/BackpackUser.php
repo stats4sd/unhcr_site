@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\User;
+use App\Models\Script;
 use Backpack\CRUD\app\Models\Traits\InheritsRelationsFromParentModel;
 use Backpack\CRUD\app\Notifications\ResetPasswordNotification as ResetPasswordNotification;
 use Illuminate\Notifications\Notifiable;
@@ -34,5 +35,11 @@ class BackpackUser extends User
     public function getEmailForPasswordReset()
     {
         return $this->email;
+    }
+
+    //One to Many
+    public function script()
+    {
+        return $this->hasMany('App\Models\Script');
     }
 }

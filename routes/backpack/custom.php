@@ -21,4 +21,5 @@ Route::group([
     // Route::crud('country', 'CountryCrudController');
     Route::crud('homepagecard', 'HomePageCardCrudController');
     Route::crud('subgroup', 'SubgroupCrudController');
+    Route::crud('script', 'ScriptCrudController');
 }); // this should be the absolute last line of this file
