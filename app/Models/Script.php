@@ -67,9 +67,9 @@ class Script extends Model
     public function getSdgIndicatorsAttribute()
     {
         $indicators = $this->indicators;
-        $indicators = [];
+        $sdgs = [];
         foreach ($indicators as $indicator) {
-            $sdgs[] = $indicator->sdg_indicators->name;
+            array_push($sdgs, $indicator->sdg_indicator->name);
         }
         return $sdgs;
     }
