@@ -103,7 +103,7 @@ class ScriptCrudController extends CrudController
                 'entity' => 'sdg_indicator_id',
                 'attribute' => 'code',
                 'model' => Indicator::class,
-                'pivot' => true, 
+                
                 // 'options'   => (function ($query) {
                 //     dd($query);
 
