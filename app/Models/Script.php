@@ -74,7 +74,7 @@ class Script extends Model
         dd($sdgs);
         return $sdgs;
     }
-
+dd(getSdgIndicatorsAttribute());
     /*
     |--------------------------------------------------------------------------
     | MUTATORS

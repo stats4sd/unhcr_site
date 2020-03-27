@@ -44,13 +44,9 @@ class SdgIndicator extends Model
     */
     public function indicators()
     {
-        return $this->hasMany('App\Models\Indicator', 'sdg_indicator_id');
+        return $this->hasMany('App\Models\Indicator');
     }
 
-    public function scripts()
-    {
-        return $this->belongsToMany('App\Models\Script', 'name+of_table', 'sdg_indicator_id', 'script_id');
-    }
 
     /*
     |--------------------------------------------------------------------------
