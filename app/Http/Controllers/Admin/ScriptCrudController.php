@@ -100,11 +100,11 @@ class ScriptCrudController extends CrudController
             [
                 'name' => 'indicators_calculated',
                 'label' => 'SGD Indicators Calculated',
-                'type' => 'select2_multiple',
+                'type' => 'select2_nested',
                 'entity' => 'sdg_indicators',
                 'attribute' => 'code',
                 'model' => SdgIndicator::class,
-                'pivot'     => true, 
+                
             ],
             // [
             //     'name' => 'groups_id',
