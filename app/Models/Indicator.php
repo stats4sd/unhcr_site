@@ -54,6 +54,12 @@ class Indicator extends Model
         return $this->belongsTo('App\Models\Subgroup', 'subgroup_name');
     }
 
+    //Many to Many
+    public function scripts()
+    {
+        return $this->belongsToMany('App\Models\Script', 'link_scripts_indicators', 'script_id', 'indicator_id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

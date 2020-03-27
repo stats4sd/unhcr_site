@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\User;
-use App\Models\Group;
-use App\Models\SdgIndicator;
+use App\Models\Indicator;
 use App\Http\Requests\ScriptRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -58,16 +57,16 @@ class ScriptCrudController extends CrudController
                 'type' => 'select_multiple',
                 'entity' => 'sdg_indicators',
                 'attribute' => 'code',
-                'model' => SdgIndicator::class
+                'model' => Indicator::class
             ],
-            // [
-            //     'name' => 'groups_id',
-            //     'label' => 'Groups',
-            //     'type' => 'select',
-            //     'entity' => 'groups',
-            //     'attribute' => 'name',
-            //     'model' => Group::class
-            // ],
+            [
+                'name' => 'groups_id',
+                'label' => 'Groups',
+                'type' => 'select',
+                'entity' => 'groups',
+                'attribute' => 'name',
+                'model' => Indicator::class
+            ],
             [
                 'name' => 'script_file',
                 'label' => 'Scripts',
@@ -103,17 +102,17 @@ class ScriptCrudController extends CrudController
                 'type' => 'select2_multiple',
                 'entity' => 'sdg_indicators',
                 'attribute' => 'code',
-                'model' => SdgIndicator::class,
+                'model' => Indicator::class,
                 'pivot' => true, 
             ],
-            // [
-            //     'name' => 'groups_id',
-            //     'label' => 'Groups',
-            //     'type' => 'select2_multiple',
-            //     'entity' => 'groups',
-            //     'attribute' => 'name',
-            //     'model' => Group::class
-            // ],
+            [
+                'name' => 'groups_id',
+                'label' => 'Groups',
+                'type' => 'select2_multiple',
+                'entity' => 'groups',
+                'attribute' => 'name',
+                'model' => Indicator::class
+            ],
             [
                 'name' => 'script_file',
                 'type' => 'upload_multiple',

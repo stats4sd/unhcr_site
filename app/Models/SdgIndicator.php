@@ -49,7 +49,7 @@ class SdgIndicator extends Model
 
     public function scripts()
     {
-        return $this->belongsToMany('App\Models\Script', 'code', 'id');
+        return $this->belongsToMany('App\Models\Script', 'name+of_table', 'sdg_indicator_id', 'script_id');
     }
 
     /*
