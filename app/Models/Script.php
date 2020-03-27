@@ -69,9 +69,10 @@ class Script extends Model
         $indicators = $this->indicators;
         $sdgs = [];
         foreach ($indicators as $indicator) {
-            array_push($sdgs, $indicator->sdg_indicator->name);
+            array_push($sdgs, $indicator->sdg_indicator->code);
         }
-        return $sdgs;
+            $sdg_list<-array_unique($sdgs);
+        return $sdg_list;
     }
 
     /*
