@@ -103,7 +103,8 @@ class ScriptCrudController extends CrudController
                 'type' => 'select2_multiple',
                 'entity' => 'sdg_indicators',
                 'attribute' => 'code',
-                'model' => SdgIndicator::class
+                'model' => SdgIndicator::class,
+                'pivot'     => true, 
             ],
             // [
             //     'name' => 'groups_id',
