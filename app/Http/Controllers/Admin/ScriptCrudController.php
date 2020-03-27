@@ -100,8 +100,8 @@ class ScriptCrudController extends CrudController
                 'name' => 'indicators_calculated',
                 'label' => 'SGD Indicators Calculated',
                 'type' => 'select2_multiple',
-                'entity' => 'sdg_indicator_id',
-                'attribute' => 'code',
+                'entity' => 'indicators',
+                'attribute' => 'sdg_indicator_id',
                 'model' => Indicator::class,
                 
                 // 'options'   => (function ($query) {
@@ -114,8 +114,8 @@ class ScriptCrudController extends CrudController
                 'name' => 'groups_id',
                 'label' => 'Groups',
                 'type' => 'select2_multiple',
-                'entity' => 'groups',
-                'attribute' => 'name',
+                'entity' => 'indicators',
+                'attribute' => 'group_id',
                 'model' => Indicator::class
             ],
             [
