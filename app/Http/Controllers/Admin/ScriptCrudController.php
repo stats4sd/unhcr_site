@@ -47,7 +47,7 @@ class ScriptCrudController extends CrudController
     {
         $this->crud->setValidation(ScriptRequest::class);
 
-         $this->crud->addFields([
+        $this->crud->addFields([
            
             [
                 'name' => 'user_id',
@@ -56,11 +56,13 @@ class ScriptCrudController extends CrudController
                 'entity' => 'users',
                 'attribute' => 'name',
                 'model' => User::class
-            ],
+            ]
+        ]);
+
     }
 
     protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation();
+        $this->setupCreateOperation();s
     }
 }
