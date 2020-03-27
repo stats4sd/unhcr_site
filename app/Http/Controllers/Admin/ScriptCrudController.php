@@ -33,7 +33,7 @@ class ScriptCrudController extends CrudController
         $this->crud->setFromDb();
         $this->crud->addColumns([
             [
-                'name' => 'user_id',
+                'name' => 'author_id',
                 'label' => 'Author',
                 'type' => 'select',
                 'entity' => 'users',
@@ -51,7 +51,7 @@ class ScriptCrudController extends CrudController
         $this->crud->addFields([
            
             [
-                'name' => 'user_id',
+                'name' => 'author_id',
                 'label' => 'Select the author of the script',
                 'type' => 'select2',
                 'entity' => 'users',
