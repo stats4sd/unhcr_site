@@ -114,7 +114,7 @@ class ScriptCrudController extends CrudController
                         $sdg_list<-array_unique($sdgs);
                     dd($sdg_list);
                     return $sdg_list;
-                });
+                }),
                           
             ],
             [
