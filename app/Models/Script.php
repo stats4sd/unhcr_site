@@ -71,6 +71,7 @@ class Script extends Model
         foreach ($indicators as $indicator) {
             array_push($sdgs, $indicator->sdg_indicator->name);
         }
+        dd($sdgs);
         return $sdgs;
     }
 
