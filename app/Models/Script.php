@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\User;
+use App\User;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
@@ -43,7 +43,7 @@ class Script extends Model
 
     public function users()
     {
-        return $this->belongsTo('App\Models\User', 'name');
+        return $this->belongsTo('App\User', 'name');
     }
 
     /*
