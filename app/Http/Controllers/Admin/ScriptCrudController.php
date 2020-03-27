@@ -55,16 +55,16 @@ class ScriptCrudController extends CrudController
                 'name' => 'indicators_calculated',
                 'label' => 'SGD Indicators Calculated',
                 'type' => 'select_multiple',
-                'entity' => 'sdg_indicators',
-                'attribute' => 'code',
+                'entity' => 'indicators',
+                'attribute' => 'sdg_indicator_id',
                 'model' => Indicator::class
             ],
             [
                 'name' => 'groups_id',
                 'label' => 'Groups',
                 'type' => 'select',
-                'entity' => 'groups',
-                'attribute' => 'name',
+                'entity' => 'indicators',
+                'attribute' => 'group_id',
                 'model' => Indicator::class
             ],
             [
