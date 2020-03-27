@@ -64,6 +64,16 @@ class Script extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function getSdgIndicatorsAttribute()
+    {
+        $indicators = $this->indicators;
+        $indicators = [];
+        foreach ($indicators as $indicator) {
+            $sdgs[] = $indicator->sdg_indicators->name;
+        }
+        return $sdgs;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
