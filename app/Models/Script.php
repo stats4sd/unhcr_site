@@ -72,7 +72,6 @@ class Script extends Model
             array_push($sdgs, $indicator->sdg_indicator->code);
         }
         $sdg_list<-array_unique($sdgs);
-        dd($sdg_list);
         return $sdg_list;
     }
 
