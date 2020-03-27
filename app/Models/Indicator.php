@@ -22,7 +22,8 @@ class Indicator extends Model
     protected $table = 'indicators';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'datasets','dataset_id'];
+    protected $appends = ['combined_label'];
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
@@ -32,6 +33,19 @@ class Indicator extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
+    public function getCombinedLabelAttribute ()
+    {
+        // dataset: sdg_code - group - subgroupname
+        $dataset = $this->datasets->description;
+        $sdg_code = $this->sdg_indicator->code;
+        $group = $this->groups->name;
+        $subgroup = $this->subgroups->name;
+
+        return $dataset . ": " . $sdg_code . " - " . $group . " - " . $subgroup;
+
+    }
+
     //One to Many
 
     public function datasets()
@@ -77,7 +91,7 @@ class Indicator extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-   
+
 
     /*
     |--------------------------------------------------------------------------

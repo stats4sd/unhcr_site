@@ -20,7 +20,7 @@ class Script extends Model
     protected $table = 'scripts';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'datasets'];
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
@@ -44,12 +44,12 @@ class Script extends Model
 
     public function users()
     {
-        return $this->belongsTo('App\User', 'name');
+        return $this->belongsTo('App\User', 'author_id');
     }
 
     public function indicators()
     {
-        return $this->belongsToMany('App\Models\Indicator');
+        return $this->belongsToMany('App\Models\Indicator', 'link_scripts_indicators');
     }
 
     /*

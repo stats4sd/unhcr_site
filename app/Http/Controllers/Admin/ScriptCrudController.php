@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\User;
-use App\Models\Indicator;
 use App\Http\Requests\ScriptRequest;
+use App\Models\Dataset;
+use App\Models\Indicator;
+use App\User;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -47,24 +48,21 @@ class ScriptCrudController extends CrudController
                 'model' => User::class
             ],
             [
-                'name' => 'location',
-                'label' => 'Location',
-                'type' => 'text'
-            ],
-            [
-                'name' => 'indicators_calculated',
-                'label' => 'SGD Indicators Calculated',
+                'name' => 'indicators',
+                'key' => 'indicator',
+                'label' => 'Indicators Calculated',
                 'type' => 'select_multiple',
                 'entity' => 'indicators',
-                'attribute' => 'sdg_indicator_id',
+                'attribute' => 'combined_label',
                 'model' => Indicator::class
             ],
             [
-                'name' => 'groups_id',
-                'label' => 'Groups',
-                'type' => 'select',
+                'name' => 'indicators',
+                'key' => 'sdg_indicator',
+                'label' => 'SDG Indicators Calculated',
+                'type' => 'select_multiple',
                 'entity' => 'indicators',
-                'attribute' => 'group_id',
+                'attribute' => 'sdg_indicator_id',
                 'model' => Indicator::class
             ],
             [
@@ -82,7 +80,7 @@ class ScriptCrudController extends CrudController
         $this->crud->setValidation(ScriptRequest::class);
 
         $this->crud->addFields([
-           
+
             [
                 'name' => 'author_id',
                 'label' => 'Select the author of the script',
@@ -92,23 +90,54 @@ class ScriptCrudController extends CrudController
                 'model' => User::class
             ],
             [
-                'name' => 'location',
-                'label' => 'Location',
-                'type' => 'text'
+                'name' => 'title',
+                'label' => 'Script Title',
+                'type' => 'text',
             ],
+
+            // Datasets (for filtering indicators - not to be saved)
             [
-                'name' => 'indicators_calculated',
-                'label' => 'SGD Indicators Calculated',
-                'type' => 'array',
-            ],
-            [
-                'name' => 'groups_id',
-                'label' => 'Groups',
+                'name' => 'datasets',
+                'label' => 'Select the Datasets this script works with',
                 'type' => 'select2_multiple',
-                'entity' => 'indicators',
-                'attribute' => 'group_id',
-                'model' => Indicator::class
+                'entity' => 'dataset',
+                'model' => Dataset::class,
+                'attribute' => "description", // foreign key attribute that is shown to user
             ],
+
+
+            // Indicators
+            [
+                'name' => 'indicators',
+                'label' => 'Select Indicators that are calculated by the script',
+                'type' => 'select2_from_ajax_multiple',
+                'entity' => 'indicators',
+                'attribute' => 'combined_label',
+                'model' => Indicator::class,
+                'data_source' => url("api/indicators"), // url to controller search function (with /{id} should return model)
+                'placeholder' => 'select indicator',
+                'minimum_input_length' => 0,
+                'pivot' => true,
+            ],
+
+            // [
+            //     'name' => 'location',
+            //     'label' => 'Location',
+            //     'type' => 'text'
+            // ],
+            // [
+            //     'name' => 'indicators_calculated',
+            //     'label' => 'SGD Indicators Calculated',
+            //     'type' => 'array',
+            // ],
+            // [
+            //     'name' => 'groups_id',
+            //     'label' => 'Groups',
+            //     'type' => 'select2_multiple',
+            //     'entity' => 'indicators',
+            //     'attribute' => 'group_id',
+            //     'model' => Indicator::class
+            // ],
             [
                 'name' => 'script_file',
                 'type' => 'upload_multiple',

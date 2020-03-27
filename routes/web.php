@@ -47,3 +47,11 @@ Route::get('admin/login',function(){
 Route::get('admin/logout',function(){
     return view('welcome');
 });
+
+/**
+ * Endpoints for custom filters in Backpack Crud Panels
+ */
+Route::get('api/indicators', 'IndicatorsFilterController@index');
+Route::get('api/indicators/{id}', 'IndicatorsFilterController@show');
+
+
