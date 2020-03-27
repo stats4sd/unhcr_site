@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Indicator;
+use App\Models\Script;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
@@ -44,6 +45,11 @@ class SdgIndicator extends Model
     public function indicators()
     {
         return $this->hasMany('App\Models\Indicator', 'sdg_indicator_id');
+    }
+
+    public function scripts()
+    {
+        return $this->belongsToMany('App\Models\Script', 'sdg_indicator_id');
     }
 
     /*

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\User;
+use App\Models\SdgIndicator;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
@@ -44,6 +45,11 @@ class Script extends Model
     public function users()
     {
         return $this->belongsTo('App\User', 'name');
+    }
+
+    public function sdg_indicators()
+    {
+        return $this->belongsToMany('App\Models\SdgIndicator');
     }
 
     /*

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\User;
+use App\Models\Group;
+use App\Models\SdgIndicator;
 use App\Http\Requests\ScriptRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -30,8 +32,13 @@ class ScriptCrudController extends CrudController
     protected function setupListOperation()
     {
         // TODO: remove setFromDb() and manually define Columns, maybe Filters
-        $this->crud->setFromDb();
+        #$this->crud->setFromDb();
         $this->crud->addColumns([
+            [
+                'name' => 'title',
+                'label' => 'Title',
+                'type' => 'text'
+            ],
             [
                 'name' => 'author_id',
                 'label' => 'Author',
@@ -40,6 +47,33 @@ class ScriptCrudController extends CrudController
                 'attribute' => 'name',
                 'model' => User::class
             ],
+            [
+                'name' => 'location',
+                'label' => 'Location',
+                'type' => 'text'
+            ],
+            [
+                'name' => 'indicators_calculated',
+                'label' => 'SGD Indicators Calculated',
+                'type' => 'select',
+                'entity' => 'sdg_indicators',
+                'attribute' => 'code',
+                'model' => SdgIndicator::class
+            ],
+            // [
+            //     'name' => 'groups_id',
+            //     'label' => 'Groups',
+            //     'type' => 'select',
+            //     'entity' => 'groups',
+            //     'attribute' => 'name',
+            //     'model' => Group::class
+            // ],
+            [
+                'name' => 'script_file',
+                'label' => 'Scripts',
+                'type' => 'text'
+            ],
+
 
         ]);
     }
@@ -57,7 +91,35 @@ class ScriptCrudController extends CrudController
                 'entity' => 'users',
                 'attribute' => 'name',
                 'model' => User::class
+            ],
+            [
+                'name' => 'location',
+                'label' => 'Location',
+                'type' => 'text'
+            ],
+            [
+                'name' => 'indicators_calculated',
+                'label' => 'SGD Indicators Calculated',
+                'type' => 'select_multiple',
+                'entity' => 'sdg_indicators',
+                'attribute' => 'code',
+                'model' => SdgIndicator::class
+            ],
+            // [
+            //     'name' => 'groups_id',
+            //     'label' => 'Groups',
+            //     'type' => 'select2_multiple',
+            //     'entity' => 'groups',
+            //     'attribute' => 'name',
+            //     'model' => Group::class
+            // ],
+            [
+                'name' => 'script_file',
+                'type' => 'upload_multiple',
+                'label' => 'If the scripts used to generate the linked indicators are available online, enter the url where they can be found',
+                'upload' => true,
             ]
+
         ]);
 
     }
