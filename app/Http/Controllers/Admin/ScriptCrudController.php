@@ -104,11 +104,11 @@ class ScriptCrudController extends CrudController
                 'attribute' => 'code',
                 'model' => Indicator::class,
                 'pivot' => true, 
-                'options'   => (function ($query) {
-                    dd($query);
+                // 'options'   => (function ($query) {
+                //     dd($query);
 
-                    #return $query->orderBy('name', 'ASC')->where('depth', 1)->get();
-                }), 
+                //     #return $query->orderBy('name', 'ASC')->where('depth', 1)->get();
+                // }), 
             ],
             [
                 'name' => 'groups_id',
