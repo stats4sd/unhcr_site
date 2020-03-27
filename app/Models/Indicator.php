@@ -77,16 +77,7 @@ class Indicator extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-    public function getSdgIndicatorIddAttribute()
-    {
-        $indicators = $this->indicators;
-        $sdgs = [];
-        foreach ($indicators as $indicator) {
-            array_push($sdgs, $indicator->sdg_indicator->code);
-        }
-            $sdg_list<-array_unique($sdgs);
-        return $sdg_list;
-    }
+   
 
     /*
     |--------------------------------------------------------------------------

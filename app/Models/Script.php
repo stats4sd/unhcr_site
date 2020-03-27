@@ -66,7 +66,7 @@ class Script extends Model
 
     public function getIndicatorsCalculatedAttribute()
     {
-        $indicators = $this->indicators;
+        $indicators = $this->indicators();
         $sdgs = [];
         foreach ($indicators as $indicator) {
             array_push($sdgs, $indicator->sdg_indicator->code);
