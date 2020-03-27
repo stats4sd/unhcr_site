@@ -64,7 +64,7 @@ class Script extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function setIndicatorsCalculatedAttribute()
+    public function getIndicatorsCalculatedAttribute()
     {
         $indicators = $this->indicators;
         $sdgs = [];

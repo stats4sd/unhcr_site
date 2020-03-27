@@ -104,11 +104,16 @@ class ScriptCrudController extends CrudController
                 'attribute' => 'sdg_indicator_id',
                 'model' => Indicator::class,
                 
-                // 'options'   => (function ($query) {
-                //     dd($query);
-
-                //     #return $query->orderBy('name', 'ASC')->where('depth', 1)->get();
-                // }), 
+                'options'   => (function ($query) {
+                  
+                    $indicators = $this->indicators;
+                    $sdgs = [];
+                    foreach ($indicators as $indicator) {
+                        array_push($sdgs, $indicator->sdg_indicator->code);
+                    }
+                        $sdg_list<-array_unique($sdgs);
+                    return $sdg_list;
+                          
             ],
             [
                 'name' => 'groups_id',
