@@ -63,6 +63,6 @@ class ScriptCrudController extends CrudController
 
     protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation();s
+        $this->setupCreateOperation();
     }
 }
