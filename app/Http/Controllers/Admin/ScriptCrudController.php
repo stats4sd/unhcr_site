@@ -101,19 +101,19 @@ class ScriptCrudController extends CrudController
                 'label' => 'SGD Indicators Calculated',
                 'type' => 'select2_multiple',
                 'entity' => 'indicators',
-                'attribute' => 'sdg_indicator_id',
+                'attribute' => 'getIndicatorsCalculatedAttribute',
                 'model' => Indicator::class,
                 
-                'options'   => (function ($query) {
+                // 'options'   => (function ($query) {
                   
-                    $indicators = $this->indicators();
-                    $sdgs = [];
-                    foreach ($indicators as $indicator) {
-                        array_push($sdgs, $indicator->sdg_indicator->code);
-                    }
-                        $sdg_list<-array_unique($sdgs);
-                    return $sdg_list;
-                }),
+                //     $indicators = indicators();
+                //     $sdgs = [];
+                //     foreach ($indicators as $indicator) {
+                //         array_push($sdgs, indicator->sdg_indicator->code);
+                //     }
+                //         $sdg_list<-array_unique($sdgs);
+                //     return $sdg_list;
+                // }),
                           
             ],
             [
