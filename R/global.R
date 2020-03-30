@@ -6,7 +6,6 @@ library(RColorBrewer)
 library(ggplot2)
 library(shinyjs)
 library(rgdal)
-#library(rjson)
 source('data.R')
 
 indicators<-load_indicators(NULL) 

@@ -42,14 +42,21 @@ server = function(input, output, session) {
   observe({
     req(input$country)
     datasets <- load_dataset(input$country) 
+    df1<-vector()
+    for (id in datasets$id) {
+      df1 <- df1 %>%  append(additional_info_download(id));  
+    }
+    
+
+    datasets$additional_info_download <- df1;
+   
     output$additional_info <- renderUI({ 
      
       HTML(paste0(
         "<h4><b>",datasets$description,"</b></h4><br>",
         "<h5><b>Population Definitions: </b>","<br></h5>","<a href=", datasets$source_url,">", datasets$source_url,"</a>","<br>",
         "<h5><b>Comments: </b></h5>",datasets$comment, "<br>",
-       # "<h5><b>Scripts Used: </b></h5>",additional_info(input$country), "<br>",
-        "<h5>Description:",datasets$scripts_description, "</h5><br>",
+       "<h5><b>Scripts Used: </b></h5>",datasets$additional_info_download, "<br>",
         "<hr>"
       ))
       

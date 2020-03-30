@@ -4,6 +4,7 @@ library(maps)
 library(dplyr)
 library(stringi)
 library(dotenv)
+library(rjson)
 source('dbConfig.R')
 
 #####################################
@@ -187,16 +188,17 @@ load_dataset<-function(country_code){
   
   datasets$countries_name <- as.factor(datasets$country_code)
   datasets$year <- as.numeric(datasets$year)
+  datasets$id <- as.numeric(datasets$id)
   datasets$region <- as.factor(datasets$region)
   datasets$description <- as.factor(datasets$description)
   datasets$population_definition <- as.factor(datasets$population_definition)
   datasets$source_url <- as.factor(datasets$source_url)
   datasets$comment <- as.factor(datasets$comment)
-  
-  
+ 
   dbDisconnect(con)
   return(datasets)  
 }
+
 
 load_script<-function(id){
   con <- get_sql_connection()
@@ -216,28 +218,83 @@ load_script<-function(id){
   scripts$location <- as.factor(scripts$location)
   scripts$description <- as.factor(scripts$description)
   scripts$indicators_calculated <- as.factor(scripts$indicators_calculated)
- 
+  
   
   dbDisconnect(con)
   return(scripts)  
 }
 
 
-additional_info<-function(country_code){
+additional_info_download<-function(dataset_id){
   load_dot_env(file = "../.env")
-  datasets_by_country <- load_dataset(country_code)
-  script_id <- datasets_by_country$scrip_id
-  script_info<-load_script(script_id) 
-  #json_data <- fromJSON(script_info$script_file)
-  #print(json_data)
-  #script_download <- script_download %>%  append(paste('<a href="',Sys.getenv('APP_URL'),'/storage/', script_info,
-   #                              '"><i class="fa fa-download" style="color:#0072BC">',' Example script',
-   #                              '</i></a>', sep = ""))
-        
 
-  return(script_info)
+  datasets <- load_dataset(NULL)
+  dataset <- subset(datasets, id == dataset_id)
+  
+  script_download<-""
+ 
+    if(dataset$script_id>0){
+      script_info<-load_script(dataset$script_id) 
+      script_file_json<- fromJSON(script_info$script_file)
+     
+      
+      
+      for (file in script_file_json) {
+        script_download <- paste(script_download,'<a href="',Sys.getenv('APP_ENV'),'/storage/', file,
+                                          '"><i class="fa fa-download" style="color:#0072BC">',' Example script &nbsp;&nbsp;&nbsp;',
+                                          '</i></a>', sep = "")
+      }
+      script_download <- paste(script_download,'<h5>Title: ', script_info$title,'</h5>',
+                               '<h5>Author: ', user_name(script_info$author_id), '</h5>', 
+                               '<h5>Location: ', script_info$location, '</h5>',
+                               '<h5>Indicator Calculated: ', sdg_calculated(dataset_id), '</h5>',
+                               '<h5>Group: ', groups_dataset(dataset_id), '</h5>', sep = ""
+      )
+            
+  }
+  
+  return(script_download)
 }
-#additional_info('IRQ')
+
+user_name<-function(user_id){
+  con <- get_sql_connection()
+  
+  sql<-"SELECT *
+          
+            FROM users
+       "
+  
+  if(! is.null(id)) {
+    sql <- paste(sql, " WHERE id = '",user_id, "'", sep = "")
+  }
+  users <- dbGetQuery(con,paste(sql,";"))
+  
+  users$name <- as.factor(users$name )
+  
+  
+  dbDisconnect(con)
+  return(users$name)  
+}
+
+sdg_calculated<-function(dataset_id){
+  indicators<-indicators %>% subset(dataset_id==dataset_id)
+  
+  indicators <- indicators[order(indicators$sdg_lft),]
+  sdg_calculated<-paste( unlist(unique(indicators$sdg_code)), collapse = ", ")
+  return(sdg_calculated)
+  
+}
+
+
+groups_dataset<-function(dataset_id){
+  indicators<-indicators %>% subset(dataset_id==dataset_id)
+  
+  indicators <- indicators[order(indicators$sdg_lft),]
+  groups<-paste( unlist(unique(indicators$group_name)), collapse = ", ")
+  return(groups)
+  
+}
+
 ############################################
 # limit to 50 characters the description 
 # for the sdg_description
@@ -383,4 +440,4 @@ killDbConnections <- function () {
   print(paste(length(all_cons), " connections killed."))
   
 }
-#killDbConnections()
+killDbConnections()
