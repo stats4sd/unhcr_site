@@ -192,34 +192,50 @@ load_dataset<-function(country_code){
   datasets$population_definition <- as.factor(datasets$population_definition)
   datasets$source_url <- as.factor(datasets$source_url)
   datasets$comment <- as.factor(datasets$comment)
-  datasets$scripts_description <- as.factor(datasets$scripts_description)
+  
   
   dbDisconnect(con)
   return(datasets)  
 }
 
+load_script<-function(id){
+  con <- get_sql_connection()
+  
+  sql<-"SELECT *
+          
+            FROM scripts
+       "
+  
+  if(! is.null(id)) {
+    sql <- paste(sql, " WHERE scripts.id = '",id, "'", sep = "")
+  }
+  scripts <- dbGetQuery(con,paste(sql,";"))
+  
+  scripts$title <- as.factor(scripts$title)
+  scripts$author_id <- as.numeric(scripts$author_id)
+  scripts$location <- as.factor(scripts$location)
+  scripts$description <- as.factor(scripts$description)
+  scripts$indicators_calculated <- as.factor(scripts$indicators_calculated)
+ 
+  
+  dbDisconnect(con)
+  return(scripts)  
+}
 
 
 additional_info<-function(country_code){
   load_dot_env(file = "../.env")
   datasets_by_country <- load_dataset(country_code)
-  script_download <- c()
-  for(i in 1:nrow(datasets_by_country)) {
-    row <- datasets_by_country[i,]
-    if(!is.na(row$scripts_url)){
-    
-      script_json <- fromJSON(row$scripts_url)
-      for (i in 1:length(script_json)) {
-        if(!is.na(script_json[i])){
-          script_download <- script_download %>%  append(paste('<a href="',Sys.getenv('APP_URL'),'/storage/', script_json[i],
-                                 '"><i class="fa fa-download" style="color:#0072BC">',' Example script',
-                                 '</i></a>', sep = ""))
-        }
-      }
-    }
-  }
+  script_id <- datasets_by_country$scrip_id
+  script_info<-load_script(script_id) 
+  json_data <- fromJSON(script_info$script_file)
+  print(json_data)
+  #script_download <- script_download %>%  append(paste('<a href="',Sys.getenv('APP_URL'),'/storage/', script_info,
+   #                              '"><i class="fa fa-download" style="color:#0072BC">',' Example script',
+   #                              '</i></a>', sep = ""))
+        
 
-  return(script_download)
+  return(json_data)
 }
 additional_info('IRQ')
 ############################################

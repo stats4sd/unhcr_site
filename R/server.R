@@ -48,7 +48,7 @@ server = function(input, output, session) {
         "<h4><b>",datasets$description,"</b></h4><br>",
         "<h5><b>Population Definitions: </b>","<br></h5>","<a href=", datasets$source_url,">", datasets$source_url,"</a>","<br>",
         "<h5><b>Comments: </b></h5>",datasets$comment, "<br>",
-        "<h5><b>Scripts Used: </b></h5>",additional_info(input$country), "<br>",
+       # "<h5><b>Scripts Used: </b></h5>",additional_info(input$country), "<br>",
         "<h5>Description:",datasets$scripts_description, "</h5><br>",
         "<hr>"
       ))
