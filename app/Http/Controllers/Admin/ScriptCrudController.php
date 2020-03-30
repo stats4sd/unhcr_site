@@ -71,10 +71,16 @@ class ScriptCrudController extends CrudController
                 'model' => Indicator::class
             ],
             [
+                'name' => 'description',
+                'label' => 'Description',
+                'type' => 'text',
+            ],
+            [
                 'name' => 'script_file',
                 'label' => 'Scripts',
                 'type' => 'text'
             ],
+
 
 
         ]);
@@ -134,7 +140,12 @@ class ScriptCrudController extends CrudController
                 'type' => 'upload_multiple',
                 'label' => 'Upload the R script.',
                 'upload' => true,
-            ]
+            ],
+            [
+                'name' => 'description',
+                'label' => 'Insert a description',
+                'type' => 'tinymce',
+            ],
 
         ]);
 

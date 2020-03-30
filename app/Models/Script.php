@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\User;
 use App\Models\Indicator;
+use App\Models\Dataset;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
@@ -50,6 +51,11 @@ class Script extends Model
     public function indicators()
     {
         return $this->belongsToMany('App\Models\Indicator', 'link_scripts_indicators');
+    }
+
+    public function dataset()
+    {
+        return $this->hasMany('App\Models\Dataset');
     }
 
     /*

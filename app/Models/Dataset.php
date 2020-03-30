@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Country;
 use App\Models\Indicator;
+use App\Models\Script;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
@@ -50,6 +51,11 @@ class Dataset extends Model
     public function indicator()
     {
         return $this->hasMany('App\Models\Indicator');
+    }
+
+    public function scripts()
+    {
+        return $this->belongsTo('App\Models\Script', 'title');
     }
 
 

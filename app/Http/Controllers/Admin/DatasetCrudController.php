@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\DatasetRequest;
 use App\Models\Country;
+use App\Models\Script;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -66,9 +67,12 @@ class DatasetCrudController extends CrudController
                 'label' => 'Source url',
             ],
             [
-                'name' => 'scripts_url',
-                'type' => 'url',
-                'label' => 'Scripts url',
+                'name' => 'script_id',
+                'label' => 'Script',
+                'type' => 'select',
+                'entity' => 'scripts',
+                'attribute' => 'title',
+                'model' => Script::class
             ],
             [
                 'name' => 'fake',
@@ -142,10 +146,12 @@ class DatasetCrudController extends CrudController
                 'label' => 'If the dataset is available online, enter the url where the source data can be found',
             ],
             [
-                'name' => 'scripts_url',
-                'type' => 'upload_multiple',
-                'label' => 'If the scripts used to generate the linked indicators are available online, enter the url where they can be found',
-                'upload' => true,
+                'name' => 'script_id',
+                'label' => 'Do you want to add the scripts?',
+                'type' => 'select2',
+                'entity' => 'scripts',
+                'attribute' => 'title',
+                'model' => Script::class
 
             ],
 
