@@ -228,16 +228,16 @@ additional_info<-function(country_code){
   datasets_by_country <- load_dataset(country_code)
   script_id <- datasets_by_country$scrip_id
   script_info<-load_script(script_id) 
-  json_data <- fromJSON(script_info$script_file)
-  print(json_data)
+  #json_data <- fromJSON(script_info$script_file)
+  #print(json_data)
   #script_download <- script_download %>%  append(paste('<a href="',Sys.getenv('APP_URL'),'/storage/', script_info,
    #                              '"><i class="fa fa-download" style="color:#0072BC">',' Example script',
    #                              '</i></a>', sep = ""))
         
 
-  return(json_data)
+  return(script_info)
 }
-additional_info('IRQ')
+#additional_info('IRQ')
 ############################################
 # limit to 50 characters the description 
 # for the sdg_description
