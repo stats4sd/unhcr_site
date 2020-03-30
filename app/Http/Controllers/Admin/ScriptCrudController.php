@@ -82,6 +82,11 @@ class ScriptCrudController extends CrudController
         $this->crud->addFields([
 
             [
+                'name' => 'title',
+                'label' => 'Script Title',
+                'type' => 'text',
+            ],
+            [
                 'name' => 'author_id',
                 'label' => 'Select the author of the script',
                 'type' => 'select2',
@@ -89,13 +94,13 @@ class ScriptCrudController extends CrudController
                 'attribute' => 'name',
                 'model' => User::class
             ],
-            [
-                'name' => 'title',
-                'label' => 'Script Title',
-                'type' => 'text',
-            ],
 
             // Datasets (for filtering indicators - not to be saved)
+            [
+                'name' => 'location',
+                'label' => 'Location',
+                'type' => 'text',
+            ],
             [
                 'name' => 'datasets',
                 'label' => 'Select the Datasets this script works with',
@@ -120,28 +125,11 @@ class ScriptCrudController extends CrudController
                 'pivot' => true,
             ],
 
-            // [
-            //     'name' => 'location',
-            //     'label' => 'Location',
-            //     'type' => 'text'
-            // ],
-            // [
-            //     'name' => 'indicators_calculated',
-            //     'label' => 'SGD Indicators Calculated',
-            //     'type' => 'array',
-            // ],
-            // [
-            //     'name' => 'groups_id',
-            //     'label' => 'Groups',
-            //     'type' => 'select2_multiple',
-            //     'entity' => 'indicators',
-            //     'attribute' => 'group_id',
-            //     'model' => Indicator::class
-            // ],
+            
             [
                 'name' => 'script_file',
                 'type' => 'upload_multiple',
-                'label' => 'If the scripts used to generate the linked indicators are available online, enter the url where they can be found',
+                'label' => 'Upload the R script.',
                 'upload' => true,
             ]
 
