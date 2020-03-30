@@ -55,7 +55,7 @@ class Dataset extends Model
 
     public function scripts()
     {
-        return $this->belongsTo('App\Models\Script', 'title');
+        return $this->belongsTo('App\Models\Script', 'id');
     }
 
 
