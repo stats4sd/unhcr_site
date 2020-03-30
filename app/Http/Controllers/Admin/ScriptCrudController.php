@@ -48,9 +48,14 @@ class ScriptCrudController extends CrudController
                 'model' => User::class
             ],
             [
+                'name' => 'location',
+                'label' => 'Location',
+                'type' => 'text',
+            ],
+            [
                 'name' => 'indicators',
                 'key' => 'indicator',
-                'label' => 'Indicators Calculated',
+                'label' => 'Dataset-Country-SDG-Group-Subgroup',
                 'type' => 'select_multiple',
                 'entity' => 'indicators',
                 'attribute' => 'combined_label',
@@ -124,8 +129,6 @@ class ScriptCrudController extends CrudController
                 'minimum_input_length' => 0,
                 'pivot' => true,
             ],
-
-            
             [
                 'name' => 'script_file',
                 'type' => 'upload_multiple',
