@@ -109,8 +109,8 @@ return [
             // Before saving the entry, how would you like the request to be stripped?
             // - false - Save ONLY inputs that have a field (safest, default);
             // - [x, y, z] - Save ALL inputs, EXCEPT the ones given in this array;
-            'saveAllInputsExcept' => false,
-            // 'saveAllInputsExcept' => ['_token', '_method', 'http_referrer', 'current_tab', 'save_action'],
+            #'saveAllInputsExcept' => true,
+            'saveAllInputsExcept' => ['_token', '_method', 'http_referrer', 'current_tab', 'save_action', 'dataset_fake'],
         ],
 
         /*

@@ -53,11 +53,7 @@ class Dataset extends Model
         return $this->hasMany('App\Models\Indicator');
     }
 
-    public function scripts()
-    {
-        return $this->belongsTo('App\Models\Script', 'id');
-    }
-
+  
 
     /*
     |--------------------------------------------------------------------------

@@ -21,7 +21,7 @@ class Script extends Model
     protected $table = 'scripts';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
-    protected $guarded = ['id', 'datasets'];
+    protected $guarded = ['id', 'dataset'];
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
@@ -53,11 +53,7 @@ class Script extends Model
         return $this->belongsToMany('App\Models\Indicator', 'link_scripts_indicators');
     }
 
-    public function dataset()
-    {
-        return $this->hasMany('App\Models\Dataset');
-    }
-
+   
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -69,17 +65,6 @@ class Script extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-
-    public function getIndicatorsCalculatedAttribute()
-    {
-        $indicators = $this->indicators();
-        $sdgs = [];
-        foreach ($indicators as $indicator) {
-            array_push($sdgs, $indicator->sdg_indicator->code);
-        }
-        $sdg_list<-array_unique($sdgs);
-        return $sdg_list;
-    }
 
     /*
     |--------------------------------------------------------------------------

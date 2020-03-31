@@ -17,7 +17,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 class ScriptCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation { store as traitStore; }
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
@@ -113,7 +113,7 @@ class ScriptCrudController extends CrudController
                 'type' => 'text',
             ],
             [
-                'name' => 'datasets',
+                'name' => 'dataset_fake',
                 'label' => 'Select the Datasets this script works with',
                 'type' => 'select2_multiple',
                 'entity' => 'dataset',
@@ -154,5 +154,15 @@ class ScriptCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function store()
+    {
+      // do something before validation, before save, before everything
+        $this->request->request->remove('dataset_fake');
+        $response = $this->traitStore();
+
+      // do something after save
+      return $response;
     }
 }

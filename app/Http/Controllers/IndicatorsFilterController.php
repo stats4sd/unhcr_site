@@ -17,7 +17,7 @@ class IndicatorsFilterController extends Controller
 
         // For when dependant field is a multi-select...
         $dataset_ids = $form->map( function($item, $key){
-            if($item['name'] == 'datasets[]' || $item['name'] == 'datasets'){
+            if($item['name'] == 'dataset_fake[]' || $item['name'] == 'dataset_fake'){
                 return $item['value'];
             }
 

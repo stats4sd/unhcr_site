@@ -67,14 +67,6 @@ class DatasetCrudController extends CrudController
                 'label' => 'Source url',
             ],
             [
-                'name' => 'script_id',
-                'label' => 'Script',
-                'type' => 'select',
-                'entity' => 'scripts',
-                'attribute' => 'title',
-                'model' => Script::class
-            ],
-            [
                 'name' => 'fake',
                 'type' => 'check',
                 'label' => 'Fake',
@@ -145,16 +137,6 @@ class DatasetCrudController extends CrudController
                 'type' => 'url',
                 'label' => 'If the dataset is available online, enter the url where the source data can be found',
             ],
-            [
-                'name' => 'script_id',
-                'label' => 'Do you want to add the scripts?',
-                'type' => 'select2',
-                'entity' => 'scripts',
-                'attribute' => 'title',
-                'model' => Script::class
-
-            ],
-
             [
                 'name' => 'fake',
                 'type' => 'checkbox',

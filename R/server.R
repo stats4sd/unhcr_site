@@ -42,13 +42,14 @@ server = function(input, output, session) {
   observe({
     req(input$country)
     datasets <- load_dataset(input$country) 
-    df1<-vector()
+    scripts_used <- vector()
     for (id in datasets$id) {
-      df1 <- df1 %>%  append(additional_info_download(id));  
+      scripts_used <- scripts_used %>%  append(additional_info_download(id));  
+      
     }
     
 
-    datasets$additional_info_download <- df1;
+    datasets$scripts_used <- scripts_used;
    
     output$additional_info <- renderUI({ 
      
@@ -56,7 +57,7 @@ server = function(input, output, session) {
         "<h4><b>",datasets$description,"</b></h4><br>",
         "<h5><b>Population Definitions: </b>","<br></h5>","<a href=", datasets$source_url,">", datasets$source_url,"</a>","<br>",
         "<h5><b>Comments: </b></h5>",datasets$comment, "<br>",
-       "<h5><b>Scripts Used: </b></h5>",datasets$additional_info_download, "<br>",
+       "<h5><b>Scripts Used: </b></h5>",datasets$scripts_used, "<br>",
         "<hr>"
       ))
       
@@ -97,9 +98,10 @@ server = function(input, output, session) {
     }
   })
   
+  #####################################
+  # Output for downloading Charts
+  #####################################
   
-  
-  #download charts
   output$downloadSDGByIndicator <- downloadHandler(
     filename = "chartSDGbyIndicator.png",
     content = function(file) {
@@ -117,13 +119,19 @@ server = function(input, output, session) {
     
   )
   
-  # Create the map
+  #####################################
+  # Creating Maps
+  #####################################
+  
   output$mymap <- renderLeaflet({
     leaflet() %>% addTiles( options = providerTileOptions(minZoom = 2, maxZoom = 10)) %>% 
       addProviderTiles("Esri.WorldStreetMap", options = providerTileOptions(minZoom = 2, maxZoom = 10))
   })
   
-  
+  #####################################
+  # Show data when country had been 
+  # selected
+  #####################################
   observe({
     req(input$filterIndicators)
     if(input$country!=""){
@@ -131,7 +139,10 @@ server = function(input, output, session) {
     }
   })
   
-  # Create a list of sdg selected from filter
+  #####################################
+  # Create a list of sdg selected from 
+  # filter GroupsSdg
+  #####################################
   ChartGroupsSdg <- reactive ({
     req(input$sdgChartFilter)
     data <- selectedData()
@@ -141,6 +152,10 @@ server = function(input, output, session) {
     
   })
   
+  #####################################
+  # Create a list of groups selected from 
+  # filter SdgsGroup
+  #####################################
   ChartSdgsGroup<- reactive ({
     req(input$groupChartFilter)
     data <- selectedData()
@@ -150,7 +165,10 @@ server = function(input, output, session) {
     
   })
   
-  # Filter data by filters in the control panel
+  #####################################
+  # Filter all indicators by filters in 
+  # the control panel
+  #####################################
   selectedData <- reactive({
     req(input$country)
     indicators_by_country <- indicators %>% filter(country_code == input$country)
@@ -179,8 +197,12 @@ server = function(input, output, session) {
     return(data_table)
   })
   
-  # Update the Subsets, Subgroups and SDG indicators after the filter country has been selected
-  
+ 
+  #####################################
+  # Update the Subsets, Subgroups and 
+  # SDG indicators after the filter 
+  # country has been selected
+  #####################################
   observe({
     req(input$country)
  
@@ -192,7 +214,11 @@ server = function(input, output, session) {
   
   })
   
-  #update checkboxGroup if the Select All is unticked/ticked
+ 
+  #####################################
+  # Update checkboxGroup if the 
+  # Select All is unticked/ticked
+  #####################################
   observe({
     
     updateCheckboxGroupInput(session = session, inputId = 'filterSubsets', selected = if(input$select_all_groups) subsets_list(NULL))
@@ -206,8 +232,9 @@ server = function(input, output, session) {
     
     })
   
-  
-
+  #####################################
+  # Maps Attributes
+  #####################################
   observe({
     
     if(input$country=="") {
@@ -236,8 +263,9 @@ server = function(input, output, session) {
     
   })
   
-  
-  ## table in main page tab 1
+  #####################################
+  # DataTable on Available Data
+  #####################################
   output$tableTab1 = DT::renderDataTable(server = FALSE,{
     #select data from selectedData to display on the table 
     data_download<-selectedData()
@@ -260,15 +288,16 @@ server = function(input, output, session) {
       class = "display"
     ) %>% 
       formatStyle('sdg_code', fontWeight = 'bold')
-      #formatStyle('countries_name', color = '#0072BC') 
   })
- #
+ 
   wrapper <- function(x, ...) 
   {
     paste(strwrap(x, ...), collapse = "\n")
   }
   
-  ## Create the plot for downloading
+  #####################################
+  # Create the plots for downloading
+  #####################################
   plotSdgByIndicator<- reactive({
     data <- ChartGroupsSdg()
     charts <-ggplot(data = data, aes(x=as.numeric(year), y=indicator_value)) +
@@ -309,7 +338,10 @@ server = function(input, output, session) {
       )
   })
   
-  # Display Charts
+  #####################################
+  # Create the plots for diplaying 
+  # on available data
+  #####################################
   observe({
     data <- ChartGroupsSdg()
     output$chart <- renderPlot({

@@ -199,6 +199,9 @@ load_dataset<-function(country_code){
   return(datasets)  
 }
 
+############################################
+# load scripts table by id
+#############################################
 
 load_script<-function(id){
   con <- get_sql_connection()
@@ -217,27 +220,55 @@ load_script<-function(id){
   scripts$author_id <- as.numeric(scripts$author_id)
   scripts$location <- as.factor(scripts$location)
   scripts$description <- as.factor(scripts$description)
-  scripts$indicators_calculated <- as.factor(scripts$indicators_calculated)
-  
   
   dbDisconnect(con)
   return(scripts)  
 }
 
+############################################
+# load scripts_dataset View by dataset_id
+#############################################
+
+load_scripts_dataset<-function(dataset_id){
+  con <- get_sql_connection()
+  
+  sql<-"SELECT *
+          
+            FROM scripts_dataset
+       "
+  
+  if(! is.null(dataset_id)) {
+    sql <- paste(sql, " WHERE scripts_dataset.dataset_id = '",dataset_id, "'", sep = "")
+  }
+  scripts_dataset <- dbGetQuery(con,paste(sql,";"))
+  
+  scripts_dataset$script_id <- as.numeric(scripts_dataset$script_id)
+  scripts_dataset$dataset_id <- as.numeric(scripts_dataset$dataset_id)
+  scripts_dataset$group_name <- as.factor(scripts_dataset$group_name)
+  scripts_dataset$sdg_code <- as.factor(scripts_dataset$sdg_code)
+  scripts_dataset$dataset_description <- as.factor(scripts_dataset$dataset_description)
+  scripts_dataset$author <- as.factor(scripts_dataset$author)
+  
+  dbDisconnect(con)
+  return(scripts_dataset)  
+}
+
+############################################
+# additional_info_download create the IU for
+# downloading scripts by dataset_id
+############################################
 
 additional_info_download<-function(dataset_id){
+
   load_dot_env(file = "../.env")
 
-  datasets <- load_dataset(NULL)
-  dataset <- subset(datasets, id == dataset_id)
-  
+  scripts_dataset <- load_scripts_dataset(dataset_id)
+
   script_download<-""
  
-    if(dataset$script_id>0){
-      script_info<-load_script(dataset$script_id) 
+      if(nrow(scripts_dataset)>0){
+      script_info<-load_script(scripts_dataset$script_id) 
       script_file_json<- fromJSON(script_info$script_file)
-     
-      
       
       for (file in script_file_json) {
         script_download <- paste(script_download,'<a href="',Sys.getenv('APP_ENV'),'/storage/', file,
@@ -245,69 +276,17 @@ additional_info_download<-function(dataset_id){
                                           '</i></a>', sep = "")
       }
       script_download <- paste(script_download,'<h5>Title: ', script_info$title,'</h5>',
-                               '<h5>Author: ', user_name(script_info$author_id), '</h5>', 
+                               '<h5>Author: ', scripts_dataset$author, '</h5>', 
                                '<h5>Location: ', script_info$location, '</h5>',
-                               '<h5>Indicator Calculated: ', sdg_calculated(dataset_id), '</h5>',
-                               '<h5>Group: ', groups_dataset(dataset_id), '</h5>', sep = ""
+                               '<h5>Indicator Calculated: ', scripts_dataset$sdg_code, '</h5>',
+                               '<h5>Group: ', scripts_dataset$group_name, '</h5>',
+                               '<h5>Subgroup: ', scripts_dataset$subgroup_name, '</h5>', sep = ""
       )
+      }
             
-  }
+  
   
   return(script_download)
-}
-
-user_name<-function(user_id){
-  con <- get_sql_connection()
-  
-  sql<-"SELECT *
-          
-            FROM users
-       "
-  
-  if(! is.null(id)) {
-    sql <- paste(sql, " WHERE id = '",user_id, "'", sep = "")
-  }
-  users <- dbGetQuery(con,paste(sql,";"))
-  
-  users$name <- as.factor(users$name )
-  
-  
-  dbDisconnect(con)
-  return(users$name)  
-}
-
-sdg_calculated<-function(dataset_id){
-  indicators<-indicators %>% subset(dataset_id==dataset_id)
-  
-  indicators <- indicators[order(indicators$sdg_lft),]
-  sdg_calculated<-paste( unlist(unique(indicators$sdg_code)), collapse = ", ")
-  return(sdg_calculated)
-  
-}
-
-
-groups_dataset<-function(dataset_id){
-  indicators<-indicators %>% subset(dataset_id==dataset_id)
-  
-  indicators <- indicators[order(indicators$sdg_lft),]
-  groups<-paste( unlist(unique(indicators$group_name)), collapse = ", ")
-  return(groups)
-  
-}
-
-############################################
-# limit to 50 characters the description 
-# for the sdg_description
-#############################################
-
-limited_description<-function(){
-  description<-substring(load_indicators(NULL)$sdg_description, 0, 30)
-  for(i in 1:length(load_indicators(NULL)$sdg_description)){
-    if(length(load_indicators(NULL)$sdg_description[i])<25){
-      description[i]<-paste(description[i], '[...]')
-    }
-  }
-  return(description)
 }
 
 ############################################
@@ -440,4 +419,4 @@ killDbConnections <- function () {
   print(paste(length(all_cons), " connections killed."))
   
 }
-#killDbConnections()
+killDbConnections()
