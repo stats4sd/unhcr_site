@@ -44,8 +44,8 @@ server = function(input, output, session) {
     datasets <- load_dataset(input$country) 
     scripts_used <- c()
     for (id in datasets$id) {
-      print(additional_info_download(id))
-      scripts_used <- append(scripts_used, additional_info_download(id));  
+      
+      #scripts_used <- append(scripts_used, additional_info_download(id));  
       
     }
     
