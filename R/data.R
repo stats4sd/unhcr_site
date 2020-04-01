@@ -231,7 +231,7 @@ load_script<-function(id){
 
 load_scripts_dataset<-function(dataset_id){
   con <- get_sql_connection()
-  
+
   sql<-"SELECT *
           
             FROM scripts_dataset
@@ -240,18 +240,21 @@ load_scripts_dataset<-function(dataset_id){
   if(! is.null(dataset_id)) {
     sql <- paste(sql, " WHERE scripts_dataset.dataset_id = '",dataset_id, "'", sep = "")
   }
-  scripts_dataset <- dbGetQuery(con,paste(sql,";"))
   
+ 
+  scripts_dataset <- dbGetQuery(con,paste(sql,";"))
+
   scripts_dataset$script_id <- as.numeric(scripts_dataset$script_id)
   scripts_dataset$dataset_id <- as.numeric(scripts_dataset$dataset_id)
   scripts_dataset$group_name <- as.factor(scripts_dataset$group_name)
   scripts_dataset$sdg_code <- as.factor(scripts_dataset$sdg_code)
   scripts_dataset$dataset_description <- as.factor(scripts_dataset$dataset_description)
   scripts_dataset$author <- as.factor(scripts_dataset$author)
-  
+
   dbDisconnect(con)
   return(scripts_dataset)  
 }
+
 
 ############################################
 # additional_info_download create the IU for
