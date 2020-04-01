@@ -4,7 +4,7 @@ library(maps)
 library(dplyr)
 library(stringi)
 library(dotenv)
-library(jsonlite)
+library(rjson)
 source('dbConfig.R')
 
 #####################################
@@ -419,4 +419,4 @@ killDbConnections <- function () {
   print(paste(length(all_cons), " connections killed."))
   
 }
-killDbConnections()
+#killDbConnections()

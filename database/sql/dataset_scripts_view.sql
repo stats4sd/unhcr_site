@@ -4,7 +4,6 @@ SELECT
 	`link_scripts_indicators`.`script_id` AS `script_id`,
 	GROUP_CONCAT(`link_scripts_indicators`.`indicator_id` SEPARATOR ', ') AS `indicator_id`,
 	`indicators`.`dataset_id` AS `dataset_id`,
-	GROUP_CONCAT(DISTINCT `indicators`.`sdg_indicator_id` SEPARATOR ', ') AS `sdg_indicator_id`,
 	GROUP_CONCAT(DISTINCT `sdg_indicators`.`code` SEPARATOR ', ') AS `sdg_code`,
 	GROUP_CONCAT(DISTINCT  `indicators`.`group_name` SEPARATOR ', ') AS `group_name`,
 	GROUP_CONCAT(DISTINCT `indicators`.`subgroup_name` SEPARATOR ', ') AS `subgroup_name`,
