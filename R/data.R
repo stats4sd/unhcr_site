@@ -283,7 +283,8 @@ additional_info_download<-function(dataset_id){
                                '<h5>Location: ', script_info$location, '</h5>',
                                '<h5>Indicator Calculated: ', scripts_dataset$sdg_code, '</h5>',
                                '<h5>Group: ', scripts_dataset$group_name, '</h5>',
-                               '<h5>Subgroup: ', scripts_dataset$subgroup_name, '</h5>', sep = ""
+                               '<h5>Subgroup: ', scripts_dataset$subgroup_name, '</h5>',
+                               '<h5>Descriprion: ', script_info$description, '</h5>',sep = ""
       )
       }
             
@@ -410,16 +411,16 @@ show_image<-function(sdg_number){
 }
 
 
-#killDbConnections <- function () {
+killDbConnections <- function () {
   
-#  all_cons <- dbListConnections(MySQL())
+  all_cons <- dbListConnections(MySQL())
   
-#  print(all_cons)
+  print(all_cons)
   
-#  for(con in all_cons)
-#    +  dbDisconnect(con)
+  for(con in all_cons)
+    +  dbDisconnect(con)
   
-#  print(paste(length(all_cons), " connections killed."))
+  print(paste(length(all_cons), " connections killed."))
   
-#}
-#killDbConnections()
+}
+killDbConnections()
