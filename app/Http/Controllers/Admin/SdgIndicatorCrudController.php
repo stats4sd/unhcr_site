@@ -41,6 +41,11 @@ class SdgIndicatorCrudController extends CrudController
                 'type' => 'text',
                 'limit' => 100,
             ],
+            [
+                'name' => 'lft',
+                'label' => 'Order number',
+                'type' => 'number',
+            ]
         ]);
     }
 
@@ -60,6 +65,11 @@ class SdgIndicatorCrudController extends CrudController
                 'name' => 'description',
                 'label' => 'Insert description',
                 'type' => 'text',
+            ],
+            [
+                'name' => 'lft',
+                'label' => 'Order number',
+                'type' => 'number',
             ]
         ]);
     }
@@ -80,6 +90,11 @@ class SdgIndicatorCrudController extends CrudController
                 'name' => 'description',
                 'label' => 'Description',
                 'type' => 'text',
+            ],
+            [
+                'name' => 'lft',
+                'label' => 'Order number',
+                'type' => 'number',
             ]
         ]);
     }
