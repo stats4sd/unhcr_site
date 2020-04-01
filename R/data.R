@@ -411,16 +411,16 @@ show_image<-function(sdg_number){
 }
 
 
-killDbConnections <- function () {
+#killDbConnections <- function () {
   
-  all_cons <- dbListConnections(MySQL())
+#  all_cons <- dbListConnections(MySQL())
   
-  print(all_cons)
+#  print(all_cons)
   
-  for(con in all_cons)
-    +  dbDisconnect(con)
+#  for(con in all_cons)
+#    +  dbDisconnect(con)
   
-  print(paste(length(all_cons), " connections killed."))
+#  print(paste(length(all_cons), " connections killed."))
   
-}
-killDbConnections()
+#}
+#killDbConnections()
