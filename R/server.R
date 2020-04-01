@@ -42,7 +42,7 @@ server = function(input, output, session) {
   observe({
     req(input$country)
     datasets <- load_dataset(input$country) 
-    scripts_used <- vector()
+    scripts_used <- c()
     for (id in datasets$id) {
       scripts_used <- append(scripts_used, additional_info_download(id));  
       
