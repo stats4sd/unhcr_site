@@ -13,12 +13,13 @@ UPDATE sdg_indicators SET lft = 10 WHERE code = '4.1.1.c.i' ;
 UPDATE sdg_indicators SET lft = 11 WHERE code = '4.1.1.c.ii' ; 
 UPDATE sdg_indicators SET lft = 12 WHERE code = '4.1.1.c.ii' ; 
 
-UPDATE sdg_indicators SET lft = 13 WHERE code = '7.1.1' ; 
-UPDATE sdg_indicators SET lft = 14 WHERE code = '8.3.1.female' ; 
-UPDATE sdg_indicators SET lft = 15 WHERE code = '8.3.1.male' ; 
-UPDATE sdg_indicators SET lft = 16 WHERE code = '8.5.2.female' ; 
+UPDATE sdg_indicators SET lft = 13 WHERE code = '6.1.1' ; 
+UPDATE sdg_indicators SET lft = 14 WHERE code = '7.1.1' ; 
+UPDATE sdg_indicators SET lft = 15 WHERE code = '8.3.1.female' ; 
+UPDATE sdg_indicators SET lft = 16 WHERE code = '8.3.1.male' ; 
+UPDATE sdg_indicators SET lft = 17 WHERE code = '8.5.2.female' ; 
 
-UPDATE sdg_indicators SET lft = 17 WHERE code = '8.5.2.male' ; 
-UPDATE sdg_indicators SET lft = 18 WHERE code = '11.1.1' ; 
-UPDATE sdg_indicators SET lft = 19 WHERE code = '16.1.4' ; 
-UPDATE sdg_indicators SET lft = 20 WHERE code = '16.9.1' ; 
+UPDATE sdg_indicators SET lft = 18 WHERE code = '8.5.2.male' ; 
+UPDATE sdg_indicators SET lft = 19 WHERE code = '11.1.1' ; 
+UPDATE sdg_indicators SET lft = 20 WHERE code = '16.1.4' ; 
+UPDATE sdg_indicators SET lft = 21 WHERE code = '16.9.1' ; 
