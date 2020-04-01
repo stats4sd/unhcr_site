@@ -44,7 +44,7 @@ server = function(input, output, session) {
     datasets <- load_dataset(input$country) 
     scripts_used <- vector()
     for (id in datasets$id) {
-      scripts_used <- scripts_used %>%  append(additional_info_download(id));  
+      scripts_used <- append(scripts_used, additional_info_download(id));  
       
     }
     
