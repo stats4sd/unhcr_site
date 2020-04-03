@@ -22,7 +22,7 @@ class Indicator extends Model
     protected $table = 'indicators';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
-    protected $guarded = ['id', 'datasets','dataset_id'];
+    protected $guarded = ['id', 'datasets'];
     protected $appends = ['combined_label'];
     // protected $fillable = [];
     // protected $hidden = [];
