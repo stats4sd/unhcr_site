@@ -45,7 +45,7 @@ server = function(input, output, session) {
     scripts_used <- c()
     for (id in datasets$id) {
       
-      #scripts_used <- append(scripts_used, additional_info_download(id));  
+      scripts_used <- append(scripts_used, additional_info_download(id));  
       
     }
     
@@ -58,7 +58,7 @@ server = function(input, output, session) {
         "<h4><b>",datasets$description,"</b></h4><br>",
         "<h5><b>Population Definitions: </b>","<br></h5>","<a href=", datasets$source_url,">", datasets$source_url,"</a>","<br>",
         "<h5><b>Comments: </b></h5>",datasets$comment, "<br>",
-        #"<h5><b>Scripts Used: </b></h5>",datasets$scripts_used, "<br>",
+        "<h5><b>Scripts Used: </b></h5>",datasets$scripts_used, "<br>",
         "<hr>"
       ))
       

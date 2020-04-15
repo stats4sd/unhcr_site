@@ -270,7 +270,9 @@ additional_info_download<-function(dataset_id){
   script_download<-""
  
       if(nrow(scripts_dataset)>0){
+        browser()
       script_info<-load_script(scripts_dataset$script_id) 
+   
       script_file_json<- fromJSON(script_info$script_file)
       
       for (file in script_file_json) {
