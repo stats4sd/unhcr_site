@@ -270,7 +270,7 @@ additional_info_download<-function(dataset_id){
   script_download<-""
  
       if(nrow(scripts_dataset)>0){
-        browser()
+
       script_info<-load_script(scripts_dataset$script_id) 
    
       script_file_json<- fromJSON(script_info$script_file)
@@ -280,13 +280,13 @@ additional_info_download<-function(dataset_id){
                                           '"><i class="fa fa-download" style="color:#0072BC">',' Example script &nbsp;&nbsp;&nbsp;',
                                           '</i></a>', sep = "")
       }
-      script_download <- paste(script_download,'<h5>Title: ', script_info$title,'</h5>',
+      script_download <- paste("<h5><b>Scripts Used: </b></h5>", script_download,'<h5>Title: ', script_info$title,'</h5>',
                                '<h5>Author: ', scripts_dataset$author, '</h5>', 
                                '<h5>Location: ', script_info$location, '</h5>',
                                '<h5>Indicator Calculated: ', scripts_dataset$sdg_code, '</h5>',
                                '<h5>Group: ', scripts_dataset$group_name, '</h5>',
                                '<h5>Subgroup: ', scripts_dataset$subgroup_name, '</h5>',
-                               '<h5>Descriprion: ', script_info$description, '</h5>',sep = ""
+                               '<h5>Descriprion: ', script_info$description, '</h5>',"<br>",sep = ""
       )
       }
             
@@ -413,16 +413,16 @@ show_image<-function(sdg_number){
 }
 
 
-#killDbConnections <- function () {
+killDbConnections <- function () {
   
-#  all_cons <- dbListConnections(MySQL())
+  all_cons <- dbListConnections(RMySQL::MySQL())
   
-#  print(all_cons)
+  print(all_cons)
   
-#  for(con in all_cons)
-#    +  dbDisconnect(con)
+  for(con in all_cons)
+    +  dbDisconnect(con)
   
-#  print(paste(length(all_cons), " connections killed."))
+  print(paste(length(all_cons), " connections killed."))
   
-#}
+}
 #killDbConnections()
