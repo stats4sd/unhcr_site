@@ -1,5 +1,7 @@
 library(DBI)
 library(dotenv)
+
+
 #Include databasename, user and password
 
 load_dot_env(file = "../.env")

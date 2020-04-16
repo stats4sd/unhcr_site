@@ -266,33 +266,49 @@ additional_info_download<-function(dataset_id){
   load_dot_env(file = "../.env")
 
   scripts_dataset <- load_scripts_dataset(dataset_id)
-
+  #summarise sdg_code, group_name,subgroup_name and author by script_id 
+  scripts_dataset<- scripts_dataset %>% group_by(script_id) %>% summarise(sdg_code=paste(unique(sdg_code),collapse=", "),
+                                                                  author=paste(unique(author),collapse=", "),
+                                                                  group_name=paste(unique(group_name),collapse=", "),
+                                                                  subgroup_name=paste(unique(subgroup_name),collapse=", ") 
+                                                                  
+                                                                  )
   script_download<-""
- 
+  scripts_used<-""
       if(nrow(scripts_dataset)>0){
-
-      script_info<-load_script(scripts_dataset$script_id) 
-   
-      script_file_json<- fromJSON(script_info$script_file)
       
-      for (file in script_file_json) {
-        script_download <- paste(script_download,'<a href="',Sys.getenv('APP_ENV'),'/storage/', file,
-                                          '"><i class="fa fa-download" style="color:#0072BC">',' Example script &nbsp;&nbsp;&nbsp;',
-                                          '</i></a>', sep = "")
-      }
-      script_download <- paste("<h5><b>Scripts Used: </b></h5>", script_download,'<h5>Title: ', script_info$title,'</h5>',
+      for (script_id in scripts_dataset$script_id) {
+        
+      script_info<-load_script(script_id) 
+#      script_file_json<- fromJSON(script_info$script_file)
+    
+#      for (file in script_file_json) {
+#        script_download <- paste(script_download,'<a href="',Sys.getenv('APP_ENV'),'/storage/', file,
+#                                          '"><i class="fa fa-download" style="color:#0072BC">',' Example script &nbsp;&nbsp;&nbsp;',
+#                                          '</i></a>', sep = "")
+#      }
+      scripts_used <- paste("<h5><b>Scripts Used: </b></h5>",'<a href="',Sys.getenv('APP_ENV'),'/storage/', script_info$script_file,
+                            '"><i class="fa fa-download" style="color:#0072BC">',' Example script &nbsp;&nbsp;&nbsp;',
+                            '</i></a>' ,'<h5>Title: ', script_info$title,'</h5>',
                                '<h5>Author: ', scripts_dataset$author, '</h5>', 
                                '<h5>Location: ', script_info$location, '</h5>',
                                '<h5>Indicator Calculated: ', scripts_dataset$sdg_code, '</h5>',
                                '<h5>Group: ', scripts_dataset$group_name, '</h5>',
                                '<h5>Subgroup: ', scripts_dataset$subgroup_name, '</h5>',
-                               '<h5>Descriprion: ', script_info$description, '</h5>',"<br>",sep = ""
+                               '<h5>Descriprion: ', script_info$description, '</h5>',"<br>" ,sep = ""
       )
+      
+      
       }
             
-  
-  
-  return(script_download)
+     
+
+ 
+      scripts_used <-paste(scripts_used, collapse = '')
+    
+
+      }
+  return(scripts_used)
 }
 
 ############################################

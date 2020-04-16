@@ -41,15 +41,14 @@ server = function(input, output, session) {
   #####################################
   observe({
     req(input$country)
+
     datasets <- load_dataset(input$country) 
     scripts_used <- c()
     for (id in datasets$id) {
-      
-      scripts_used <- append(scripts_used, additional_info_download(id));  
-      
+      scripts_used<- scripts_used %>% append(additional_info_download(id))
     }
-    
 
+ 
     datasets$scripts_used <- scripts_used;
    
     output$additional_info <- renderUI({ 
