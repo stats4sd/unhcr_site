@@ -280,14 +280,15 @@ additional_info_download<-function(dataset_id){
       for (script_id in scripts_dataset$script_id) {
         
       script_info<-load_script(script_id) 
-#      script_file_json<- fromJSON(script_info$script_file)
+      script_file_json<- fromJSON(script_info$script_file)
     
 #      for (file in script_file_json) {
 #        script_download <- paste(script_download,'<a href="',Sys.getenv('APP_ENV'),'/storage/', file,
 #                                          '"><i class="fa fa-download" style="color:#0072BC">',' Example script &nbsp;&nbsp;&nbsp;',
 #                                          '</i></a>', sep = "")
 #      }
-      scripts_used <- paste("<h5><b>Scripts Used: </b></h5>",'<a href="',Sys.getenv('APP_ENV'),'/storage/', script_info$script_file,
+      
+      scripts_used <- paste('<a href="',Sys.getenv('APP_ENV'),'/storage/', script_file_json,
                             '"><i class="fa fa-download" style="color:#0072BC">',' Example script &nbsp;&nbsp;&nbsp;',
                             '</i></a>' ,'<h5>Title: ', script_info$title,'</h5>',
                                '<h5>Author: ', scripts_dataset$author, '</h5>', 
@@ -304,8 +305,8 @@ additional_info_download<-function(dataset_id){
      
 
  
-      scripts_used <-paste(scripts_used, collapse = '')
-    
+      scripts_used <- paste(scripts_used, collapse = '')
+      scripts_used <- paste("<h5><b>Scripts Used: </b></h5>", scripts_used, collapse = '')
 
       }
   return(scripts_used)
