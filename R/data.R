@@ -288,7 +288,7 @@ additional_info_download<-function(dataset_id){
 #                                          '</i></a>', sep = "")
 #      }
       
-      scripts_used <- paste('<a href="',Sys.getenv('APP_ENV'),'/storage/', script_file_json,
+      scripts_used <- paste('<a href="',Sys.getenv('APP_URL'),'/storage/', script_file_json,
                             '"><i class="fa fa-download" style="color:#0072BC">',' Example script &nbsp;&nbsp;&nbsp;',
                             '</i></a>' ,'<h5>Title: ', script_info$title,'</h5>',
                                '<h5>Author: ', scripts_dataset$author, '</h5>', 
