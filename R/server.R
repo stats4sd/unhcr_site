@@ -102,6 +102,15 @@ server = function(input, output, session) {
   # Output for downloading Charts
   #####################################
   
+  
+  output$downloadSdgNotProposional <- downloadHandler(
+    filename = "chartSDGbyIndicator.png",
+    content = function(file) {
+      device <- function(..., width, height) grDevices::png(..., width = width, height = height, res = 300, units = "in")
+      ggsave(file, plot = plotSdgNotProportional(), device = device)
+    }
+  )
+  
   output$downloadSDGByIndicator <- downloadHandler(
     filename = "chartSDGbyIndicator.png",
     content = function(file) {
@@ -136,6 +145,18 @@ server = function(input, output, session) {
     req(input$filterIndicators)
     if(input$country!=""){
       shinyjs::show(id = "available_data")
+    }
+  })
+  
+  #####################################
+  # Show SDG 3.2.1 when it had been 
+  # selected from the control panel
+  #####################################
+  observe({
+    req(input$country)
+    req(input$filterIndicators)
+    if("3.2.1" %in% input$filterIndicators){
+      shinyjs::show(id = "sdg_not_proportional")
     }
   })
   
@@ -188,6 +209,9 @@ server = function(input, output, session) {
     
     #update the selectInput for SDG Chart Filter
     sdg_code_list <- unique(data_table$sdg_code)
+    #remove 3.2.1 from sdg filter plot
+    sdg_code_list <- subset(sdg_code_list, sdg_code_list!='3.2.1')
+    
     updateSelectInput(session = session, inputId = 'sdgChartFilter', choices = sdg_code_list)
     
     #update the selectInput for Group Chart Filter
@@ -298,12 +322,34 @@ server = function(input, output, session) {
   #####################################
   # Create the plots for downloading
   #####################################
+  plotSdgNotProportional<- reactive({
+    sdg_3_2_1 <- subset(selectedData(), sdg_code == '3.2.1')
+    
+    charts <-ggplot(data = sdg_3_2_1, aes(x=as.numeric(year), y=indicator_value)) +
+      geom_line(aes(color = group_name, linetype= group_name)) +
+      geom_point(aes(color = group_name), size = 3, alpha = 0.75) +
+      labs(y="Deaths per 1000", x = "Year") +
+      ggtitle(paste(sdg_3_2_1$countries_name," \n","SDG Indicator ",  sdg_3_2_1$sdg_code,"\n",wrapper(sdg_3_2_1$sdg_description[1], width = 60),"\n", sep = "")) +
+      scale_x_continuous(breaks=years) +
+      scale_y_continuous(limits =c(0,100)) +
+      scale_linetype("Groups") +
+      scale_color_manual("Groups",values=palette_indicators()) +
+      theme(text = element_text(size = 16, family ="proxima-nova"), 
+            plot.title = element_text(margin=margin(0,0,30,0),size = 14, face ="bold", family ="proxima-nova"),
+            panel.background = element_blank(),
+            panel.grid.major = element_line(colour = "grey"),
+            axis.title.x = element_text(margin=margin(30,0,0,0)), 
+            axis.title.y = element_text(margin=margin(0,30,0,0))
+      )
+    
+  })
+  
   plotSdgByIndicator<- reactive({
     data <- ChartGroupsSdg()
     charts <-ggplot(data = data, aes(x=as.numeric(year), y=indicator_value)) +
       geom_line(aes(color = group_name, linetype= group_name)) +
       geom_point(aes(color = group_name), size = 3, alpha = 0.75) +
-      labs(y="SDG Indicator", x = "Year") +
+      labs(y="Proportion of population", x = "Year") +
       ggtitle(paste(data$countries_name," \n","SDG Indicator ",  data$sdg_code,"\n",wrapper(data$sdg_description[1], width = 60),"\n", sep = "")) +
       scale_x_continuous(breaks=years) +
       scale_y_continuous(limits =c(0,1)) +
@@ -319,11 +365,11 @@ server = function(input, output, session) {
   })
   
   plotSdgBySubset<- reactive({
-    data <- ChartSdgsGroup()
+    data <- subset(ChartSdgsGroup(), sdg_code != '3.2.1')
     charts <-ggplot(data = data, aes(x=as.numeric(year), y=indicator_value)) +
       geom_line(aes(color = sdg_code, linetype= sdg_code)) +
       geom_point(aes(color = sdg_code), size = 3, alpha = 0.75) +
-      labs(y="SDG Indicator", x = "Year")+
+      labs(y="Proportion of population", x = "Year")+
       ggtitle(paste(data$countries_name," \n","SDG Indicator for ",data$group_name," ",data$subgroup_name," ","\n", sep = "")) +
       scale_x_continuous(breaks=years)+
       scale_y_continuous(limits =c(0,1))+
@@ -343,12 +389,40 @@ server = function(input, output, session) {
   # on available data
   #####################################
   observe({
-    data <- ChartGroupsSdg()
+   
+    output$plot_3_2_1 <- renderPlot({
+      
+      sdg_3_2_1 <- subset(selectedData(), sdg_code == '3.2.1')
+      
+      charts <-ggplot(data = sdg_3_2_1, aes(x=as.numeric(year), y=indicator_value)) +
+        geom_line(aes(color = group_name, linetype= group_name)) +
+        geom_point(aes(color = group_name), size = 3, alpha = 0.75) +
+        labs(y="Deaths per 1000", x = "Year") +
+        ggtitle(paste(sdg_3_2_1$countries_name," \n","SDG Indicator ",  sdg_3_2_1$sdg_code,"\n",wrapper(sdg_3_2_1$sdg_description[1], width = 60),"\n", sep = "")) +
+        scale_x_continuous(breaks=years) +
+        scale_y_continuous(limits =c(0,100)) +
+        scale_linetype("Groups") +
+        scale_color_manual("Groups",values=palette_indicators()) +
+        theme(text = element_text(size = 16, family ="proxima-nova"), 
+              plot.title = element_text(margin=margin(0,0,30,0),size = 14, face ="bold", family ="proxima-nova"),
+              panel.background = element_blank(),
+              panel.grid.major = element_line(colour = "grey"),
+              axis.title.x = element_text(margin=margin(30,0,0,0)), 
+              axis.title.y = element_text(margin=margin(0,30,0,0))
+        )
+      
+      charts
+      
+    })
+    
     output$chart <- renderPlot({
+      
+      data <- subset(ChartGroupsSdg(), sdg_code != '3.2.1')
+      
       charts <-ggplot(data = data, aes(x=as.numeric(year), y=indicator_value)) +
         geom_line(aes(color = group_name, linetype= group_name)) +
         geom_point(aes(color = group_name), size = 3, alpha = 0.75) +
-        labs(y="SDG Indicator", x = "Year") +
+        labs(y="Proportion of population", x = "Year") +
         ggtitle(paste(data$countries_name," \n","SDG Indicator ",  data$sdg_code,"\n",wrapper(data$sdg_description[1], width = 60),"\n", sep = "")) +
         scale_x_continuous(breaks=years) +
         scale_y_continuous(limits =c(0,1)) +
@@ -367,11 +441,13 @@ server = function(input, output, session) {
     })
     
     output$chartSdgsGroup <- renderPlot({
-      data <- ChartSdgsGroup()
+      
+      data <- subset(ChartSdgsGroup(), sdg_code != '3.2.1')
+      
       charts <-ggplot(data = data, aes(x=as.numeric(year), y=indicator_value)) +
         geom_line(aes(color = sdg_code, linetype= sdg_code)) +
         geom_point(aes(color = sdg_code), size = 3, alpha = 0.75) +
-        labs(y="SDG Indicator", x = "Year")+
+        labs(y="Proportion of population", x = "Year")+
         ggtitle(paste(data$countries_name," \n","SDG Indicator for ",data$group_name," ",data$subgroup_name," ","\n", sep = "")) +
         scale_x_continuous(breaks=years)+
         scale_y_continuous(limits =c(0,1))+

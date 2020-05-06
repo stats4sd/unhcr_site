@@ -288,7 +288,7 @@ additional_info_download<-function(dataset_id){
 #                                          '</i></a>', sep = "")
 #      }
       
-      scripts_used <- paste('<a href="',Sys.getenv('APP_ENV'),'/storage/', script_file_json,
+      scripts_used <- paste('<a href="',Sys.getenv('APP_URL'),'/storage/', script_file_json,
                             '"><i class="fa fa-download" style="color:#0072BC">',' Example script &nbsp;&nbsp;&nbsp;',
                             '</i></a>' ,'<h5>Title: ', script_info$title,'</h5>',
                                '<h5>Author: ', scripts_dataset$author, '</h5>', 
@@ -352,7 +352,9 @@ sdg_code_list <- function(){
   sdg_code_df <- dbGetQuery(con, sql)
   dbDisconnect(con)
   sdg_code_list <- unique(sdg_code_df$sdg_code)
-  
+  #remove 3.2.1 from sdg filter plot
+  sdg_code_list <- subset(sdg_code_list, sdg_code_list!='3.2.1')
+
   return(sdg_code_list)
 }
 

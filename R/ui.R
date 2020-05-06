@@ -125,6 +125,10 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
       zoom: 1;
       overflow-x: scroll;
     }
+    #downloadSdgNotProposional {
+      color: #0072BC !important;
+      border-color: #0072BC;
+    }
 
     #downloadSDGByIndicator {
       color: #0072BC !important;
@@ -328,6 +332,10 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                   
                               column(8, 
                                      
+                                     plotOutput("plot_3_2_1"),
+                                     br(),
+                                     br(),
+                                     
                                      plotOutput("chart"),
                                      br(),
                                      br(),
@@ -344,14 +352,19 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                               ),
                               
                               column(4,
+                                     shinyjs::hidden(
+                                     div(style="display: inline-block;vertical-align:top; width: 200px; ", id="sdg_not_proportional",
+                                         
+                                         
+                                         downloadButton('downloadSdgNotProposional', 'Download Plot')
+                                         
+                                     )),
                                      
-                               
                                      
-                                       div(style="display: inline-block;vertical-align:top; width: 200px; ", id="sdgfilter",
+                                       div(style="display: inline-block;vertical-align:top; width: 200px;  padding-top: 400px;", id="sdgfilter",
                                            
                                            selectizeInput("sdgChartFilter",
                                                           label = NULL,
-                                                         # h5("Filter Indicators"), 
                                                           choices = sdg_code_list(),
                                                           selected = sdg_code_list()[[1]]
                                            ),
@@ -360,11 +373,9 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                                      ),
                                     
                                      
-                                   
                                        div(style="vertical-align:top; width: 200px; padding-top: 300px; margin-top:50px;", id="groupfilter",
                                            selectizeInput("groupChartFilter", 
                                                           label = NULL,
-                                                          #h5("Filter Subsets"), 
                                                           choices = subsets_list(NULL),
                                                           selected = subsets_list(NULL)[[1]]
                                            ),
