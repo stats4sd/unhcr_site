@@ -380,10 +380,11 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                                      ),
                                     
                                      shinyjs::hidden(
-                                       div(style="vertical-align:top; width: 200px; padding-top: 300px; margin-top:50px;", id="sdg_not_proportional",
+                                       div(style="display: inline-block;vertical-align:top; width: 200px; padding-top: 300px; margin-top:50px;", id="sdg_not_proportional",
                                            downloadButton('downloadSdgNotProposional', 'Download Plot')
                                        )
                                      )
+                              
                                      
                               )
                               
