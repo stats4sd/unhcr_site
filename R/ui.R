@@ -331,15 +331,17 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                               ),
                   
                               column(8, 
-                                     
-                                     plotOutput("plot_3_2_1"),
-                                     br(),
-                                     br(),
-                                     
+                                    
                                      plotOutput("chart"),
                                      br(),
                                      br(),
                                      plotOutput("chartSdgsGroup"),
+                                     br(),
+                                     br(),
+                                     
+                                     shinyjs::hidden(
+                                       plotOutput("plot_3_2_1")
+                                     ),
                                      
                                      HTML("<div class='alert alert-info', style='width:90%; margin-top:25px;'>
                                             <b>Note</b>: where there are multiple values for the same indicator, 
@@ -352,35 +354,36 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                               ),
                               
                               column(4,
-                                     shinyjs::hidden(
-                                     div(style="display: inline-block;vertical-align:top; width: 200px; ", id="sdg_not_proportional",
-                                         
-                                         
-                                         downloadButton('downloadSdgNotProposional', 'Download Plot')
-                                         
-                                     )),
-                                     
-                                     
-                                       div(style="display: inline-block;vertical-align:top; width: 200px;  padding-top: 400px;", id="sdgfilter",
-                                           
-                                           selectizeInput("sdgChartFilter",
-                                                          label = NULL,
-                                                          choices = sdg_code_list(),
-                                                          selected = sdg_code_list()[[1]]
-                                           ),
-                                           downloadButton('downloadSDGByIndicator', 'Download Plot')
-                                       
-                                     ),
                                     
+                                     div(style="display: inline-block;vertical-align:top; width: 200px; ", id="sdgfilter",
+                                         selectizeInput("sdgChartFilter",
+                                                        label = NULL,
+                                                        choices = sdg_code_list(),
+                                                        selected = sdg_code_list()[[1]]
+                                         ),
+                                         downloadButton('downloadSDGByIndicator', 'Download Plot')
+                                         
+                                         
+                                         
+                                     ),
                                      
-                                       div(style="vertical-align:top; width: 200px; padding-top: 300px; margin-top:50px;", id="groupfilter",
+                                     
+                                       div(style="display: inline-block;vertical-align:top; width: 200px;  padding-top: 400px;", id="groupfilter",
+                                           
                                            selectizeInput("groupChartFilter", 
                                                           label = NULL,
                                                           choices = subsets_list(NULL),
                                                           selected = subsets_list(NULL)[[1]]
                                            ),
                                            downloadButton('downloadSDGBySubset', 'Download Plot')
+                                       
+                                     ),
+                                    
+                                     shinyjs::hidden(
+                                       div(style="vertical-align:top; width: 200px; padding-top: 300px; margin-top:50px;", id="sdg_not_proportional",
+                                           downloadButton('downloadSdgNotProposional', 'Download Plot')
                                        )
+                                     )
                                      
                               )
                               

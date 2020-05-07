@@ -155,8 +155,14 @@ server = function(input, output, session) {
   observe({
     req(input$country)
     req(input$filterIndicators)
+    print("3.2.1" %in% input$filterIndicators)
     if("3.2.1" %in% input$filterIndicators){
       shinyjs::show(id = "sdg_not_proportional")
+      shinyjs::show(id = "plot_3_2_1")
+      
+    }else {
+      removeUI(selector = "#sdg_not_proportional", session = session)
+      removeUI(selector = "#plot_3_2_1", session = session)
     }
   })
   
