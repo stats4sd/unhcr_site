@@ -16,6 +16,8 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
  */
 class ScriptCrudController extends CrudController
 {
+    // use HasFileUploads;
+    
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation { store as traitStore; }
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
@@ -59,7 +61,7 @@ class ScriptCrudController extends CrudController
                 'type' => 'select_multiple',
                 'entity' => 'indicators',
                 'attribute' => 'combined_label',
-                'model' => Indicator::class
+                'model' => Indicator::class,
             ],
             [
                 'name' => 'indicators',
@@ -68,7 +70,7 @@ class ScriptCrudController extends CrudController
                 'type' => 'select_multiple',
                 'entity' => 'indicators',
                 'attribute' => 'sdg_indicator_id',
-                'model' => Indicator::class
+                'model' => Indicator::class,
             ],
             [
                 'name' => 'description',
