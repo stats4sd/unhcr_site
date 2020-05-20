@@ -20,7 +20,7 @@ class Group extends Model
     protected $primaryKey = 'name';
     // public $timestamps = false;
     // protected $guarded = ['id'];
-    protected $fillable = ['name', 'subgroup_id'];
+    protected $fillable = ['name', 'subgroup_id', 'lft', 'rgt','depth'];
     // protected $hidden = [];
     // protected $dates = [];
     public $incrementing = false;
