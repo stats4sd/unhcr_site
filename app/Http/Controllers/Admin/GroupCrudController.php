@@ -35,6 +35,21 @@ class GroupCrudController extends CrudController
                 'name' => 'name',
                 'label' => 'Name',
                 'type' => 'text',
+            ],
+            [
+                'name' => 'lft',
+                'label' => 'lft',
+                'type' => 'number',
+            ],
+            [
+                'name' => 'rgt',
+                'label' => 'rgt',
+                'type' => 'number',
+            ],
+            [
+                'name' => 'depth',
+                'label' => 'depth',
+                'type' => 'number',
             ]     
         ]);
     }
@@ -48,6 +63,21 @@ class GroupCrudController extends CrudController
                 'name' => 'name',
                 'label' => 'Enter name of group',
                 'type' => 'text',
+            ],
+            [
+                'name' => 'lft',
+                'label' => 'Enter left number',
+                'type' => 'number',
+            ],
+            [
+                'name' => 'rgt',
+                'label' => 'Enter right number',
+                'type' => 'number',
+            ],
+            [
+                'name' => 'depth',
+                'label' => 'Enter depth number',
+                'type' => 'number',
             ]
         ]);
 
