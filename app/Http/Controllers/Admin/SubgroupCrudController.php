@@ -51,7 +51,7 @@ class SubgroupCrudController extends CrudController
                 'name' => 'depth',
                 'label' => 'depth',
                 'type' => 'number',
-            ]     
+            ],  
             [
                 'name' => 'created_at',
                 'label' => 'Created at',
