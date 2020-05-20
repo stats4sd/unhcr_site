@@ -38,6 +38,21 @@ class SubgroupCrudController extends CrudController
                 'type' => 'text',
             ],
             [
+                'name' => 'lft',
+                'label' => 'lft',
+                'type' => 'number',
+            ],
+            [
+                'name' => 'rgt',
+                'label' => 'rgt',
+                'type' => 'number',
+            ],
+            [
+                'name' => 'depth',
+                'label' => 'depth',
+                'type' => 'number',
+            ]     
+            [
                 'name' => 'created_at',
                 'label' => 'Created at',
                 'type' => 'datetime',
@@ -61,6 +76,21 @@ class SubgroupCrudController extends CrudController
                 'name' => 'name',
                 'label' => 'Subgroup name',
                 'type' => 'text',
+            ],
+            [
+                'name' => 'lft',
+                'label' => 'Enter left number',
+                'type' => 'number',
+            ],
+            [
+                'name' => 'rgt',
+                'label' => 'Enter right number',
+                'type' => 'number',
+            ],
+            [
+                'name' => 'depth',
+                'label' => 'Enter depth number',
+                'type' => 'number',
             ]
         ]);
     }
