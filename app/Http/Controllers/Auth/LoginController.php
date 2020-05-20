@@ -17,9 +17,6 @@ class LoginController extends BackpackLoginController
      */
     public function showLoginForm()
     {
-        $this->data['title'] = trans('backpack::base.login'); // set the page title
-        $this->data['username'] = $this->username();
-
-        return view('backpack::auth.login', $this->data);
+        return view('backpack::auth.login');
     }
 }
