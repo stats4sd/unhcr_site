@@ -21,7 +21,7 @@ class Dataset extends Model
     protected $table = 'datasets';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'script_id'];
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
