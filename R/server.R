@@ -1,5 +1,70 @@
 
 server = function(input, output, session) {
+  source('data.R')
+  
+  indicators<-load_indicators(NULL) 
+  unique_years <- unique(indicators$year)
+  years <- as.numeric(unlist(unique_years))
+  
+  updateSelectizeInput(session, 
+                       'country', 
+                       choices = countries_list(),
+                       options = list(
+                         placeholder = "Select a Country", 
+                         onInitialize = I('function() { this.setValue(""); }')
+                       ),
+                       selected = FALSE,
+                       server = TRUE
+                       )
+  updateSliderInput(session, 
+                    'years', 
+                    step = 1,
+                    label = NULL,
+                    min = min(years), 
+                    max = max(years),
+                    value = c(min(years),max(years)),
+                    )
+  
+  updateCheckboxGroupInput(session, 
+                           'filterSubsets', 
+                           label = NULL, 
+                           choices = subsets_list(NULL),
+                           selected = subsets_list(NULL), 
+                           inline = FALSE
+                           )
+  
+  updateCheckboxGroupInput(session, 
+                           'filterSubgroups', 
+                           label = NULL, 
+                           choices = subgroup_list(NULL),
+                           selected = subgroup_list(NULL), 
+                           inline = FALSE
+                           )
+  
+  updateCheckboxGroupInput(session, 
+                           'filterIndicators', 
+                           label = NULL, 
+                           choices = sdg_list(NULL),
+                           selected = sdg_list(NULL),
+                           inline = FALSE
+                           )
+  
+  updateSelectizeInput(session, 
+                       'sdgChartFilter', 
+                       choices = sdg_code_list(),  
+                       selected = sdg_code_list()[[1]], 
+                       server = TRUE
+                       )
+  
+  updateSelectizeInput(session, 
+                       'groupChartFilter',
+                       choices = subsets_list(NULL),  
+                       selected = subsets_list(NULL)[[1]], 
+                       server = TRUE
+                       )
+  
+  
+  
   indicators_map<-load_indicators_map()  
   
   #####################################
