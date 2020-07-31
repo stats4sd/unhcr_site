@@ -153,7 +153,7 @@ class DatasetCrudController extends CrudController
                     'toolbar' => [
                         'undo redo | styleselect | bold italic | link image | forecolor',
                         'alignleft aligncenter alignright'
-                    ]
+                    ],
                 ]
             ]
         ]);
