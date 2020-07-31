@@ -18,11 +18,9 @@ server = function(input, output, session) {
                        )
   updateSliderInput(session, 
                     'years', 
-                    step = 1,
-                    label = NULL,
-                    min = min(years), 
-                    max = max(years),
                     value = c(min(years),max(years)),
+                    min = min(years), 
+                    max = max(years)
                     )
   
   updateCheckboxGroupInput(session, 
