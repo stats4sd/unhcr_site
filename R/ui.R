@@ -211,7 +211,7 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                    selectizeInput(
                      "country", 
                      "",
-                     countries_list(), 
+                     choices = NULL, 
                      options = list(
                        placeholder = "Select a Country", 
                        onInitialize = I('function() { this.setValue(""); }')
@@ -220,9 +220,9 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                    
                    sliderInput("years",
                                h4("Filter Year"), 
-                               min = min(years),
-                               max = max(years),
-                               value = c(min(years), max(years)),
+                               min = 1,
+                               max = 100,
+                               value = c(1, 100),
                                sep = ""
                    ),
                    h4("Filter Groups"),
@@ -238,8 +238,8 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                    
                    checkboxGroupInput("filterSubsets", 
                                       label = NULL,
-                                      choices = subsets_list(NULL),  
-                                      selected = subsets_list(NULL),
+                                      choices = NULL,  
+                                      selected = NULL,
                    ),
                    h4("Filter Subgroups"), 
                    HTML('<div class="form-group shiny-input-container">
@@ -253,8 +253,8 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                    '),
                    checkboxGroupInput("filterSubgroups", 
                                       label = NULL,
-                                      choices = subgroup_list(NULL),  
-                                      selected = subgroup_list(NULL),
+                                      choices = NULL,  
+                                      selected = NULL,
                    ),
                    div(class="indicator_checkbox",
                        h4("Filter Indicators"), 
@@ -269,8 +269,8 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                    '),
                        checkboxGroupInput("filterIndicators", 
                                           label = NULL,
-                                          choices = sdg_list(NULL),
-                                          selected = sdg_list(NULL),
+                                          choices = NULL,
+                                          selected = NULL,
                        ),
                    ),
                )
@@ -358,8 +358,8 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                                      div(style="display: inline-block;vertical-align:top; width: 200px; ", id="sdgfilter",
                                          selectizeInput("sdgChartFilter",
                                                         label = NULL,
-                                                        choices = sdg_code_list(),
-                                                        selected = sdg_code_list()[[1]]
+                                                        choices = NULL
+                                                       
                                          ),
                                          downloadButton('downloadSDGByIndicator', 'Download Plot')
                                          
@@ -372,8 +372,8 @@ jscode <- "shinyjs.refresh = function() { location.reload(); }"
                                            
                                            selectizeInput("groupChartFilter", 
                                                           label = NULL,
-                                                          choices = subsets_list(NULL),
-                                                          selected = subsets_list(NULL)[[1]]
+                                                          choices = NULL
+                                                         
                                            ),
                                            downloadButton('downloadSDGBySubset', 'Download Plot')
                                        

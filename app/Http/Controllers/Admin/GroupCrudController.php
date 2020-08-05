@@ -35,7 +35,8 @@ class GroupCrudController extends CrudController
                 'name' => 'name',
                 'label' => 'Name',
                 'type' => 'text',
-            ]     
+            ]
+            
         ]);
     }
 
@@ -49,6 +50,7 @@ class GroupCrudController extends CrudController
                 'label' => 'Enter name of group',
                 'type' => 'text',
             ]
+           
         ]);
 
     }

@@ -6,8 +6,4 @@ library(RColorBrewer)
 library(ggplot2)
 library(shinyjs)
 library(rgdal)
-source('data.R')
 
-indicators<-load_indicators(NULL) 
-unique_years <- unique(indicators$year)
-years <- as.numeric(unlist(unique_years))

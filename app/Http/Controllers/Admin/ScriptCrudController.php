@@ -51,7 +51,7 @@ class ScriptCrudController extends CrudController
             ],
             [
                 'name' => 'location',
-                'label' => 'Location',
+                'label' => 'Geography Region location ',
                 'type' => 'text',
             ],
             [
