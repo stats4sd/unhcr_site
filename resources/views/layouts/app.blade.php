@@ -218,13 +218,13 @@ Footer
 <body>
     <div class="container w-100 px-0"></div>
       <div class="row">
-          <div class="col-3 px-0">
+          <div class="col-4 px-0">
             <img src="images/logo.png" style="height: 100px; padding-left: 50px;">
           </div>
-          <a class="col-3 nav px-0 {{ (request()->is('home')) ? 'active' : '' }}" href="{{ url('home') }}" style="text-decoration:none;">    
+          <a class="col-4 nav px-0 {{ (request()->is('home')) ? 'active' : '' }}" href="{{ url('home') }}" style="text-decoration:none;">    
             <div class="navitem">Home</div>
           </a>
-          <a class="col-3 nav px-0 {{ (request()->is('sdgs')) ? 'active' : '' }}" href="{{ url('sdgs') }}" style="text-decoration:none;">    
+          <a class="col-4 nav px-0 {{ (request()->is('sdgs')) ? 'active' : '' }}" href="{{ url('sdgs') }}" style="text-decoration:none;">    
             <div class="navitem">SDG Indicators</div>
           </a>       
           <!-- <a class="col-3 nav disable px-0 {{ (request()->is('lessons')) ? 'active' : '' }}" href="#" style="text-decoration:line-through;">    
