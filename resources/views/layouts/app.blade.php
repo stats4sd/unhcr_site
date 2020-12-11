@@ -227,9 +227,9 @@ Footer
           <a class="col-3 nav px-0 {{ (request()->is('sdgs')) ? 'active' : '' }}" href="{{ url('sdgs') }}" style="text-decoration:none;">    
             <div class="navitem">SDG Indicators</div>
           </a>       
-          <a class="col-3 nav disable px-0 {{ (request()->is('lessons')) ? 'active' : '' }}" href="#" style="text-decoration:line-through;">    
+          <!-- <a class="col-3 nav disable px-0 {{ (request()->is('lessons')) ? 'active' : '' }}" href="#" style="text-decoration:line-through;">    
             <div class="navitem">Recommendations</div>
-          </a>
+          </a> -->
       </div>
     </div>
 @yield('content')
