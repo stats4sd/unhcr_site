@@ -332,7 +332,11 @@ sdg_list <- function(country_code){
     sdg_indicators <- filter(sdg_indicators,code %in% sdg_code_country)
   }
   sdg_indicators <- sdg_indicators[order(sdg_indicators$lft),]
+  if(nrow(sdg_indicators)>0){
   sdg_list <- setNames(as.character(sdg_indicators$code),paste(sdg_indicators$code,":",sdg_indicators$description))
+  } else {
+    sdg_list<-NULL
+  }
   
   return(sdg_list)
 }

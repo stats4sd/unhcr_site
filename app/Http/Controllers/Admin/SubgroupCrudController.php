@@ -62,6 +62,7 @@ class SubgroupCrudController extends CrudController
                 'label' => 'Subgroup name',
                 'type' => 'text',
             ]
+            
         ]);
     }
 

@@ -145,9 +145,17 @@ class DatasetCrudController extends CrudController
             ],
             [
                 'name' => 'comment',
-                'type' => 'textarea',
+                'type' => 'tinymce',
                 'label' => 'Add any comments about this specific dataset:',
-            ],
+                'options' => [
+                    'selector' => 'textarea.tinymce',
+                    'plugins' => 'image,link,media,anchor,textcolor,colorpicker',
+                    'toolbar' => [
+                        'undo redo | styleselect | bold italic | link image | forecolor',
+                        'alignleft aligncenter alignright'
+                    ],
+                ]
+            ]
         ]);
     }
 
