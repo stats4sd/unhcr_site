@@ -19,7 +19,7 @@ php artisan backpack:install
 npm install
 npm run dev
 ```
-7.	Migrate the database: `php aritsan migrate:fresh --seed` (or copy from the staging site)
+6.	Migrate the database: `php aritsan migrate:fresh --seed` (or copy from the staging site)
 
 ## Setup R
 
